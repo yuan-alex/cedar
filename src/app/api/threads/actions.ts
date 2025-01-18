@@ -13,7 +13,10 @@ const DEFAULT_MODEL = "openai/gpt-4o-mini";
 
 function generateTitle(threadId: number, prompt: string) {
   generateText({
-    model: openrouter(process.env.AI_GATEWAY_TITLE_GENERATION_MODEL || "google/gemini-flash-1.5-8b"),
+    model: openrouter(
+      process.env.AI_GATEWAY_TITLE_GENERATION_MODEL ||
+        "google/gemini-flash-1.5-8b",
+    ),
     messages: [
       {
         role: "system",
