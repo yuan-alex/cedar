@@ -1,0 +1,31 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Thread {
+  id        Int      @id @default(autoincrement())
+  name      String   @default("New chat")
+  model     String
+  token     String   @unique @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id          Int      @id @default(autoincrement())
+  token       String   @default(uuid())
+  threadId    Int
+  thread      Thread   @relation(fields: [threadId], references: [id])
+  isAssistant Boolean
+  content     String
+  createdAt   DateTime @default(now())
+}
