@@ -1,4 +1,4 @@
-import { Button, Dialog, Select } from "@radix-ui/themes";
+import { Select } from "@radix-ui/themes";
 
 const providers = [
   {

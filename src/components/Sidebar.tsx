@@ -37,9 +37,9 @@ export function Sidebar() {
   }
 
   return (
-    <div className="w-64 flex-shrink-0">
-      <div className="p-3 flex flex-col space-y-3 h-full">
-        <div className="flex items-center space-x-2">
+    <div className="w-64 flex-shrink-0 flex flex-col divide-y">
+      <div className="p-3">
+        <div className="flex items-center space-x-2 mb-2">
           <FiMessageSquare />
           <p className="text-lg font-semibold">Chat Gateway</p>
           <div className="flex-grow" />
@@ -48,15 +48,14 @@ export function Sidebar() {
         <Link href="/">
           <Button>Start new chat</Button>
         </Link>
-        <div className="flex flex-col space-y-1 overflow-y-auto">
-          {threads?.map((thread) => (
-            <ThreadButton key={thread.id} thread={thread} />
-          ))}
-        </div>
-        <div className="flex-grow" />
-        <div className="flex">
-          <UserButton />
-        </div>
+      </div>
+      <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
+        {threads?.map((thread) => (
+          <ThreadButton key={thread.id} thread={thread} />
+        ))}
+      </div>
+      <div className="p-3 flex items-center">
+        <UserButton />
       </div>
     </div>
   );
