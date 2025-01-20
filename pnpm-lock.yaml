@@ -63,6 +63,9 @@ importers:
       '@biomejs/biome':
         specifier: ^1.9.4
         version: 1.9.4
+      '@nanostores/logger':
+        specifier: ^0.4.0
+        version: 0.4.0(nanostores@0.11.3)
       '@types/node':
         specifier: ^22.10.7
         version: 22.10.7
@@ -370,6 +373,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@nanostores/logger@0.4.0':
+    resolution: {integrity: sha512-8ipUQgX9udy3Uc9X9b7CFDZQR7DAKa+ZbZlIOcs3F0F1nDEYejffV2UoTQ1oYQ1F+DTXrNZIyZWhw+IWuSqvRQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      nanostores: '>=0.10.2'
 
   '@nanostores/persistent@0.10.2':
     resolution: {integrity: sha512-BEndnLhRC+yP7gXTESepBbSj8XNl8OXK9hu4xAgKC7MWJHKXnEqJMqY47LUyHxK6vYgFnisyHmqq+vq8AUFyIg==}
@@ -2314,6 +2323,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@nanostores/logger@0.4.0(nanostores@0.11.3)':
+    dependencies:
+      nanostores: 0.11.3
 
   '@nanostores/persistent@0.10.2(nanostores@0.11.3)':
     dependencies:

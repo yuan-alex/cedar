@@ -9,15 +9,13 @@ import { mutate } from "swr";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
-import { $prompt } from "@/utils/stores";
 
 export function Chat(props) {
   const { thread } = props;
 
   const formRef = useRef(null);
-  const messagesEndRef = useRef(null);
 
-  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, reload } = useChat({
     api: `/api/threads/${thread.token}`,
     id: thread.token,
     initialMessages: thread.messages.map((msg) =>
@@ -34,21 +32,11 @@ export function Chat(props) {
     },
   });
 
-  function scrollToBottom() {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }
-
   useEffect(() => {
-    scrollToBottom();
-
-    if ($prompt.value) {
-      append({
-        role: "user",
-        content: $prompt.value,
-      });
-      $prompt.set("");
+    if (!thread.messages[thread.messages.length - 1].isAssistant) {
+      reload();
     }
-  }, [$prompt]);
+  }, []);
 
   return (
     <>
@@ -87,7 +75,7 @@ function Message(props) {
         </div>
       )}
       <div
-        className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-4 py-2 bg-zinc-100 dark:bg-zinc-800 rounded-xl ml-auto"}`}
+        className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-5 py-3 bg-zinc-50 dark:bg-zinc-800 rounded-xl ml-auto"}`}
       >
         <Markdown components={components} remarkPlugins={[remarkGfm]}>
           {message.content}

@@ -35,13 +35,13 @@ async function getMessages(threadId: number): Promise<CoreMessage[]> {
     ...messages.map((message) =>
       message.isAssistant
         ? {
-          role: "assistant" as const,
-          content: message.content,
-        }
+            role: "assistant" as const,
+            content: message.content,
+          }
         : {
-          role: "user" as const,
-          content: message.content,
-        },
+            role: "user" as const,
+            content: message.content,
+          },
     ),
   ];
 }

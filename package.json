@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@nanostores/logger": "^0.4.0",
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
