@@ -1,5 +1,6 @@
 import { ContextMenu } from "@radix-ui/themes";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { mutate } from "swr";
 
 export function ThreadButton(props) {
@@ -10,6 +11,7 @@ export function ThreadButton(props) {
       method: "DELETE",
     }).then(() => {
       mutate("/api/threads");
+      redirect("/");
     });
   }
 
