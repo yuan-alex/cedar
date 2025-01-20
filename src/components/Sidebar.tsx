@@ -49,7 +49,7 @@ export function Sidebar() {
           <Button>Start new chat</Button>
         </Link>
       </div>
-      <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
+      <div className="px-2 flex-grow flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
           <ThreadButton key={thread.id} thread={thread} />
         ))}
