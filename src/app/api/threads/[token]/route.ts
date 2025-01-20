@@ -29,19 +29,19 @@ async function getMessages(threadId: number): Promise<CoreMessage[]> {
 
   return [
     {
-      role: "system",
+      role: "system" as const,
       content: SYSTEM_MESSAGE,
     },
     ...messages.map((message) =>
       message.isAssistant
         ? {
-            role: "assistant",
-            content: message.content,
-          }
+          role: "assistant" as const,
+          content: message.content,
+        }
         : {
-            role: "user",
-            content: message.content,
-          },
+          role: "user" as const,
+          content: message.content,
+        },
     ),
   ];
 }
