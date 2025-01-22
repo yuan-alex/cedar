@@ -33,7 +33,7 @@ export function Chat(props) {
   });
 
   useEffect(() => {
-    if (!thread.messages[thread.messages.length - 1].isAssistant) {
+    if (!thread.messages[thread.messages.length - 1]?.isAssistant) {
       reload();
     }
   }, []);
