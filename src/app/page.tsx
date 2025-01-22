@@ -11,8 +11,8 @@ export default function NewChat() {
         <ModelSelector
           name="model"
           defaultValue={$model.get()}
-          onValueChange={(value) => {
-            $model.set(value);
+          onChange={(value) => {
+            $model.set(value.target.value);
           }}
         />
       </nav>
