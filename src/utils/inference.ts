@@ -69,14 +69,6 @@ export const providers: IProvider[] = [
         id: "google/gemini-flash-1.5-8b",
         name: "Gemini Flash 1.5 8B",
       },
-      {
-        id: "google/gemma-2-27b-it",
-        name: "Gemma 2 27B",
-      },
-      {
-        id: "google/gemma-2-9b-it",
-        name: "Gemma 2 9B",
-      },
     ],
   },
   {
@@ -115,14 +107,6 @@ export const providers: IProvider[] = [
         id: "mistralai/mistral-nemo",
         name: "Mistral Nemo",
       },
-      {
-        id: "mistralai/mixtral-8x22b-instruct",
-        name: "Mixtral 8x22b",
-      },
-      {
-        id: "mistralai/mixtral-8x7b-instruct",
-        name: "Mixtral 8x7b",
-      },
     ],
   },
   {
@@ -135,31 +119,6 @@ export const providers: IProvider[] = [
       {
         id: "x-ai/grok-beta",
         name: "Grok Beta",
-      },
-    ],
-  },
-  {
-    name: "Qwen",
-    models: [
-      {
-        id: "qwen/qvq-72b-preview",
-        name: "QwQ 72B Preview",
-      },
-      {
-        id: "qwen/qwq-32b-preview",
-        name: "QwQ 32B Preview",
-      },
-      {
-        id: "qwen/qwen-2.5-72b-instruct",
-        name: "Qwen 2.5 72B Instruct",
-      },
-      {
-        id: "qwen/qwen-2.5-coder-32b-instruct",
-        name: "Qwen 2.5 Coder 32B Instruct",
-      },
-      {
-        id: "qwen/qwen-2.5-7b-instruct",
-        name: "Qwen 2.5 7B Instruct",
       },
     ],
   },
@@ -182,15 +141,6 @@ export const providers: IProvider[] = [
       {
         id: "microsoft/phi-4",
         name: "Phi 4",
-      },
-    ],
-  },
-  {
-    name: "Nvidia",
-    models: [
-      {
-        id: "nvidia/llama-3.1-nemotron-70b-instruct",
-        name: "Llama 3.1 Nemotron 70B Instruct",
       },
     ],
   },
