@@ -51,7 +51,7 @@ export function Sidebar() {
       </div>
       <div className="px-2 grow flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
-          <ThreadButton key={thread.id} thread={thread} />
+          <ThreadButton key={thread.id} className="first:mt-2 last:mb-2" thread={thread} />
         ))}
       </div>
       <div className="p-3 flex items-center">

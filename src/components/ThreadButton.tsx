@@ -18,7 +18,7 @@ export function ThreadButton(props) {
   return (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <Link key={thread.id} href={`/chat/${thread.token}`}>
+        <Link key={thread.id} href={`/chat/${thread.token}`} {...props}>
           <div
             key={thread.id}
             className="px-3 py-1 text-sm rounded-sm truncate hover:bg-zinc-200 dark:hover:bg-zinc-800"
