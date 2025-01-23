@@ -26,14 +26,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const formData = await request.formData();
-  const message = formData.get("message").toString();
-  const model = formData.get("model").toString();
+  const message = formData.get("message")?.toString();
+  const model = formData.get("model")?.toString();
 
   await auth.protect();
   const { userId } = await auth();
 
-  if (!message) {
-    return new Response("message not provided", { status: 400 });
+  if (!userId || !message || !model) {
+    return new Response("invalid parameters", { status: 400 });
   }
 
   const thread = await prisma.thread.create({
