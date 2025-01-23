@@ -24,7 +24,7 @@ export default async function Thread({ params }) {
     <div className="flex flex-col h-full">
       <nav className="py-3 px-4 flex items-center border-b dark:border-zinc-700">
         <p className="font-medium">{thread.name}</p>
-        <div className="flex-grow" />
+        <div className="grow" />
         <Badge>{thread.model}</Badge>
       </nav>
       <Chat thread={thread} />

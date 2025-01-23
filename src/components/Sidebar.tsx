@@ -30,26 +30,26 @@ export function Sidebar() {
         <Link href="/">
           <FiPlus />
         </Link>
-        <div className="flex-grow" />
+        <div className="grow" />
         <UserButton />
       </div>
     );
   }
 
   return (
-    <div className="w-64 flex-shrink-0 flex flex-col divide-y dark:divide-zinc-700">
+    <div className="w-64 shrink-0 flex flex-col divide-y dark:divide-zinc-700">
       <div className="p-3">
         <div className="flex items-center space-x-2 mb-2">
           <FiMessageSquare />
           <p className="text-lg font-medium">Chat Gateway</p>
-          <div className="flex-grow" />
+          <div className="grow" />
           <SidebarToggle />
         </div>
         <Link href="/">
           <Button>Start new chat</Button>
         </Link>
       </div>
-      <div className="px-2 flex-grow flex flex-col space-y-1 overflow-y-auto">
+      <div className="px-2 grow flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
           <ThreadButton key={thread.id} thread={thread} />
         ))}

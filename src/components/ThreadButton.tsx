@@ -21,7 +21,7 @@ export function ThreadButton(props) {
         <Link key={thread.id} href={`/chat/${thread.token}`}>
           <div
             key={thread.id}
-            className="px-3 py-1 text-sm rounded truncate hover:bg-zinc-200 dark:hover:bg-zinc-800"
+            className="px-3 py-1 text-sm rounded-sm truncate hover:bg-zinc-200 dark:hover:bg-zinc-800"
           >
             {thread.name}
           </div>

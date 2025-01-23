@@ -42,7 +42,7 @@ export function Chat(props) {
   return (
     <>
       <StickToBottom
-        className="flex-grow overflow-auto w-full"
+        className="grow overflow-auto w-full"
         resize="smooth"
         initial="instant"
       >
