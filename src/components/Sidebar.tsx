@@ -41,7 +41,7 @@ export function Sidebar() {
       <div className="p-3">
         <div className="flex items-center space-x-2 mb-2">
           <FiMessageSquare />
-          <p className="text-lg font-semibold">Chat Gateway</p>
+          <p className="text-lg font-medium">Chat Gateway</p>
           <div className="flex-grow" />
           <SidebarToggle />
         </div>

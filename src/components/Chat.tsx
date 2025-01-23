@@ -2,6 +2,7 @@
 
 import { useChat } from "ai/react";
 import { useEffect, useRef } from "react";
+import { SiMeta } from "react-icons/si";
 import { VscSparkle } from "react-icons/vsc";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -36,7 +37,7 @@ export function Chat(props) {
     if (!thread.messages[thread.messages.length - 1]?.isAssistant) {
       reload();
     }
-  }, []);
+  }, [thread.messages, reload]);
 
   return (
     <>
@@ -69,11 +70,6 @@ function Message(props) {
 
   return (
     <div className="flex items-start space-x-4 my-4">
-      {message.role === "assistant" && (
-        <div className="p-1">
-          <VscSparkle className="w-5 h-5" />
-        </div>
-      )}
       <div
         className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-5 py-3 bg-zinc-50 dark:bg-zinc-800 rounded-xl ml-auto"}`}
       >

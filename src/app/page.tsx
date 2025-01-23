@@ -18,8 +18,11 @@ export default function NewChat() {
       </nav>
       <div className="flex-grow flex items-center justify-center">
         <div className="max-w-2xl w-full">
-          <p className="text-4xl font-serif font-semibold mb-5">
-            👋 What can I do for you today?
+          <p className="text-xl font-medium text-center mb-3">
+            💬 Chat Gateway
+          </p>
+          <p className="text-4xl text-center font-serif font-semibold mb-8">
+            What can I do for you today?
           </p>
           <InputBox name="message" rows={3} />
         </div>
