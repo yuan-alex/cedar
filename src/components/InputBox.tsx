@@ -11,7 +11,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
       // Reset height to auto first to handle text removal
       textarea.style.height = "auto";
       // Set height to scrollHeight to accommodate all content
-      textarea.style.height = textarea.scrollHeight + "px";
+      textarea.style.height = `${textarea.scrollHeight}px`;
     }
   };
 
@@ -35,6 +35,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   };
 
   // Adjust height on mount and when content changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     adjustHeight();
   }, []);

@@ -14,17 +14,17 @@ import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-})
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 const instrument_serif = Instrument_Serif({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-instrument-serif',
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-instrument-serif",
   weight: "400",
-})
+});
 
 export const metadata: Metadata = {
   title: "Chat Gateway",

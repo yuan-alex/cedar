@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        serif: ['var(--font-instrument-serif)'],
+        sans: ["var(--font-inter)"],
+        serif: ["var(--font-instrument-serif)"],
       },
     },
   },
