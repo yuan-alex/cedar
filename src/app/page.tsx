@@ -2,7 +2,7 @@
 
 import { InputBox } from "@/components/InputBox";
 import { ModelSelector } from "@/components/ModelSelector";
-import { $model } from "@/utils/stores";
+import { $model, $prompt } from "@/utils/stores";
 
 export default function NewChat() {
   return (
@@ -24,7 +24,11 @@ export default function NewChat() {
           <p className="text-4xl text-center font-serif font-semibold mb-8">
             What can I do for you today?
           </p>
-          <InputBox name="message" rows={3} />
+          <InputBox
+            name="message"
+            rows={3}
+            onChange={(event) => $prompt.set(event.target.value)}
+          />
         </div>
       </div>
     </form>

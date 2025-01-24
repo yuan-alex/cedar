@@ -40,12 +40,6 @@ export async function POST(request: Request) {
     data: {
       model: model || DEFAULT_MODEL,
       userId,
-      messages: {
-        create: {
-          content: message,
-          isAssistant: false,
-        },
-      },
     },
   });
 

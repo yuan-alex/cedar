@@ -13,7 +13,7 @@ export function Chat(props) {
 
   const formRef = useRef(null);
 
-  const { messages, input, handleInputChange, handleSubmit, reload } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
     api: `/api/threads/${thread.token}`,
     id: thread.token,
     initialMessages: thread.messages.map((msg) =>
@@ -31,8 +31,8 @@ export function Chat(props) {
   });
 
   useEffect(() => {
-    if (!thread.messages[thread.messages.length - 1]?.isAssistant) {
-      reload();
+    if (thread.messages.length === 0 && localStorage.getItem("prompt")) {
+      append({ role: "user", content: localStorage.getItem("prompt") });
     }
   }, []);
 
