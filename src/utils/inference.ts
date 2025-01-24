@@ -133,6 +133,10 @@ export const providers: IProvider[] = [
         id: "deepseek/deepseek-r1",
         name: "DeepSeek R1",
       },
+      {
+        id: "deepseek/deepseek-r1-distill-llama-70b",
+        name: "DeepSeek R1 Distill Llama 70B",
+      },
     ],
   },
   {
