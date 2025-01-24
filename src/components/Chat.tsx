@@ -2,14 +2,11 @@
 
 import { useChat } from "ai/react";
 import { useEffect, useRef } from "react";
-import { SiMeta } from "react-icons/si";
-import { VscSparkle } from "react-icons/vsc";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { mutate } from "swr";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
+import { Message } from "@/components/Message";
 
 export function Chat(props) {
   const { thread } = props;
@@ -34,7 +31,9 @@ export function Chat(props) {
   });
 
   useEffect(() => {
-    reload();
+    if (!thread.messages[thread.messages.length - 1]?.isAssistant) {
+      reload();
+    }
   }, []);
 
   return (
@@ -56,25 +55,5 @@ export function Chat(props) {
         </form>
       </div>
     </>
-  );
-}
-
-const components = {
-  code: ({ children }) => <code className="text-xs">{children}</code>,
-};
-
-function Message(props) {
-  const { message } = props;
-
-  return (
-    <div className="flex items-start space-x-4 my-4">
-      <div
-        className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-5 py-3 bg-zinc-50 dark:bg-zinc-800 rounded-xl ml-auto"}`}
-      >
-        <Markdown components={components} remarkPlugins={[remarkGfm]}>
-          {message.content}
-        </Markdown>
-      </div>
-    </div>
   );
 }
