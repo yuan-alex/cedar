@@ -22,8 +22,7 @@ export default async function Thread({ params }) {
 
   return (
     <div className="flex flex-col h-full">
-      <nav className="py-3 px-4 flex items-center border-b dark:border-zinc-700">
-        <p className="font-medium">{thread.name}</p>
+      <nav className="py-3 px-4 flex items-center dark:border-zinc-700">
         <div className="grow" />
         <Badge>{thread.model}</Badge>
       </nav>
