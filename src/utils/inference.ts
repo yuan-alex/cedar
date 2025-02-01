@@ -129,6 +129,10 @@ export const providers: IProvider[] = [
     name: "Mistral AI",
     models: [
       {
+        id: "mistralai/mistral-small-24b-instruct-2501",
+        name: "Mistral Small 3"
+      },
+      {
         id: "mistralai/pixtral-12b",
         name: "Mistral Pixtral 12B",
       },
