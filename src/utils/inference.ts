@@ -72,6 +72,35 @@ export const providers: IProvider[] = [
     ],
   },
   {
+    name: "DeepSeek",
+    models: [
+      {
+        id: "deepseek/deepseek-r1",
+        name: "R1",
+      },
+      {
+        id: "deepseek/deepseek-r1-distill-llama-70b",
+        name: "R1 Distill Llama 70B",
+      },
+      {
+        id: "deepseek/deepseek-r1-distill-qwen-32b",
+        name: "R1 Distill Qwen 32B"
+      },
+      {
+        id: "deepseek/deepseek-r1-distill-qwen-14b",
+        name: "R1 Distill Qwen 14B"
+      },
+      {
+        id: "deepseek/deepseek-r1-distill-qwen-1.5b",
+        name: "R1 Distill Qwen 1.5B"
+      },
+      {
+        id: "deepseek/deepseek-chat",
+        name: "V3",
+      },
+    ],
+  },
+  {
     name: "Meta",
     models: [
       {
@@ -119,23 +148,6 @@ export const providers: IProvider[] = [
       {
         id: "x-ai/grok-beta",
         name: "Grok Beta",
-      },
-    ],
-  },
-  {
-    name: "DeepSeek",
-    models: [
-      {
-        id: "deepseek/deepseek-chat",
-        name: "DeepSeek V3",
-      },
-      {
-        id: "deepseek/deepseek-r1",
-        name: "DeepSeek R1",
-      },
-      {
-        id: "deepseek/deepseek-r1-distill-llama-70b",
-        name: "DeepSeek R1 Distill Llama 70B",
       },
     ],
   },
