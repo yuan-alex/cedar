@@ -7,6 +7,7 @@ import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
 import { Message } from "@/components/Message";
+import { $prompt } from "@/utils/stores";
 
 export function Chat(props) {
   const { thread } = props;
@@ -31,8 +32,10 @@ export function Chat(props) {
   });
 
   useEffect(() => {
-    if (thread.messages.length === 0 && localStorage.getItem("prompt")) {
-      append({ role: "user", content: localStorage.getItem("prompt") });
+    const prompt = localStorage.getItem("prompt");
+    if (thread.messages.length === 0 && prompt) {
+      append({ role: "user", content: prompt });
+      $prompt.set("");
     }
   }, []);
 

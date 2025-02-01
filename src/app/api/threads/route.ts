@@ -1,12 +1,10 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
+import { modelIds } from "@/utils/inference";
 import { prisma } from "@/utils/prisma";
 import { generateTitle } from "../utils";
-
-const DEFAULT_MODEL = "openai/gpt-4o-mini";
 
 export async function GET() {
   await auth.protect();
@@ -25,25 +23,24 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-  const message = formData.get("message")?.toString();
-  const model = formData.get("model")?.toString();
-
   await auth.protect();
   const { userId } = await auth();
 
-  if (!userId || !message || !model) {
+  const data = await request.json();
+  const { model, prompt } = data;
+
+  if (!userId || !prompt || !model || !modelIds.includes(model)) {
     return new Response("invalid parameters", { status: 400 });
   }
 
   const thread = await prisma.thread.create({
     data: {
-      model: model || DEFAULT_MODEL,
+      model: model,
       userId,
     },
   });
 
-  generateTitle(thread.id, message).then(async (response) => {
+  generateTitle(thread.id, prompt).then(async (response) => {
     await prisma.thread.update({
       where: {
         id: thread.id,
@@ -54,5 +51,5 @@ export async function POST(request: Request) {
     });
   });
 
-  redirect(`/chat/${thread.token}`);
+  return Response.json(thread);
 }

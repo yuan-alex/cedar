@@ -1,24 +1,40 @@
+"use client";
+
+import { Button, Popover } from "@radix-ui/themes";
 import type React from "react";
 
 import { providers } from "@/utils/inference";
 
-export function ModelSelector(
-  props: React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  >,
-) {
+interface IProps {
+  name?: string;
+  model: string;
+  onChange: (model: string) => void;
+}
+
+export default function ModelSelector(props: IProps) {
   return (
-    <select className="px-3 py-2 text-sm rounded-lg cursor-pointer" {...props}>
-      {providers.map((provider) => (
-        <optgroup key={provider.name} label={provider.name}>
-          {provider.models.map((model) => (
-            <option key={model.id} value={model.id}>
-              {model.name}
-            </option>
+    <Popover.Root>
+      <Popover.Trigger>
+        <Button variant="soft">{props.model}</Button>
+      </Popover.Trigger>
+      <Popover.Content width="250px" height="500px">
+        <div className="flex flex-col space-y-2">
+          {providers.map((provider) => (
+            <span key={provider.name}>
+              <p className="text-sm font-medium mb-2">{provider.name}</p>
+              {provider.models.map((model) => (
+                <Popover.Close
+                  key={model.id}
+                  className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${model.id === props.model ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
+                  onClick={() => props.onChange(model.id)}
+                >
+                  <p>{model.name}</p>
+                </Popover.Close>
+              ))}
+            </span>
           ))}
-        </optgroup>
-      ))}
-    </select>
+        </div>
+      </Popover.Content>
+    </Popover.Root>
   );
 }

@@ -149,3 +149,7 @@ export const providers: IProvider[] = [
     ],
   },
 ];
+
+export const modelIds = providers.flatMap((provider) =>
+  provider.models.map((model) => model.id),
+);

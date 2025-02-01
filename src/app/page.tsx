@@ -1,26 +1,43 @@
 "use client";
 
+import { useStore } from "@nanostores/react";
+import dynamic from "next/dynamic";
+import { redirect } from "next/navigation";
+
 import { InputBox } from "@/components/InputBox";
-import { ModelSelector } from "@/components/ModelSelector";
 import { $model, $prompt } from "@/utils/stores";
 
+const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
+  ssr: false,
+});
+
 export default function NewChat() {
+  const model = useStore($model);
+
+  function handleCreateThread(event) {
+    event.preventDefault();
+
+    fetch("/api/threads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: $model.value,
+        prompt: $prompt.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => redirect(`/chat/${data.token}`));
+  }
+
   return (
-    <form className="h-full flex flex-col" action="/api/threads" method="POST">
+    <form className="h-full flex flex-col" onSubmit={handleCreateThread}>
       <nav className="p-3 flex">
-        <ModelSelector
-          name="model"
-          defaultValue={$model.get()}
-          onChange={(value) => {
-            $model.set(value.target.value);
-          }}
-        />
+        <ModelSelector model={model} onChange={(value) => $model.set(value)} />
       </nav>
       <div className="grow flex items-center justify-center">
         <div className="max-w-2xl w-full">
-          <p className="text-xl font-medium text-center mb-3">
-            💬 Chat Gateway
-          </p>
           <p className="text-4xl text-center font-serif font-semibold mb-8">
             What can I do for you today?
           </p>
