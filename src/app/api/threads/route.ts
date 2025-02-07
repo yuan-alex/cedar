@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     },
   });
 
-  generateTitle(thread.id, prompt).then(async (response) => {
+  generateTitle(prompt).then(async (response) => {
     await prisma.thread.update({
       where: {
         id: thread.id,

@@ -8,6 +8,7 @@ export function Message(props) {
 
   return (
     <div className="flex items-start space-x-4 my-4">
+      {message.reasoning && <pre>{message.reasoning}</pre>}
       <div
         className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-5 py-3 bg-zinc-50 dark:bg-zinc-800 rounded-xl ml-auto"}`}
       >

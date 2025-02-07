@@ -27,5 +27,6 @@ model ChatMessage {
   thread      Thread   @relation(fields: [threadId], references: [id])
   isAssistant Boolean
   content     String
+  reasoning   String?
   createdAt   DateTime @default(now())
 }
