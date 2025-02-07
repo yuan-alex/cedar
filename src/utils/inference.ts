@@ -57,6 +57,10 @@ export const providers: IProvider[] = [
     name: "Google",
     models: [
       {
+        id: "google/gemini-2.0-flash-001",
+        name: "Gemini 2.0 Flash",
+      },
+      {
         id: "google/gemini-pro-1.5",
         name: "Gemini Pro 1.5",
       },
