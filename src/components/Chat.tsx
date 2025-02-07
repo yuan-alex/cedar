@@ -46,9 +46,6 @@ export function Chat(props) {
         resize="smooth"
         initial="instant"
       >
-        {process.env.NODE_ENV === "development" && (
-          <pre className="p-5 text-sm overflow-auto max-h-52 bg-zinc-800 text-white">{JSON.stringify(messages, undefined, 2)}</pre>
-        )}
         <StickToBottom.Content className="flex flex-col w-full max-w-3xl mx-auto my-10">
           {messages.map((msg, i) => (
             <Message key={msg.id} index={i} message={msg} />

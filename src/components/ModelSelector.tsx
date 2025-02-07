@@ -17,7 +17,7 @@ export default function ModelSelector(props: IProps) {
       <Popover.Trigger>
         <Button variant="soft">{props.model}</Button>
       </Popover.Trigger>
-      <Popover.Content width="250px" height="500px">
+      <Popover.Content width="300px" height="500px">
         <div className="flex flex-col space-y-2">
           {providers.map((provider) => (
             <span key={provider.name}>

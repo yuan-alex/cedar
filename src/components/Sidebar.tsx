@@ -37,7 +37,7 @@ export function Sidebar() {
   }
 
   return (
-    <div className="w-64 shrink-0 flex flex-col divide-y dark:divide-zinc-700">
+    <div className="w-64 shrink-0 flex flex-col dark:divide-zinc-700">
       <div className="p-3">
         <div className="flex items-center space-x-2 mb-2">
           <FiMessageSquare />
