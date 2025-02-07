@@ -24,7 +24,7 @@ export const providers: IProvider[] = [
     models: [
       {
         id: "openai/o1-preview",
-        name: "o1-preview",
+        name: "o1 preview",
       },
       {
         id: "openai/o1-mini",
@@ -50,10 +50,6 @@ export const providers: IProvider[] = [
       {
         id: "anthropic/claude-3.5-haiku",
         name: "Claude 3.5 Haiku",
-      },
-      {
-        id: "anthropic/claude-3-haiku",
-        name: "Claude 3 Haiku",
       },
     ],
   },
@@ -87,15 +83,15 @@ export const providers: IProvider[] = [
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-32b",
-        name: "R1 Distill Qwen 32B"
+        name: "R1 Distill Qwen 32B",
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-14b",
-        name: "R1 Distill Qwen 14B"
+        name: "R1 Distill Qwen 14B",
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-1.5b",
-        name: "R1 Distill Qwen 1.5B"
+        name: "R1 Distill Qwen 1.5B",
       },
       {
         id: "deepseek/deepseek-chat",
@@ -109,14 +105,6 @@ export const providers: IProvider[] = [
       {
         id: "meta-llama/llama-3.3-70b-instruct",
         name: "Llama 3.3 70B",
-      },
-      {
-        id: "meta-llama/llama-3.2-90b-vision-instruct",
-        name: "Llama 3.2 90B",
-      },
-      {
-        id: "meta-llama/llama-3.2-11b-vision-instruct",
-        name: "Llama 3.2 11B",
       },
       {
         id: "meta-llama/llama-3.1-8b-instruct",
@@ -133,11 +121,7 @@ export const providers: IProvider[] = [
     models: [
       {
         id: "mistralai/mistral-small-24b-instruct-2501",
-        name: "Mistral Small 3"
-      },
-      {
-        id: "mistralai/pixtral-12b",
-        name: "Mistral Pixtral 12B",
+        name: "Mistral Small 3",
       },
       {
         id: "mistralai/mistral-nemo",
