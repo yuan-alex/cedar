@@ -12,7 +12,11 @@ export default async function Thread({ params }) {
       token: thread_token,
     },
     include: {
-      messages: true,
+      messages: {
+        orderBy: {
+          id: "asc",
+        },
+      },
     },
   });
 

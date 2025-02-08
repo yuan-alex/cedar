@@ -39,6 +39,9 @@ export async function POST(
     where: {
       threadId: thread.id,
     },
+    orderBy: {
+      id: "asc",
+    },
   });
 
   const result = streamText({
