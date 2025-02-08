@@ -48,7 +48,7 @@ export function Chat(props) {
       >
         <StickToBottom.Content className="flex flex-col w-full max-w-3xl mx-auto my-10">
           {messages.map((msg, i) => (
-            <Message key={msg.id} index={i} message={msg} />
+            <Message key={msg.id} index={i} thread={thread} message={msg} />
           ))}
         </StickToBottom.Content>
       </StickToBottom>

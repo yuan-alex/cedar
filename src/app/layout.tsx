@@ -7,6 +7,7 @@ import {
 import { Theme, ThemePanel } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import { Sidebar } from "@/components/Sidebar";
 
@@ -39,6 +40,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${instrument_serif.variable}`}>
+          <Toaster position="bottom-right" />
           <Theme accentColor="gray" radius="large">
             <SignedOut>
               <RedirectToSignIn />
