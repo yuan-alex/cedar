@@ -94,6 +94,10 @@ export const providers: IProvider[] = [
         name: "R1 Distill Qwen 14B",
       },
       {
+        id: "deepseek/deepseek-r1-distill-llama-8b",
+        name: "R1 Distill Llama 3.1 8B",
+      },
+      {
         id: "deepseek/deepseek-r1-distill-qwen-1.5b",
         name: "R1 Distill Qwen 1.5B",
       },
