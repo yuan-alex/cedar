@@ -16,6 +16,8 @@ interface IProvider {
 interface IModel {
   id: string;
   name: string;
+  reasoning?: boolean;
+  fast?: boolean;
 }
 
 export const providers: IProvider[] = [
@@ -25,10 +27,12 @@ export const providers: IProvider[] = [
       {
         id: "openai/o1-preview",
         name: "o1 preview",
+        reasoning: true,
       },
       {
         id: "openai/o1-mini",
         name: "o1 mini",
+        reasoning: true,
       },
       {
         id: "openai/chatgpt-4o-latest",
@@ -37,6 +41,7 @@ export const providers: IProvider[] = [
       {
         id: "openai/gpt-4o-mini",
         name: "GPT-4o mini",
+        fast: true,
       },
     ],
   },
@@ -59,6 +64,7 @@ export const providers: IProvider[] = [
       {
         id: "google/gemini-2.0-flash-001",
         name: "Gemini 2.0 Flash",
+        fast: true,
       },
       {
         id: "google/gemini-pro-1.5",
@@ -67,10 +73,12 @@ export const providers: IProvider[] = [
       {
         id: "google/gemini-flash-1.5",
         name: "Gemini Flash 1.5",
+        fast: true,
       },
       {
         id: "google/gemini-flash-1.5-8b",
         name: "Gemini Flash 1.5 8B",
+        fast: true,
       },
     ],
   },
@@ -79,31 +87,27 @@ export const providers: IProvider[] = [
     models: [
       {
         id: "deepseek/deepseek-r1",
-        name: "R1",
+        name: "DeepSeek R1",
+        reasoning: true,
       },
       {
         id: "deepseek/deepseek-r1-distill-llama-70b",
         name: "R1 Distill Llama 70B",
-      },
-      {
-        id: "deepseek/deepseek-r1-distill-qwen-32b",
-        name: "R1 Distill Qwen 32B",
-      },
-      {
-        id: "deepseek/deepseek-r1-distill-qwen-14b",
-        name: "R1 Distill Qwen 14B",
+        reasoning: true,
       },
       {
         id: "deepseek/deepseek-r1-distill-llama-8b",
         name: "R1 Distill Llama 3.1 8B",
+        reasoning: true,
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-1.5b",
         name: "R1 Distill Qwen 1.5B",
+        reasoning: true,
       },
       {
         id: "deepseek/deepseek-chat",
-        name: "V3",
+        name: "DeepSeek V3",
       },
     ],
   },
@@ -117,10 +121,12 @@ export const providers: IProvider[] = [
       {
         id: "meta-llama/llama-3.1-8b-instruct",
         name: "Llama 3.1 8B",
+        fast: true,
       },
       {
         id: "meta-llama/llama-3.2-3b-instruct",
         name: "Llama 3.2 3B",
+        fast: true,
       },
     ],
   },
@@ -134,6 +140,7 @@ export const providers: IProvider[] = [
       {
         id: "mistralai/mistral-nemo",
         name: "Mistral Nemo",
+        fast: true,
       },
     ],
   },
@@ -156,6 +163,7 @@ export const providers: IProvider[] = [
       {
         id: "microsoft/phi-4",
         name: "Phi 4",
+        fast: true,
       },
     ],
   },

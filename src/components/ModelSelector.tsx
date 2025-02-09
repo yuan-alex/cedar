@@ -2,6 +2,8 @@
 
 import { Button, Popover } from "@radix-ui/themes";
 import type React from "react";
+import { BiBrain } from "react-icons/bi";
+import { MdBolt } from "react-icons/md";
 
 import { providers } from "@/utils/inference";
 
@@ -28,7 +30,12 @@ export default function ModelSelector(props: IProps) {
                   className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${model.id === props.model ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
                   onClick={() => props.onChange(model.id)}
                 >
-                  <p>{model.name}</p>
+                  <div className="flex items-center">
+                    <p>{model.name}</p>
+                    <div className="grow" />
+                    {model.fast && <MdBolt className="text-yellow-400" />}
+                    {model.reasoning && <BiBrain className="text-blue-400" />}
+                  </div>
                 </Popover.Close>
               ))}
             </span>
