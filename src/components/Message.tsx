@@ -55,7 +55,9 @@ export function Message(props) {
           </Markdown>
         </div>
       </div>
-      <div className="flex justify-end gap-4">
+      <div
+        className={`${message.role === "assistant" ? "flex justify-end gap-4 mb-4" : "invisible"}`}
+      >
         <IconButton variant="ghost" size="2">
           <FiCopy onClick={handleCopyText} />
         </IconButton>
