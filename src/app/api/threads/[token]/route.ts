@@ -27,13 +27,20 @@ export async function POST(
     return notFound();
   }
 
-  await prisma.chatMessage.create({
-    data: {
-      threadId: thread.id,
-      isAssistant: false,
-      content: userInput,
+  await prisma.thread.update({
+    where: {
+      id: thread.id,
     },
-  });
+    data: {
+      lastMessagedAt: new Date(),
+      messages: {
+        create: {
+          isAssistant: false,
+          content: userInput,
+        }
+      }
+    }
+  })
 
   const messages = await prisma.chatMessage.findMany({
     where: {

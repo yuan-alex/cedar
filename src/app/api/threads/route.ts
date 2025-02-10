@@ -15,7 +15,7 @@ export async function GET() {
       userId,
     },
     orderBy: {
-      id: "desc",
+      lastMessagedAt: "desc",
     },
   });
 

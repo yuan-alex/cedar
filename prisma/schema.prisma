@@ -9,13 +9,14 @@ datasource db {
 }
 
 model Thread {
-  id        Int      @id @default(autoincrement())
-  name      String   @default("New chat")
-  model     String
-  token     String   @unique @default(uuid())
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  name           String   @default("New chat")
+  model          String
+  token          String   @unique @default(uuid())
+  userId         String
+  lastMessagedAt DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   messages ChatMessage[]
 }
