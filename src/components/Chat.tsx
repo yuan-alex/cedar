@@ -1,7 +1,8 @@
 "use client";
 
 import { useChat } from "ai/react";
-import { useEffect, useRef } from "react";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 import { mutate } from "swr";
 import { StickToBottom } from "use-stick-to-bottom";
 
@@ -11,8 +12,6 @@ import { $prompt } from "@/utils/stores";
 
 export function Chat(props) {
   const { thread } = props;
-
-  const formRef = useRef(null);
 
   const { messages, input, handleInputChange, handleSubmit, append } = useChat({
     api: `/api/threads/${thread.token}`,
@@ -37,6 +36,17 @@ export function Chat(props) {
       append({ role: "user", content: prompt });
       $prompt.set("");
     }
+
+    function listener(event: KeyboardEvent) {
+      if (event.key === "Ctrl+k" || (event.metaKey && event.key === "k")) {
+        redirect("/");
+      }
+    }
+    document.addEventListener("keydown", listener);
+
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
   }, []);
 
   return (
@@ -53,7 +63,7 @@ export function Chat(props) {
         </StickToBottom.Content>
       </StickToBottom>
       <div className="w-full max-w-3xl mx-auto mb-2">
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <InputBox value={input} onChange={handleInputChange} />
         </form>
       </div>
