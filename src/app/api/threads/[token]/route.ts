@@ -37,10 +37,10 @@ export async function POST(
         create: {
           isAssistant: false,
           content: userInput,
-        }
-      }
-    }
-  })
+        },
+      },
+    },
+  });
 
   const messages = await prisma.chatMessage.findMany({
     where: {

@@ -38,10 +38,11 @@ export function Message(props) {
                     {...rest}
                     className="not-prose"
                     PreTag="div"
-                    children={String(children).replace(/\n$/, "")}
                     language={match[1]}
                     style={atomDark}
-                  />
+                  >
+                    {String(children).replace(/\n$/, "")}
+                  </SyntaxHighlighter>
                 ) : (
                   <code {...rest} className={className}>
                     {children}

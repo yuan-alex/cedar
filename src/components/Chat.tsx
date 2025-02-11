@@ -47,7 +47,7 @@ export function Chat(props) {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, []);
+  }, [append, thread.messages.length]);
 
   return (
     <>
