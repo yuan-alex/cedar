@@ -18,8 +18,8 @@ export function Chat(props) {
     id: thread.token,
     initialMessages: thread.messages.map((msg) =>
       msg.isAssistant
-        ? { id: msg.id, role: "assistant", content: msg.content }
-        : { id: msg.id, role: "user", content: msg.content },
+        ? { ...msg, id: msg.id, role: "assistant", content: msg.content }
+        : { ...msg, id: msg.id, role: "user", content: msg.content },
     ),
     experimental_prepareRequestBody: ({ messages }) => {
       // e.g. only the text of the last message:

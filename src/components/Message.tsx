@@ -24,10 +24,17 @@ export function Message(props) {
   return (
     <>
       <div className="flex items-start space-x-4 my-5">
-        {message.reasoning && <pre>{message.reasoning}</pre>}
         <div
           className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "px-5 py-3 bg-zinc-50 dark:bg-zinc-800 rounded-xl ml-auto"}`}
         >
+          {message.reasoning && (
+            <details>
+              <summary>Show reasoning</summary>
+              <p className="border-l-3 dark:border-zinc-700 pl-8 mb-10">
+                {message.reasoning}
+              </p>
+            </details>
+          )}
           <Markdown
             components={{
               code(props) {

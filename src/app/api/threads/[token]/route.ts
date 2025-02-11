@@ -54,13 +54,14 @@ export async function POST(
   const result = streamText({
     model: openrouter(thread.model),
     messages: convertMessagesToOpenAiFormat(messages),
-    onFinish: async ({ text, reasoning }) => {
+    onFinish: async (event) => {
       await prisma.chatMessage.create({
         data: {
+          token: event.response.id,
           threadId: thread.id,
           isAssistant: true,
-          content: text,
-          reasoning,
+          content: event.text,
+          reasoning: event.reasoning,
         },
       });
     },
