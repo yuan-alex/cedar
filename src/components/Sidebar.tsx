@@ -3,7 +3,7 @@
 import { UserButton } from "@clerk/nextjs";
 import { Button } from "@radix-ui/themes";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiMessageSquare, FiPlus, FiSidebar } from "react-icons/fi";
 import useSWR from "swr";
 
@@ -14,6 +14,20 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 export function Sidebar() {
   const { data: threads } = useSWR("/api/threads", fetcher);
   const [open, setOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    function listener(event: KeyboardEvent) {
+      if (event.shiftKey && event.metaKey && event.key === "s") {
+        event.preventDefault();
+        setOpen((prev) => !prev);
+      }
+    }
+    document.addEventListener("keydown", listener);
+
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   function SidebarToggle() {
     return (
