@@ -25,6 +25,7 @@ export function Chat(props) {
       // e.g. only the text of the last message:
       return messages[messages.length - 1].content;
     },
+    experimental_throttle: 50,
     onFinish: () => {
       mutate("/api/threads");
     },
