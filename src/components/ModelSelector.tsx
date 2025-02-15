@@ -33,8 +33,16 @@ export default function ModelSelector(props: IProps) {
                   <div className="flex items-center space-x-1">
                     <p>{model.name}</p>
                     <div className="grow" />
-                    {model.fast && <Badge color="orange"><MdBolt /></Badge>}
-                    {model.reasoning && <Badge color="blue"><BiBrain /></Badge>}
+                    {model.fast && (
+                      <Badge color="orange">
+                        <MdBolt />
+                      </Badge>
+                    )}
+                    {model.reasoning && (
+                      <Badge color="blue">
+                        <BiBrain />
+                      </Badge>
+                    )}
                   </div>
                 </Popover.Close>
               ))}
