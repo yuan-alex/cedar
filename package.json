@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^1.1.15",
     "@clerk/nextjs": "^6.11.2",
     "@nanostores/persistent": "^0.10.2",
     "@nanostores/react": "^0.8.4",

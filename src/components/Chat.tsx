@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { mutate } from "swr";
