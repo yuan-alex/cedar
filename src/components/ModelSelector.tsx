@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Popover } from "@radix-ui/themes";
+import { Badge, Button, Popover } from "@radix-ui/themes";
 import type React from "react";
 import { BiBrain } from "react-icons/bi";
 import { MdBolt } from "react-icons/md";
@@ -19,7 +19,7 @@ export default function ModelSelector(props: IProps) {
       <Popover.Trigger>
         <Button variant="soft">{props.model}</Button>
       </Popover.Trigger>
-      <Popover.Content width="300px" height="500px">
+      <Popover.Content width="400px" height="600px">
         <div className="flex flex-col space-y-2">
           {providers.map((provider) => (
             <span key={provider.name}>
@@ -30,11 +30,11 @@ export default function ModelSelector(props: IProps) {
                   className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${model.id === props.model ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
                   onClick={() => props.onChange(model.id)}
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-1">
                     <p>{model.name}</p>
                     <div className="grow" />
-                    {model.fast && <MdBolt className="text-yellow-400" />}
-                    {model.reasoning && <BiBrain className="text-blue-400" />}
+                    {model.fast && <Badge color="orange"><MdBolt /></Badge>}
+                    {model.reasoning && <Badge color="blue"><BiBrain /></Badge>}
                   </div>
                 </Popover.Close>
               ))}
