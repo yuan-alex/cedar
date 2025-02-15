@@ -52,6 +52,11 @@ export function Chat(props) {
 
   return (
     <>
+      {process.env.NODE_ENV === "development" && (
+        <pre className="fixed p-5 m-3 text-sm bottom-0 right-0 w-60 h-2/3 rounded overflow-auto bg-black text-green-300">
+          {JSON.stringify(messages, undefined, 2)}
+        </pre>
+      )}
       <StickToBottom
         className="grow overflow-auto w-full"
         resize="smooth"
