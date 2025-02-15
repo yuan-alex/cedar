@@ -67,7 +67,9 @@ export async function POST(
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toDataStreamResponse({
+    sendReasoning: true,
+  });
 }
 
 export async function DELETE(
