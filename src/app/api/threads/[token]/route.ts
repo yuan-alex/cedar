@@ -53,6 +53,7 @@ export async function POST(
 
   const result = streamText({
     model: openrouter(thread.model),
+    maxTokens: 8192,
     messages: convertMessagesToOpenAiFormat(messages),
     onFinish: async (event) => {
       await prisma.chatMessage.create({
