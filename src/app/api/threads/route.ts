@@ -2,9 +2,8 @@
 
 import { auth } from "@clerk/nextjs/server";
 
-import { modelIds } from "@/utils/inference";
+import { modelIds, generateTitle } from "@/utils/inference";
 import { prisma } from "@/utils/prisma";
-import { generateTitle } from "../utils";
 
 export async function GET() {
   await auth.protect();
