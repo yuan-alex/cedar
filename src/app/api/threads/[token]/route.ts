@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { streamText } from "ai";
+import { smoothStream, streamText } from "ai";
 import { notFound } from "next/navigation";
 
 import { openrouter, convertMessagesToOpenAiFormat } from "@/utils/inference";
@@ -65,6 +65,7 @@ export async function POST(
         },
       });
     },
+    experimental_transform: smoothStream(),
   });
 
   return result.toDataStreamResponse({
