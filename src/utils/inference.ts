@@ -36,7 +36,7 @@ export const providers: IProvider[] = [
         reasoning: true,
       },
       {
-        id: "openai/chatgpt-4o-latest",
+        id: "openai/gpt-4o",
         name: "GPT-4o",
       },
       {
