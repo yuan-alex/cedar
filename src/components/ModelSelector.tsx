@@ -1,44 +1,46 @@
 "use client";
 
+import { useStore } from "@nanostores/react";
 import { Badge, Button, Popover } from "@radix-ui/themes";
 import type React from "react";
 import { BiBrain } from "react-icons/bi";
 import { MdBolt } from "react-icons/md";
 
 import { providers } from "@/utils/inference";
+import { $model } from "@/utils/stores";
 
-interface IProps {
-  name?: string;
-  model: string;
-  onChange: (model: string) => void;
-}
+export default function ModelSelector() {
+  const model = useStore($model);
 
-export default function ModelSelector(props: IProps) {
+  function onModelSelect(model) {
+    $model.set(model.id);
+  }
+
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <Button variant="soft">{props.model}</Button>
+        <Button variant="soft">{$model.get()}</Button>
       </Popover.Trigger>
       <Popover.Content width="400px" height="600px">
-        <div className="flex flex-col space-y-2">
-          {providers.map((provider) => (
-            <span key={provider.name}>
-              <p className="text-sm font-medium mb-2">{provider.name}</p>
-              {provider.models.map((model) => (
+        <div className="flex flex-col">
+          {providers.map((p) => (
+            <span key={p.name}>
+              {p.models.map((m) => (
                 <Popover.Close
-                  key={model.id}
-                  className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${model.id === props.model ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
-                  onClick={() => props.onChange(model.id)}
+                  key={m.id}
+                  className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${m.id === model ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
+                  onClick={() => onModelSelect(m)}
                 >
-                  <div className="flex items-center space-x-1">
-                    <p>{model.name}</p>
+                  <div className="flex items-center space-x-2">
+                    {p.icon ? <div>{p.icon}</div> : <div className="w-4 h-4" />}
+                    <p className="">{m.name}</p>
                     <div className="grow" />
-                    {model.fast && (
+                    {m.fast && (
                       <Badge color="orange">
                         <MdBolt />
                       </Badge>
                     )}
-                    {model.reasoning && (
+                    {m.reasoning && (
                       <Badge color="blue">
                         <BiBrain />
                       </Badge>

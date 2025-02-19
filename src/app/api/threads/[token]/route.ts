@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { smoothStream, streamText } from "ai";
 import { notFound } from "next/navigation";
 
-import { openrouter, convertMessagesToOpenAiFormat } from "@/utils/inference";
+import { convertMessagesToOpenAiFormat, openrouter } from "@/utils/inference";
 import { prisma } from "@/utils/prisma";
 
 // Create new message in thread

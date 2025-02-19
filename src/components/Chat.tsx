@@ -70,7 +70,7 @@ export function Chat(props) {
       </StickToBottom>
       <div className="w-full max-w-3xl mx-auto mb-2">
         <form onSubmit={handleSubmit}>
-          <InputBox value={input} onChange={handleInputChange} />
+          <InputBox rows={1} value={input} onChange={handleInputChange} />
         </form>
       </div>
     </>

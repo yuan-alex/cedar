@@ -1,5 +1,15 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { type CoreMessage, generateText } from "ai";
+import type { ReactElement } from "react";
+import { RiMixtralFill } from "react-icons/ri";
+import {
+  SiAlibabadotcom,
+  SiAnthropic,
+  SiGooglegemini,
+  SiMeta,
+  SiOpenai,
+  SiX,
+} from "react-icons/si";
 
 export const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -12,6 +22,7 @@ export const openrouter = createOpenRouter({
 interface IProvider {
   name: string;
   models: IModel[];
+  icon?: ReactElement;
 }
 
 interface IModel {
@@ -24,6 +35,7 @@ interface IModel {
 export const providers: IProvider[] = [
   {
     name: "OpenAI",
+    icon: <SiOpenai />,
     models: [
       {
         id: "openai/o1",
@@ -48,6 +60,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Anthropic",
+    icon: <SiAnthropic />,
     models: [
       {
         id: "anthropic/claude-3.5-sonnet",
@@ -61,6 +74,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Google",
+    icon: <SiGooglegemini />,
     models: [
       {
         id: "google/gemini-2.0-flash-001",
@@ -93,19 +107,13 @@ export const providers: IProvider[] = [
       },
       {
         id: "deepseek/deepseek-r1-distill-llama-70b",
-        name: "R1 Distill Llama 70B",
+        name: "DeepSeek R1 Distill Llama 70B",
         reasoning: true,
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-32b",
-        name: "R1 Distill Qwen 32B",
+        name: "DeepSeek R1 Distill Qwen 32B",
         reasoning: true,
-      },
-      {
-        id: "deepseek/deepseek-r1-distill-qwen-1.5b",
-        name: "R1 Distill Qwen 1.5B",
-        reasoning: true,
-        fast: true,
       },
       {
         id: "deepseek/deepseek-chat",
@@ -115,6 +123,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Meta",
+    icon: <SiMeta />,
     models: [
       {
         id: "meta-llama/llama-3.3-70b-instruct",
@@ -125,15 +134,11 @@ export const providers: IProvider[] = [
         name: "Llama 3.1 8B",
         fast: true,
       },
-      {
-        id: "meta-llama/llama-3.2-3b-instruct",
-        name: "Llama 3.2 3B",
-        fast: true,
-      },
     ],
   },
   {
     name: "Mistral AI",
+    icon: <RiMixtralFill />,
     models: [
       {
         id: "mistralai/mistral-small-24b-instruct-2501",
@@ -148,6 +153,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "xAI",
+    icon: <SiX />,
     models: [
       {
         id: "x-ai/grok-2-1212",
@@ -164,8 +170,21 @@ export const providers: IProvider[] = [
     models: [
       {
         id: "microsoft/phi-4",
-        name: "Phi 4",
-        fast: true,
+        name: "Phi-4",
+      },
+    ],
+  },
+  {
+    name: "Qwen",
+    icon: <SiAlibabadotcom />,
+    models: [
+      {
+        id: "qwen/qwq-32b-preview",
+        name: "Qwen QwQ 32B Preview",
+      },
+      {
+        id: "qwen/qwen-2.5-72b-instruct",
+        name: "Qwen 2.5 72B",
       },
     ],
   },
@@ -177,9 +196,9 @@ export const modelIds = providers.flatMap((provider) =>
 
 const SYSTEM_MESSAGE = `You are an AI assistant designed to provide clear, logical, and well-reasoned responses to user queries.
 
-- Your tone is friendly, approachable, and professional. 
-- Focus on accuracy and evidence-based reasoning, while being mindful of the user's preferences and context. 
-- If details are missing, ask clarifying questions to ensure your responses are precise and helpful. 
+- Your tone is friendly, approachable, and professional.
+- Focus on accuracy and evidence-based reasoning, while being mindful of the user's preferences and context.
+- If details are missing, ask clarifying questions to ensure your responses are precise and helpful.
 - Avoid assumptions, and always aim to enhance critical thinking and understanding in your interactions.
 - You can use Markdown to help with formatting.
 - Always ensure you promote positive values.

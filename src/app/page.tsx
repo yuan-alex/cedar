@@ -1,6 +1,5 @@
 "use client";
 
-import { useStore } from "@nanostores/react";
 import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
@@ -12,8 +11,6 @@ const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
 });
 
 export default function NewChat() {
-  const model = useStore($model);
-
   function handleCreateThread(event) {
     event.preventDefault();
 
@@ -34,7 +31,7 @@ export default function NewChat() {
   return (
     <form className="h-full flex flex-col" onSubmit={handleCreateThread}>
       <nav className="p-3 flex">
-        <ModelSelector model={model} onChange={(value) => $model.set(value)} />
+        <ModelSelector />
       </nav>
       <div className="grow flex items-center justify-center">
         <div className="max-w-2xl w-full">

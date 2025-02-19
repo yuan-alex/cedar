@@ -8,17 +8,18 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const adjustHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
-      // Reset height to auto first to handle text removal
       textarea.style.height = "auto";
-      // Set height to scrollHeight to accommodate all content
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   };
 
-  interface HandleKeyDownEvent
-    extends React.KeyboardEvent<HTMLTextAreaElement> {}
-  const handleKeyDown = (e: HandleKeyDownEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Immediately adjust height when Shift+Enter is pressed
+    if (e.key === "Enter" && e.shiftKey) {
+      // Let the newline be inserted (don't prevent default)
+      // Use setTimeout to adjust height after the new line is inserted
+      setTimeout(adjustHeight, 0);
+    } else if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       const form = e.currentTarget.form;
       if (form) {
@@ -28,29 +29,24 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
     props.onKeyDown?.(e);
   };
 
-  interface HandleChangeEvent extends React.ChangeEvent<HTMLTextAreaElement> {}
-  const handleChange = (e: HandleChangeEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.onChange?.(e);
     adjustHeight();
   };
 
-  // Adjust height on mount and when content changes
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     adjustHeight();
-  }, []);
+  }, [props.value]);
 
   return (
     <textarea
+      {...props}
       ref={textareaRef}
-      className="w-full px-5 py-4 rounded-xl resize-none min-h-10 shadow border dark:border-zinc-700 dark:bg-zinc-800 focus:outline-hidden"
+      className="w-full px-5 py-4 rounded-2xl resize-none min-h-10 shadow border dark:border-zinc-700 dark:bg-zinc-800 focus:outline-hidden"
       placeholder="Send assistant a message…"
-      rows={1}
-      value={props.value}
-      onChange={(e) => handleChange(e)}
+      onChange={handleChange}
       onKeyDown={handleKeyDown}
       autoFocus
-      {...props}
     />
   );
 }
