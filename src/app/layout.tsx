@@ -53,7 +53,9 @@ export default function RootLayout({
                 </div>
               </div>
             </SignedIn>
-            <ThemePanel defaultOpen={false} />
+            {process.env.NODE_ENV === "development" && (
+              <ThemePanel defaultOpen={false} />
+            )}
           </Theme>
         </body>
       </html>
