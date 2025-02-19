@@ -53,7 +53,7 @@ export default function RootLayout({
                 </div>
               </div>
             </SignedIn>
-            <ThemePanel />
+            <ThemePanel defaultOpen={false} />
           </Theme>
         </body>
       </html>
