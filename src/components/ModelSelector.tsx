@@ -21,7 +21,7 @@ export default function ModelSelector() {
       <Popover.Trigger>
         <Button variant="soft">{$model.get()}</Button>
       </Popover.Trigger>
-      <Popover.Content width="400px" height="600px">
+      <Popover.Content maxHeight="500px">
         <div className="flex flex-col">
           {providers.map((p) => (
             <span key={p.name}>
