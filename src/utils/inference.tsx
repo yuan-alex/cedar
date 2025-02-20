@@ -8,6 +8,7 @@ import {
   SiGooglegemini,
   SiMeta,
   SiOpenai,
+  SiPerplexity,
   SiX,
 } from "react-icons/si";
 
@@ -185,6 +186,26 @@ export const providers: IProvider[] = [
       {
         id: "qwen/qwen-2.5-72b-instruct",
         name: "Qwen 2.5 72B",
+      },
+    ],
+  },
+  {
+    name: "Perplexity",
+    icon: <SiPerplexity />,
+    models: [
+      {
+        id: "perplexity/r1-1776",
+        name: "Perplexity R1 1776",
+        reasoning: true,
+      },
+      {
+        id: "perplexity/sonar-reasoning",
+        name: "Sonar Reasoning",
+        reasoning: true,
+      },
+      {
+        id: "perplexity/sonar",
+        name: "Sonar",
       },
     ],
   },
