@@ -33,7 +33,7 @@ export default function NewChat() {
       <nav className="p-3 flex">
         <ModelSelector />
       </nav>
-      <div className="grow flex items-center justify-center">
+      <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
           <p className="text-4xl text-center font-serif font-semibold mb-8">
             What can I do for you today?
@@ -45,6 +45,11 @@ export default function NewChat() {
           />
         </div>
       </div>
+      <footer className="mb-5">
+        <p className="text-xs text-center">
+          Language models can make critical mistakes.
+        </p>
+      </footer>
     </form>
   );
 }
