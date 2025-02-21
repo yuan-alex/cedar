@@ -2,17 +2,29 @@
 
 import { auth } from "@clerk/nextjs/server";
 
-import { modelIds, generateTitle } from "@/utils/inference";
+import { generateTitle, modelIds } from "@/utils/inference";
 import { prisma } from "@/utils/prisma";
 
-export async function GET() {
+export async function GET(request: Request) {
   await auth.protect();
   const { userId } = await auth();
+
+  const url = new URL(request.url);
+  let take = Number.parseInt(url.searchParams?.get("take"));
+  if (Number.isNaN(take)) {
+    take = undefined;
+  }
+  let skip = Number.parseInt(url.searchParams?.get("skip"));
+  if (Number.isNaN(skip)) {
+    skip = undefined;
+  }
 
   const threads = await prisma.thread.findMany({
     where: {
       userId,
     },
+    take,
+    skip,
     orderBy: {
       lastMessagedAt: "desc",
     },
