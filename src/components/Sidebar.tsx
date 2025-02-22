@@ -1,10 +1,10 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
-import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FiMessageSquare, FiPlus, FiSidebar } from "react-icons/fi";
+import { FiPlusCircle } from "react-icons/fi";
 import useSWR from "swr";
 
 import { ThreadButton } from "@/components/ThreadButton";
@@ -60,7 +60,10 @@ export function Sidebar() {
           <SidebarToggle />
         </div>
         <Link href="/">
-          <Button>Start new chat</Button>
+          <div className="flex items-center gap-2 py-2 px-3 rounded bg-zinc-200 dark:bg-zinc-800">
+            <FiPlusCircle />
+            <p className="text-sm">New chat</p>
+          </div>
         </Link>
       </div>
       <div className="px-2 grow flex flex-col space-y-1 overflow-y-auto">
