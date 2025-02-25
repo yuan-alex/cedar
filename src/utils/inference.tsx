@@ -83,13 +83,13 @@ export const providers: IProvider[] = [
         fast: true,
       },
       {
-        id: "google/gemini-pro-1.5",
-        name: "Gemini Pro 1.5",
+        id: "google/gemini-2.0-flash-lite-001",
+        name: "Gemini 2.0 Flash Lite",
+        fast: true,
       },
       {
-        id: "google/gemini-flash-1.5",
-        name: "Gemini Flash 1.5",
-        fast: true,
+        id: "google/gemini-pro-1.5",
+        name: "Gemini Pro 1.5",
       },
       {
         id: "google/gemini-flash-1.5-8b",
