@@ -64,8 +64,8 @@ export const providers: IProvider[] = [
     icon: <SiAnthropic />,
     models: [
       {
-        id: "anthropic/claude-3.5-sonnet",
-        name: "Claude 3.5 Sonnet",
+        id: "anthropic/claude-3.7-sonnet",
+        name: "Claude 3.7 Sonnet",
       },
       {
         id: "anthropic/claude-3.5-haiku",
