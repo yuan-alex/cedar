@@ -255,7 +255,7 @@ export function generateTitle(prompt: string) {
   return generateText({
     model: openrouter(
       process.env.AI_GATEWAY_TITLE_GENERATION_MODEL ||
-        "google/gemini-flash-1.5-8b",
+        "google/gemini-2.0-flash-lite-001",
     ),
     messages: [
       {
