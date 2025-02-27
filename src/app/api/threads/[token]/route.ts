@@ -41,6 +41,13 @@ export async function POST(
     },
   });
 
+  const run = await prisma.run.create({
+    data: {
+      threadId: thread.id,
+      status: "inProgress"
+    }
+  })
+
   const messages = await prisma.chatMessage.findMany({
     where: {
       threadId: thread.id,
@@ -55,7 +62,7 @@ export async function POST(
     maxTokens: 8192,
     messages: convertMessagesToOpenAiFormat(messages),
     onFinish: async (event) => {
-      await prisma.chatMessage.create({
+      const message = await prisma.chatMessage.create({
         data: {
           token: event.response.id,
           threadId: thread.id,
@@ -64,6 +71,20 @@ export async function POST(
           reasoning: event.reasoning,
         },
       });
+      await prisma.run.update({
+        where: {
+          id: run.id,
+        },
+        data: {
+          status: "completed",
+          steps: {
+            create: {
+              messageId: message.id,
+              type: "generation"
+            }
+          }
+        }
+      })
     },
     experimental_transform: smoothStream(),
   });
@@ -88,12 +109,14 @@ export async function DELETE(
     return new Response("not found", { status: 404 });
   }
 
-  const deleteMessages = prisma.chatMessage.deleteMany({
+  const deleteMessages = prisma.chatMessage.updateMany({
     where: { threadId: thread.id },
+    data: { isDeleted: true, content: "" }
   });
 
-  const deleteThread = prisma.thread.delete({
+  const deleteThread = prisma.thread.update({
     where: { token, userId },
+    data: { isDeleted: true }
   });
 
   await prisma.$transaction([deleteMessages, deleteThread]);

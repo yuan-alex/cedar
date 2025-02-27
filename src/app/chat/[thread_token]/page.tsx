@@ -1,8 +1,8 @@
+import { Badge } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 
 import { Chat } from "@/components/Chat";
 import { prisma } from "@/utils/prisma";
-import { Badge } from "@radix-ui/themes";
 
 export default async function Thread({ params }) {
   const { thread_token } = await params;
@@ -13,6 +13,11 @@ export default async function Thread({ params }) {
     },
     include: {
       messages: {
+        orderBy: {
+          id: "asc",
+        },
+      },
+      runs: {
         orderBy: {
           id: "asc",
         },
