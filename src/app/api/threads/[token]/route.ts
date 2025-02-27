@@ -44,9 +44,9 @@ export async function POST(
   const run = await prisma.run.create({
     data: {
       threadId: thread.id,
-      status: "inProgress"
-    }
-  })
+      status: "inProgress",
+    },
+  });
 
   const messages = await prisma.chatMessage.findMany({
     where: {
@@ -80,11 +80,11 @@ export async function POST(
           steps: {
             create: {
               messageId: message.id,
-              type: "generation"
-            }
-          }
-        }
-      })
+              type: "generation",
+            },
+          },
+        },
+      });
     },
     experimental_transform: smoothStream(),
   });
@@ -111,12 +111,12 @@ export async function DELETE(
 
   const deleteMessages = prisma.chatMessage.updateMany({
     where: { threadId: thread.id },
-    data: { isDeleted: true, content: "" }
+    data: { isDeleted: true, content: "" },
   });
 
   const deleteThread = prisma.thread.update({
     where: { token, userId },
-    data: { isDeleted: true }
+    data: { isDeleted: true },
   });
 
   await prisma.$transaction([deleteMessages, deleteThread]);
