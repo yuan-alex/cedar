@@ -12,7 +12,7 @@ import { ThreadButton } from "@/components/ThreadButton";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export function Sidebar() {
-  const { data: threads } = useSWR("/api/threads", fetcher);
+  const { data: threads } = useSWR("/api/threads?take=10", fetcher);
   const [open, setOpen] = useState<boolean>(true);
 
   useEffect(() => {
@@ -66,7 +66,8 @@ export function Sidebar() {
           </div>
         </Link>
       </div>
-      <div className="px-2 grow flex flex-col space-y-1 overflow-y-auto">
+      <p className="px-3 font-medium">Recents</p>
+      <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
           <ThreadButton
             key={thread.id}
@@ -75,6 +76,10 @@ export function Sidebar() {
           />
         ))}
       </div>
+      <Link href="/chats" className="text-sm font-medium px-3">
+        See all
+      </Link>
+      <div className="grow" />
       <div className="p-3 flex items-center">
         <UserButton />
       </div>
