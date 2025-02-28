@@ -10,9 +10,9 @@ datasource db {
 
 model Thread {
   id             Int      @id @default(autoincrement())
+  token          String   @unique @default(uuid())
   name           String   @default("New chat")
   model          String
-  token          String   @unique @default(uuid())
   userId         String
   isDeleted      Boolean  @default(false)
   lastMessagedAt DateTime @default(now())
@@ -24,19 +24,17 @@ model Thread {
 }
 
 model ChatMessage {
-  id          Int           @id @default(autoincrement())
-  token       String        @default(uuid())
+  id          Int      @id @default(autoincrement())
+  token       String   @default(uuid())
   threadId    Int
-  thread      Thread        @relation(fields: [threadId], references: [id])
+  thread      Thread   @relation(fields: [threadId], references: [id])
   isAssistant Boolean
-  isDeleted   Boolean       @default(false)
+  isDeleted   Boolean  @default(false)
   content     String
   reasoning   String?
-  parent      ChatMessage?  @relation("ChatMessageToChatMessage", fields: [parentId], references: [id])
-  parentId    Int?
-  children    ChatMessage[] @relation("ChatMessageToChatMessage")
-  createdAt   DateTime      @default(now())
-  RunStep     RunStep[]
+  createdAt   DateTime @default(now())
+
+  runStep RunStep?
 }
 
 enum RunStatus {
@@ -51,7 +49,7 @@ enum RunStatus {
 model Run {
   id        Int       @id @default(autoincrement())
   thread    Thread    @relation(fields: [threadId], references: [id])
-  threadId  Int
+  threadId  Int       @unique
   status    RunStatus @default(queued)
   steps     RunStep[]
   createdAt DateTime  @default(now())
@@ -65,11 +63,11 @@ enum RunStepType {
 
 model RunStep {
   id        Int          @id @default(autoincrement())
-  token     String       @default(uuid())
+  token     String       @unique @default(uuid())
   runId     Int
   run       Run          @relation(fields: [runId], references: [id])
   type      RunStepType  @default(generation)
   message   ChatMessage? @relation(fields: [messageId], references: [id])
-  messageId Int?
+  messageId Int?         @unique
   createdAt DateTime     @default(now())
 }
