@@ -5,6 +5,7 @@ import { RiMixtralFill } from "react-icons/ri";
 import {
   SiAlibabadotcom,
   SiAnthropic,
+  SiClaude,
   SiGooglegemini,
   SiMeta,
   SiOpenai,
@@ -60,7 +61,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Anthropic",
-    icon: <SiAnthropic />,
+    icon: <SiClaude />,
     models: [
       {
         id: "anthropic/claude-3.7-sonnet",
