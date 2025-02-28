@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:deploy": "bun prisma migrate deploy && bun prisma generate",
+    "db:studio": "bun prisma studio --browser none"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.1.18",
