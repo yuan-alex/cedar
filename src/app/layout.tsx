@@ -28,7 +28,7 @@ const instrument_serif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Chat Gateway",
+  title: "Cedar",
 };
 
 export default function RootLayout({

@@ -3,7 +3,7 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiMessageSquare, FiPlus, FiSidebar } from "react-icons/fi";
+import { FiPlus, FiSidebar } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
 import useSWR from "swr";
 
@@ -54,8 +54,8 @@ export function Sidebar() {
     <div className="w-64 shrink-0 flex flex-col dark:divide-zinc-700">
       <div className="p-3">
         <div className="flex items-center space-x-2 mb-2">
-          <FiMessageSquare />
-          <p className="text-lg font-medium">Chat Gateway</p>
+          <img className="w-6 h-6" src="/chat_gateway.svg" />
+          <p className="text-xl font-medium font-serif">Cedar</p>
           <div className="grow" />
           <SidebarToggle />
         </div>
@@ -66,7 +66,7 @@ export function Sidebar() {
           </div>
         </Link>
       </div>
-      <p className="px-3 font-medium">Recents</p>
+      <p className="px-3 font-medium">Recent chats</p>
       <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
           <ThreadButton
