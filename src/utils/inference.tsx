@@ -9,7 +9,6 @@ import {
   SiMeta,
   SiOpenai,
   SiPerplexity,
-  SiX,
 } from "react-icons/si";
 
 export const openrouter = createOpenRouter({
@@ -91,11 +90,6 @@ export const providers: IProvider[] = [
         id: "google/gemini-pro-1.5",
         name: "Gemini Pro 1.5",
       },
-      {
-        id: "google/gemini-flash-1.5-8b",
-        name: "Gemini Flash 1.5 8B",
-        fast: true,
-      },
     ],
   },
   {
@@ -149,20 +143,6 @@ export const providers: IProvider[] = [
         id: "mistralai/mistral-nemo",
         name: "Mistral Nemo",
         fast: true,
-      },
-    ],
-  },
-  {
-    name: "xAI",
-    icon: <SiX />,
-    models: [
-      {
-        id: "x-ai/grok-2-1212",
-        name: "Grok 2",
-      },
-      {
-        id: "x-ai/grok-beta",
-        name: "Grok Beta",
       },
     ],
   },
