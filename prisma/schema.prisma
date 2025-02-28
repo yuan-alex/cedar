@@ -49,7 +49,7 @@ enum RunStatus {
 model Run {
   id        Int       @id @default(autoincrement())
   thread    Thread    @relation(fields: [threadId], references: [id])
-  threadId  Int       @unique
+  threadId  Int
   status    RunStatus @default(queued)
   steps     RunStep[]
   createdAt DateTime  @default(now())
