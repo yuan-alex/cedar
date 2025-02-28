@@ -9,10 +9,15 @@ import useSWR from "swr";
 
 import { ThreadButton } from "@/components/ThreadButton";
 
+const THREADS_TAKE = 10;
+
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export function Sidebar() {
-  const { data: threads } = useSWR("/api/threads?take=10", fetcher);
+  const { data: threads } = useSWR(
+    `/api/threads?take=${THREADS_TAKE}`,
+    fetcher,
+  );
   const [open, setOpen] = useState<boolean>(true);
 
   useEffect(() => {
@@ -76,9 +81,11 @@ export function Sidebar() {
           />
         ))}
       </div>
-      <Link href="/chats" className="text-sm font-medium px-3">
-        See all
-      </Link>
+      {threads?.length > THREADS_TAKE && (
+        <Link href="/chats" className="text-sm font-medium px-3">
+          See all
+        </Link>
+      )}
       <div className="grow" />
       <div className="p-3 flex items-center">
         <UserButton />
