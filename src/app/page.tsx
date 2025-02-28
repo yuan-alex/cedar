@@ -1,14 +1,11 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import { InputBox } from "@/components/InputBox";
+import ModelSelector from "@/components/ModelSelector";
 import { $model, $prompt } from "@/utils/stores";
-
-const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
-  ssr: false,
-});
 
 export default function NewChat() {
   function handleCreateThread(event) {
@@ -36,7 +33,7 @@ export default function NewChat() {
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
           <p className="text-4xl text-center font-serif font-semibold mb-8">
-            What can I do for you today?
+            Hello, what can I do for you today?
           </p>
           <InputBox
             name="message"

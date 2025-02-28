@@ -10,6 +10,7 @@ export default async function Thread({ params }) {
   const thread = await prisma.thread.findUnique({
     where: {
       token: thread_token,
+      isDeleted: false,
     },
     include: {
       messages: {

@@ -39,6 +39,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link
+            rel="icon"
+            href="/chat_gateway.svg"
+            sizes="any"
+            type="image/svg+xml"
+          />
+        </head>
         <body className={`${inter.variable} ${instrument_serif.variable}`}>
           <Toaster position="bottom-right" />
           <Theme accentColor="gray" radius="large">

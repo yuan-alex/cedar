@@ -16,6 +16,7 @@ export default async function Chats() {
   const threads = await prisma.thread.findMany({
     where: {
       userId,
+      isDeleted: false,
     },
     orderBy: {
       id: "desc",
@@ -23,13 +24,13 @@ export default async function Chats() {
   });
 
   return (
-    <div className="p-4 w-2xl mx-auto">
-      <p className="text-2xl my-8">Recent chats</p>
+    <div className="p-4 w-2xl mx-auto my-10">
+      <p className="text-2xl mb-5">Recent chats</p>
       <div className="flex flex-col space-y-2">
         {threads.map((thread) => (
           <Link key={thread.token} href={`/chat/${thread.token}`}>
             <Card>
-              <p className="text-lg mb-1">{thread.name}</p>
+              <p className="font-medium mb-1">{thread.name}</p>
               <p className="text-xs">
                 Last messaged {formatDistanceToNow(thread.lastMessagedAt)} ago
               </p>

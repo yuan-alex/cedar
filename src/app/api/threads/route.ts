@@ -22,6 +22,7 @@ export async function GET(request: Request) {
   const threads = await prisma.thread.findMany({
     where: {
       userId,
+      isDeleted: false,
     },
     take,
     skip,
