@@ -1,10 +1,5 @@
-import {
-  ClerkProvider,
-  RedirectToSignIn,
-  SignedIn,
-  SignedOut,
-} from "@clerk/nextjs";
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { ClerkProvider, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import { Badge, Theme, ThemePanel } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -51,7 +46,20 @@ export default function RootLayout({
           <Toaster position="bottom-right" />
           <Theme accentColor="gray" radius="large">
             <SignedOut>
-              <RedirectToSignIn />
+              <div className="flex w-screen h-screen">
+                <div className="flex justify-center items-center mx-auto w-1/3 bg-zinc-100">
+                  <SignIn />
+                </div>
+                <div className="p-10 grow">
+                  <div className="flex items-center space-x-4 mb-5">
+                    <img className="w-16 h-16" src="/chat_gateway.svg" />
+                    <p className="text-6xl font-semibold">Cedar</p>
+                    <Badge className="uppercase" color="blue">
+                      Closed Alpha
+                    </Badge>
+                  </div>
+                </div>
+              </div>
             </SignedOut>
             <SignedIn>
               <div className="flex w-screen h-screen bg-zinc-100 dark:bg-zinc-950">
