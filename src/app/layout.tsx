@@ -35,12 +35,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
-          <link
-            rel="icon"
-            href="/chat_gateway.svg"
-            sizes="any"
-            type="image/svg+xml"
-          />
+          <link rel="icon" href="/cedar.svg" sizes="any" type="image/svg+xml" />
         </head>
         <body className={`${inter.variable} ${instrument_serif.variable}`}>
           <Toaster position="bottom-right" />
@@ -52,7 +47,7 @@ export default function RootLayout({
                 </div>
                 <div className="p-10 grow">
                   <div className="flex items-center space-x-4 mb-5">
-                    <img className="w-16 h-16" src="/chat_gateway.svg" />
+                    <img className="w-16 h-16" src="/cedar.svg" />
                     <p className="text-6xl font-semibold">Cedar</p>
                     <Badge className="uppercase" color="blue">
                       Closed Alpha
