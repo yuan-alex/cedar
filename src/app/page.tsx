@@ -3,8 +3,12 @@
 import { redirect } from "next/navigation";
 
 import { InputBox } from "@/components/InputBox";
-import ModelSelector from "@/components/ModelSelector";
 import { $model, $prompt } from "@/utils/stores";
+import dynamic from "next/dynamic";
+
+const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
+  ssr: false,
+});
 
 export default function NewChat() {
   function handleCreateThread(event) {

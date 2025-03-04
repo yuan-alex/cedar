@@ -3,8 +3,6 @@ import { type CoreMessage, generateText } from "ai";
 import type { ReactElement } from "react";
 import { RiMixtralFill } from "react-icons/ri";
 import {
-  SiAlibabadotcom,
-  SiAnthropic,
   SiClaude,
   SiGooglegemini,
   SiMeta,
@@ -20,20 +18,50 @@ export const openrouter = createOpenRouter({
   },
 });
 
-interface IProvider {
+export interface IProvider {
   name: string;
   models: IModel[];
   icon?: ReactElement;
 }
 
-interface IModel {
+export interface IModel {
   id: string;
   name: string;
+  description?: string;
   reasoning?: boolean;
   fast?: boolean;
 }
 
+export const simpleModels: IModel[] = [
+  {
+    id: "openai/gpt-4o-mini",
+    name: "Smart",
+    description: "Best choice for everyday tasks",
+  },
+  {
+    id: "google/gemini-2.0-flash-lite-001",
+    name: "Fast",
+    description: "Fastest and lightest model",
+    fast: true,
+  },
+  {
+    id: "deepseek/deepseek-r1-distill-llama-70b",
+    name: "Reasoning",
+    description: "Smartest and best for math and science",
+    reasoning: true,
+  },
+];
+
 export const providers: IProvider[] = [
+  {
+    name: "OpenRouter",
+    models: [
+      {
+        id: "openrouter/auto",
+        name: "OpenRouter Auto",
+      },
+    ],
+  },
   {
     name: "OpenAI",
     icon: <SiOpenai />,
@@ -153,20 +181,6 @@ export const providers: IProvider[] = [
       {
         id: "microsoft/phi-4",
         name: "Phi-4",
-      },
-    ],
-  },
-  {
-    name: "Qwen",
-    icon: <SiAlibabadotcom />,
-    models: [
-      {
-        id: "qwen/qwq-32b-preview",
-        name: "Qwen QwQ 32B Preview",
-      },
-      {
-        id: "qwen/qwen-2.5-72b-instruct",
-        name: "Qwen 2.5 72B",
       },
     ],
   },
