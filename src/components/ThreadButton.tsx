@@ -10,7 +10,7 @@ export function ThreadButton(props) {
     fetch(`/api/threads/${thread.token}`, {
       method: "DELETE",
     }).then(() => {
-      mutate("/api/threads");
+      mutate("/api/threads?take=10");
       redirect("/");
     });
   }

@@ -27,7 +27,7 @@ export function Chat(props) {
     },
     experimental_throttle: 50,
     onFinish: () => {
-      mutate("/api/threads");
+      mutate("/api/threads?take=10");
     },
   });
 
