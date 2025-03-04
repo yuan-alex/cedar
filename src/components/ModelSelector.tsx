@@ -82,14 +82,14 @@ function ModelItem(props: IModelItemProps) {
   return (
     <Popover.Close
       key={model.id}
-      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 ${isSelected ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
+      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 ${isSelected ? "bg-zinc-50 dark:bg-zinc-800" : ""}`}
       onClick={() => onModelSelect(model)}
     >
       <div className="flex items-center space-x-3">
         {provider?.icon && <div>{provider.icon}</div>}
         <div>
           <p className="text-sm">{model.name}</p>
-          <p className="text-xs text-zinc-500">{model.description}</p>
+          <p className="text-xs text-zinc-400">{model.description}</p>
         </div>
         <div className="grow" />
         {model.fast && (

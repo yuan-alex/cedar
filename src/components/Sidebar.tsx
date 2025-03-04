@@ -1,6 +1,7 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
+import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FiPlus, FiSidebar } from "react-icons/fi";
@@ -60,10 +61,10 @@ export function Sidebar() {
           <SidebarToggle />
         </div>
         <Link href="/">
-          <div className="flex items-center gap-2 py-2 px-3 rounded bg-zinc-200 dark:bg-zinc-800">
+          <Button variant="soft" style={{ width: "100%" }}>
             <FiPlusCircle />
-            <p className="text-sm">New chat</p>
-          </div>
+            New chat
+          </Button>
         </Link>
       </div>
       <p className="px-3 font-medium">Recent chats</p>
