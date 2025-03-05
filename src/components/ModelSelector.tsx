@@ -26,9 +26,9 @@ export default function ModelSelector() {
       <Popover.Trigger>
         <Button variant="soft">{$model.get()}</Button>
       </Popover.Trigger>
-      <Popover.Content width="350px" maxHeight="80vh">
+      <Popover.Content width="350px" maxHeight="70vh">
         <Inset>
-          <Tabs.Root defaultValue="simple">
+          <Tabs.Root defaultValue="simple" className="relative dark:bg-black">
             <Tabs.List>
               <Tabs.Trigger value="simple">Simple</Tabs.Trigger>
               <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
@@ -89,7 +89,7 @@ function ModelItem(props: IModelItemProps) {
         {provider?.icon && <div>{provider.icon}</div>}
         <div>
           <p className="text-sm">{model.name}</p>
-          <p className="text-xs text-zinc-400">{model.description}</p>
+          <p className="text-xs text-zinc-500">{model.description}</p>
         </div>
         <div className="grow" />
         {model.fast && (
