@@ -59,9 +59,9 @@ export default function RootLayout({
                 </div>
               </SignedOut>
               <SignedIn>
-                <div className="flex w-screen h-screen bg-zinc-100 dark:bg-black">
+                <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-black">
                   <Sidebar />
-                  <div className="shadow bg-white dark:bg-zinc-950 grow overflow-y-auto">
+                  <div className="bg-white dark:bg-black grow overflow-y-auto">
                     {children}
                   </div>
                 </div>

@@ -1,10 +1,8 @@
 import { DataList, IconButton, Popover } from "@radix-ui/themes";
 import toast from "react-hot-toast";
 import { FiCopy, FiInfo } from "react-icons/fi";
-import Markdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import remarkGfm from "remark-gfm";
+
+import { MemoizedMarkdown } from "@/components/memorized-markdown";
 
 export function Message(props) {
   const { message, thread } = props;
@@ -25,7 +23,7 @@ export function Message(props) {
     <>
       <div className="flex items-start space-x-4 my-5">
         <div
-          className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "py-3 px-5 bg-zinc-100 dark:bg-zinc-800 rounded-2xl ml-auto"}`}
+          className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "py-3 px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
         >
           {message.reasoning && (
             <details>
@@ -35,32 +33,7 @@ export function Message(props) {
               </p>
             </details>
           )}
-          <Markdown
-            components={{
-              code(props) {
-                const { children, className, node, ...rest } = props;
-                const match = /language-(\w+)/.exec(className || "");
-                return match ? (
-                  <SyntaxHighlighter
-                    {...rest}
-                    className="not-prose"
-                    PreTag="div"
-                    language={match[1]}
-                    style={atomDark}
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                ) : (
-                  <code {...rest} className={className}>
-                    {children}
-                  </code>
-                );
-              },
-            }}
-            remarkPlugins={[remarkGfm]}
-          >
-            {message.content}
-          </Markdown>
+          <MemoizedMarkdown id={message.id} content={message.content} />
         </div>
       </div>
       <div
