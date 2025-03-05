@@ -26,7 +26,7 @@ export default function ModelSelector() {
       <Popover.Trigger>
         <Button variant="soft">{$model.get()}</Button>
       </Popover.Trigger>
-      <Popover.Content width="350px">
+      <Popover.Content width="350px" maxHeight="80vh">
         <Inset>
           <Tabs.Root defaultValue="simple">
             <Tabs.List>

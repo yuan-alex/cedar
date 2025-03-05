@@ -44,24 +44,24 @@ export default function RootLayout({
             <Theme accentColor="gray" radius="large">
               <SignedOut>
                 <div className="flex w-screen h-screen">
-                  <div className="flex justify-center items-center mx-auto w-1/3 bg-zinc-100">
+                  <div className="flex justify-center items-center mx-auto w-1/3 bg-zinc-100 dark:bg-zinc-900">
                     <SignIn />
                   </div>
-                  <div className="p-10 grow">
-                    <div className="flex items-center space-x-4 mb-5">
+                  <div className="p-12 grow shadow">
+                    <div className="flex items-end space-x-4 mb-10">
                       <img className="w-16 h-16" src="/cedar.svg" />
                       <p className="text-6xl font-semibold">Cedar</p>
-                      <Badge className="uppercase" color="blue">
-                        Closed Alpha
-                      </Badge>
                     </div>
+                    <p className="text-3xl font-serif mb-4">
+                      The AI workspace built for productivity.
+                    </p>
                   </div>
                 </div>
               </SignedOut>
               <SignedIn>
                 <div className="flex w-screen h-screen bg-zinc-100 dark:bg-black">
                   <Sidebar />
-                  <div className="bg-white dark:bg-zinc-950 grow overflow-y-auto">
+                  <div className="shadow bg-white dark:bg-zinc-950 grow overflow-y-auto">
                     {children}
                   </div>
                 </div>
