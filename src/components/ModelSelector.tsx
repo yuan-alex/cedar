@@ -18,13 +18,16 @@ export default function ModelSelector() {
   const model = useStore($model);
 
   function onModelSelect(model) {
-    $model.set(model.id);
+    $model.set({
+      id: model.id,
+      name: model.name,
+    });
   }
 
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <Button variant="soft">{$model.get()}</Button>
+        <Button variant="soft">{$model.get().name}</Button>
       </Popover.Trigger>
       <Popover.Content width="350px" maxHeight="70vh">
         <Inset>
@@ -39,7 +42,7 @@ export default function ModelSelector() {
                   <ModelItem
                     key={m.id}
                     model={m}
-                    isSelected={m.id === model}
+                    isSelected={m.id === model.id}
                     onModelSelect={onModelSelect}
                   />
                 ))}
@@ -54,7 +57,7 @@ export default function ModelSelector() {
                         key={m.id}
                         provider={p}
                         model={m}
-                        isSelected={m.id === model}
+                        isSelected={m.id === model.id}
                         onModelSelect={onModelSelect}
                       />
                     ))}
@@ -82,7 +85,7 @@ function ModelItem(props: IModelItemProps) {
   return (
     <Popover.Close
       key={model.id}
-      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 ${isSelected ? "bg-zinc-50 dark:bg-zinc-800" : ""}`}
+      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 ${isSelected ? "bg-zinc-50 dark:bg-zinc-900" : ""}`}
       onClick={() => onModelSelect(model)}
     >
       <div className="flex items-center space-x-3">

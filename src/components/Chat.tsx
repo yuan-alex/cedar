@@ -32,7 +32,7 @@ export function Chat(props) {
   });
 
   useEffect(() => {
-    const prompt = localStorage.getItem("prompt");
+    const prompt = $prompt.value;
     if (thread.messages.length === 0 && prompt) {
       append({ role: "user", content: prompt });
       $prompt.set("");

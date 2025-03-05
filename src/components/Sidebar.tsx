@@ -40,7 +40,8 @@ export function Sidebar() {
 
   if (!open) {
     return (
-      <div className="py-5 px-3 flex flex-col items-center space-y-6">
+      <div className="p-3 flex flex-col items-center space-y-5">
+        <img className="w-6 h-6" src="/cedar.svg" />
         <SidebarToggle />
         <Link href="/">
           <FiPlus />

@@ -34,7 +34,7 @@ export interface IModel {
 
 export const simpleModels: IModel[] = [
   {
-    id: "openai/gpt-4o-mini",
+    id: "google/gemini-2.0-flash-001",
     name: "Smart",
     description: "Best choice for everyday tasks",
   },

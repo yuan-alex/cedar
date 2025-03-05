@@ -20,7 +20,7 @@ export default function NewChat() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: $model.value,
+        model: $model.get().id,
         prompt: $prompt.value,
       }),
     })
