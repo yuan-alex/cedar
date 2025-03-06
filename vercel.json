@@ -1,3 +1,4 @@
 {
+  "framework": "nextjs",
   "buildCommand": "pnpm run build:vercel"
 }

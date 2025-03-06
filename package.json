@@ -5,11 +5,10 @@
   "scripts": {
     "format": "biome format . --write",
     "dev": "next dev --turbo",
-    "build": "prisma generate && next build",
-    "build:vercel": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate --no-engine && next build",
+    "build:vercel": "prisma generate --no-engine && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:deploy": "prisma generate && prisma migrate deploy",
     "db:studio": "prisma studio --browser none"
   },
   "dependencies": {
