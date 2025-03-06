@@ -5,11 +5,12 @@
   "scripts": {
     "format": "biome format . --write",
     "dev": "next dev --turbo",
-    "build": "corepack pnpm run prisma generate && next build",
+    "build": "prisma generate && next build",
+    "build:vercel": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:deploy": "corepack pnpm prisma migrate deploy && corepack pnpm prisma generate",
-    "db:studio": "corepack pnpm prisma studio --browser none"
+    "db:deploy": "prisma generate && prisma migrate deploy",
+    "db:studio": "prisma studio --browser none"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.1.18",
