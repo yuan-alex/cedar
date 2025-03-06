@@ -3,6 +3,7 @@ import { type CoreMessage, generateText } from "ai";
 import type { ReactElement } from "react";
 import { RiMixtralFill } from "react-icons/ri";
 import {
+  SiAlibabacloud,
   SiClaude,
   SiGooglegemini,
   SiMeta,
@@ -157,6 +158,16 @@ export const providers: IProvider[] = [
         id: "meta-llama/llama-3.1-8b-instruct",
         name: "Llama 3.1 8B",
         fast: true,
+      },
+    ],
+  },
+  {
+    name: "Qwen by Alibaba",
+    icon: <SiAlibabacloud />,
+    models: [
+      {
+        id: "qwen/qwq-32b",
+        name: "QwQ 32b",
       },
     ],
   },
