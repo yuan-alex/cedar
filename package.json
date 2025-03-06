@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:deploy": "bun prisma migrate deploy && bun prisma generate",
-    "db:studio": "bun prisma studio --browser none"
+    "db:deploy": "corepack pnpm prisma migrate deploy && corepack pnpm prisma generate",
+    "db:studio": "corepack pnpm prisma studio --browser none"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.1.18",
@@ -50,5 +50,5 @@
     "tailwindcss": "^4.0.9",
     "typescript": "^5.7.3"
   },
-  "packageManager": "pnpm@9.12.1+sha256.91452fdfa46234ae447d46d5c4fc4e7e0a7058f90495c4b6f77f8beebbb154e3"
+  "packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b"
 }
