@@ -1,11 +1,12 @@
-import { ClerkProvider, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
-import { Badge, Theme, ThemePanel } from "@radix-ui/themes";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import { Theme, ThemePanel } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Instrument_Serif, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
 import { Sidebar } from "@/components/Sidebar";
+import { LandingPage } from "@/components/landing-page";
 
 import "@radix-ui/themes/styles.css";
 import "./globals.css";
@@ -43,20 +44,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class">
             <Theme accentColor="gray" radius="large">
               <SignedOut>
-                <div className="flex w-screen h-screen">
-                  <div className="flex justify-center items-center mx-auto w-1/3 bg-zinc-100 dark:bg-zinc-900">
-                    <SignIn />
-                  </div>
-                  <div className="p-12 grow shadow">
-                    <div className="flex items-end space-x-4 mb-10">
-                      <img className="w-16 h-16" src="/cedar.svg" />
-                      <p className="text-6xl font-semibold">Cedar</p>
-                    </div>
-                    <p className="text-3xl font-serif mb-4">
-                      The AI workspace built for productivity.
-                    </p>
-                  </div>
-                </div>
+                <LandingPage />
               </SignedOut>
               <SignedIn>
                 <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-black">
