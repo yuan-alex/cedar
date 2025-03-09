@@ -57,7 +57,7 @@ export function Sidebar() {
       <div className="p-3">
         <div className="flex items-center space-x-2 mb-2">
           <img className="w-6 h-6" src="/cedar.svg" />
-          <p className="text-xl font-medium font-serif">Cedar</p>
+          <p className="text-xl font-medium">Cedar</p>
           <div className="grow" />
           <SidebarToggle />
         </div>

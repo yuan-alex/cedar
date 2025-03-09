@@ -35,7 +35,7 @@ export default function NewChat() {
       </nav>
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
-          <p className="text-4xl text-center font-serif font-semibold mb-8">
+          <p className="text-4xl text-center font-semibold mb-8">
             Hello, what can I do for you today?
           </p>
           <InputBox
