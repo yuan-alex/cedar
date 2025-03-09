@@ -2,6 +2,7 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { type CoreMessage, generateText } from "ai";
 import type { ReactElement } from "react";
 import { RiMixtralFill } from "react-icons/ri";
+import { RiMicrosoftFill } from "react-icons/ri";
 import {
   SiAlibabacloud,
   SiClaude,
@@ -168,6 +169,7 @@ export const providers: IProvider[] = [
       {
         id: "qwen/qwq-32b",
         name: "QwQ 32b",
+        reasoning: true,
       },
     ],
   },
@@ -188,7 +190,12 @@ export const providers: IProvider[] = [
   },
   {
     name: "Microsoft",
+    icon: <RiMicrosoftFill />,
     models: [
+      {
+        id: "microsoft/phi-4-multimodal-instruct",
+        name: "Phi-4 Multimodal",
+      },
       {
         id: "microsoft/phi-4",
         name: "Phi-4",
