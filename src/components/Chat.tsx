@@ -16,11 +16,11 @@ export function Chat(props) {
   const { messages, input, handleInputChange, handleSubmit, append } = useChat({
     api: `/api/threads/${thread.token}`,
     id: thread.token,
-    initialMessages: thread.messages.map((msg) =>
-      msg.isAssistant
-        ? { ...msg, id: msg.token, role: "assistant", content: msg.content }
-        : { ...msg, id: msg.token, role: "user", content: msg.content },
-    ),
+    initialMessages: thread.messages.map((msg) => ({
+      ...msg,
+      id: msg.token,
+      role: msg.isAssistant ? "assistant" : "user",
+    })),
     experimental_prepareRequestBody: ({ messages }) => {
       // e.g. only the text of the last message:
       return messages[messages.length - 1].content;
