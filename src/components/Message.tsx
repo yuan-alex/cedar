@@ -28,9 +28,12 @@ export function Message(props) {
           {message.reasoning && (
             <details>
               <summary>Show reasoning</summary>
-              <p className="border-l-3 dark:border-zinc-700 pl-8 mb-10">
-                {message.reasoning}
-              </p>
+              <div className="prose dark:prose-invert border-l-3 dark:border-zinc-700 pl-8 my-10">
+                <MemoizedMarkdown
+                  id={`${message.id}:reasoning`}
+                  content={message.reasoning}
+                />
+              </div>
             </details>
           )}
           <MemoizedMarkdown id={message.id} content={message.content} />
