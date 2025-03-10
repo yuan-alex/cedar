@@ -3,7 +3,7 @@ import { smoothStream, streamText } from "ai";
 import { notFound } from "next/navigation";
 
 import { convertMessagesToOpenAiFormat, openrouter } from "@/utils/inference";
-import { prisma } from "@/utils/prisma";
+import prisma from "@/utils/prisma";
 
 // Create new message in thread
 export async function POST(

@@ -2,7 +2,7 @@ import { Badge } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 
 import { Chat } from "@/components/Chat";
-import { prisma } from "@/utils/prisma";
+import prisma from "@/utils/prisma";
 
 export default async function Thread({ params }) {
   const { thread_token } = await params;
