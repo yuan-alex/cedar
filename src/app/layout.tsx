@@ -1,6 +1,5 @@
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Theme, ThemePanel } from "@radix-ui/themes";
-import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Instrument_Serif, Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -24,10 +23,6 @@ const instrument_serif = Instrument_Serif({
   weight: "400",
 });
 
-export const metadata: Metadata = {
-  title: "Cedar",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +32,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
+          <title>Cedar</title>
           <link rel="icon" href="/cedar.svg" sizes="any" type="image/svg+xml" />
+          <meta property="og:title" content="Cedar" />
+          <meta property="og:image" content="/open-graph.jpg" />
         </head>
         <body className={`${inter.variable} ${instrument_serif.variable}`}>
           <Toaster position="bottom-right" />
