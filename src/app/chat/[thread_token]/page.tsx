@@ -14,6 +14,9 @@ export default async function Thread({ params }) {
     },
     include: {
       messages: {
+        include: {
+          runStep: true,
+        },
         orderBy: {
           id: "asc",
         },
@@ -32,10 +35,6 @@ export default async function Thread({ params }) {
 
   return (
     <div className="flex flex-col h-full">
-      <nav className="py-3 px-4 flex items-center border-b dark:border-zinc-800">
-        <div className="grow" />
-        <Badge>{thread.model}</Badge>
-      </nav>
       <Chat thread={thread} />
     </div>
   );

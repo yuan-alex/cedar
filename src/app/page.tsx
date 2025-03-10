@@ -30,9 +30,6 @@ export default function NewChat() {
 
   return (
     <form className="h-full flex flex-col" onSubmit={handleCreateThread}>
-      <nav className="p-3 flex">
-        <ModelSelector />
-      </nav>
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
           <p className="text-4xl text-center font-semibold mb-8">

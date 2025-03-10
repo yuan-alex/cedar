@@ -21,7 +21,7 @@ export function Message(props) {
 
   return (
     <>
-      <div className="flex items-start space-x-4 my-5">
+      <div className="flex items-start space-x-4 m-5">
         <div
           className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "py-3 px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
         >
@@ -54,12 +54,18 @@ export function Message(props) {
           <Popover.Content width="360px">
             <DataList.Root>
               <DataList.Item>
-                <DataList.Label>ID</DataList.Label>
-                <DataList.Value>{message.id}</DataList.Value>
+                <DataList.Label>Message Token</DataList.Label>
+                <DataList.Value>{message.token}</DataList.Value>
               </DataList.Item>
-              <DataList.Item align="center">
+              <DataList.Item>
+                <DataList.Label>Step Token</DataList.Label>
+                <DataList.Value>{message.runStep?.token}</DataList.Value>
+              </DataList.Item>
+              <DataList.Item>
                 <DataList.Label>Model</DataList.Label>
-                <DataList.Value>{thread.model}</DataList.Value>
+                <DataList.Value>
+                  {message.runStep?.generationModel}
+                </DataList.Value>
               </DataList.Item>
             </DataList.Root>
           </Popover.Content>

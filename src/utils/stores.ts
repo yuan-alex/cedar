@@ -7,7 +7,7 @@ interface ModelValue {
 }
 
 export const $model = persistentMap<ModelValue>("model", {
-  id: "google/gemini-2.0-flash-001",
+  id: "cedar/smart",
   name: "Smart",
 });
 export const $prompt = persistentAtom<string>("prompt");

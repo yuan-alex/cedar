@@ -8,7 +8,7 @@ import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
 import { Message } from "@/components/Message";
-import { $prompt } from "@/utils/stores";
+import { $model, $prompt } from "@/utils/stores";
 
 export function Chat(props) {
   const { thread } = props;
@@ -23,7 +23,10 @@ export function Chat(props) {
     })),
     experimental_prepareRequestBody: ({ messages }) => {
       // e.g. only the text of the last message:
-      return messages[messages.length - 1].content;
+      return {
+        model: $model?.get().id,
+        content: messages[messages.length - 1].content,
+      };
     },
     experimental_throttle: 50,
     onFinish: () => {

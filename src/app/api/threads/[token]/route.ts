@@ -2,7 +2,11 @@ import { auth } from "@clerk/nextjs/server";
 import { smoothStream, streamText } from "ai";
 import { notFound } from "next/navigation";
 
-import { convertMessagesToOpenAiFormat, openrouter } from "@/utils/inference";
+import {
+  convertMessagesToOpenAiFormat,
+  modelIds,
+  openrouter,
+} from "@/utils/inference";
 import prisma from "@/utils/prisma";
 
 // Create new message in thread
@@ -16,6 +20,15 @@ export async function POST(
   const { token } = await params;
   const userInput = await req.json();
 
+  let { model } = userInput;
+  if (model === "cedar/smart") {
+    model = "meta-llama/llama-3.3-70b-instruct";
+  } else if (model === "cedar/fast") {
+    model = "google/gemini-2.0-flash-lite-001";
+  } else if (model === "cedar/reasoning") {
+    model = "deepseek/deepseek-r1-distill-llama-70b";
+  }
+
   const thread = await prisma.thread.findUnique({
     where: {
       token: token,
@@ -24,6 +37,10 @@ export async function POST(
 
   if (!thread || thread.userId !== userId) {
     return notFound();
+  }
+
+  if (!userInput.content || !modelIds.includes(model)) {
+    return new Response("invalid parameters", { status: 400 });
   }
 
   await prisma.thread.update({
@@ -35,7 +52,7 @@ export async function POST(
       messages: {
         create: {
           isAssistant: false,
-          content: userInput,
+          content: userInput.content,
         },
       },
     },
@@ -58,19 +75,10 @@ export async function POST(
   });
 
   const result = streamText({
-    model: openrouter(thread.model),
+    model: openrouter(model),
     maxTokens: 8192,
     messages: convertMessagesToOpenAiFormat(messages),
     onFinish: async (event) => {
-      const message = await prisma.chatMessage.create({
-        data: {
-          token: event.response.id,
-          threadId: thread.id,
-          isAssistant: true,
-          content: event.text,
-          reasoning: event.reasoning,
-        },
-      });
       await prisma.run.update({
         where: {
           id: run.id,
@@ -79,8 +87,17 @@ export async function POST(
           status: "completed",
           steps: {
             create: {
-              messageId: message.id,
+              message: {
+                create: {
+                  threadId: thread.id,
+                  isAssistant: true,
+                  content: event.text,
+                  reasoning: event.reasoning,
+                },
+              },
               type: "generation",
+              generationProviderToken: event.response.id,
+              generationModel: event.response.modelId,
             },
           },
         },

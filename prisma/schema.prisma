@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -58,17 +57,25 @@ model Run {
 
 enum RunStepType {
   generation
-  webSearch
-  codeSandbox
+}
+
+enum GenerationProvider {
+  openrouter
 }
 
 model RunStep {
-  id        Int          @id @default(autoincrement())
-  token     String       @unique @default(uuid())
-  runId     Int
-  run       Run          @relation(fields: [runId], references: [id])
-  type      RunStepType  @default(generation)
-  message   ChatMessage? @relation(fields: [messageId], references: [id])
-  messageId Int?         @unique
-  createdAt DateTime     @default(now())
+  id    Int         @id @default(autoincrement())
+  token String      @unique @default(uuid())
+  runId Int
+  run   Run         @relation(fields: [runId], references: [id])
+  type  RunStepType @default(generation)
+
+  // generation
+  generationProvider      GenerationProvider? @default(openrouter)
+  generationProviderToken String?             @unique
+  generationModel         String?
+  message                 ChatMessage?        @relation(fields: [messageId], references: [id])
+  messageId               Int?                @unique
+
+  createdAt DateTime @default(now())
 }

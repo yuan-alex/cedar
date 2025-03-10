@@ -36,18 +36,18 @@ export interface IModel {
 
 export const simpleModels: IModel[] = [
   {
-    id: "google/gemini-2.0-flash-001",
+    id: "cedar/smart",
     name: "Smart",
     description: "Best choice for everyday tasks",
   },
   {
-    id: "google/gemini-2.0-flash-lite-001",
+    id: "cedar/fast",
     name: "Fast",
-    description: "Fastest and lightest model",
+    description: "Fastest and lightest model for basic tasks",
     fast: true,
   },
   {
-    id: "deepseek/deepseek-r1-distill-llama-70b",
+    id: "cedar/reasoning",
     name: "Reasoning",
     description: "Smartest and best for math and science",
     reasoning: true,
@@ -223,10 +223,10 @@ export const providers: IProvider[] = [
     ],
   },
 ];
-
-export const modelIds = providers.flatMap((provider) =>
-  provider.models.map((model) => model.id),
-);
+export const modelIds = [
+  ...providers.flatMap((provider) => provider.models.map((model) => model.id)),
+  ...simpleModels.map((m) => m.id),
+];
 
 const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logical, and well-reasoned responses.
 

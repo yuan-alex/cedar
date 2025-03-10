@@ -27,9 +27,13 @@ export default function ModelSelector() {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <Button variant="soft">{$model.get().name}</Button>
+        <Button variant="soft">
+          {model.id === "cedar/reasoning" && <BiBrain />}
+          {model.id === "cedar/fast" && <MdBolt />}
+          {model.name}
+        </Button>
       </Popover.Trigger>
-      <Popover.Content width="350px" maxHeight="70vh">
+      <Popover.Content width="350px" maxHeight="500px">
         <Inset>
           <Tabs.Root defaultValue="simple" className="relative dark:bg-black">
             <Tabs.List>
