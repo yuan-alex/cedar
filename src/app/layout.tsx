@@ -45,7 +45,7 @@ export default function RootLayout({
                 <LandingPage />
               </SignedOut>
               <SignedIn>
-                <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-black">
+                <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-zinc-900">
                   <Sidebar />
                   <div className="bg-white dark:bg-black grow overflow-y-auto">
                     {children}

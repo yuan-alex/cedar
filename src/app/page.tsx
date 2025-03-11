@@ -32,9 +32,9 @@ export default function NewChat() {
     <form className="h-full flex flex-col" onSubmit={handleCreateThread}>
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
-          <p className="text-4xl text-center font-semibold mb-8">
-            Hello, what can I do for you today?
-          </p>
+          <div className="flex items-center justify-center mb-5 space-x-3">
+            <p className="text-3xl font-medium">Hey there, how can I help?</p>
+          </div>
           <InputBox
             name="message"
             rows={3}
