@@ -36,6 +36,11 @@ export interface IModel {
 
 export const simpleModels: IModel[] = [
   {
+    id: "cedar/auto",
+    name: "Auto",
+    description: "Automatically pick the best model",
+  },
+  {
     id: "cedar/smart",
     name: "Smart",
     description: "Best choice for everyday tasks",

@@ -21,8 +21,10 @@ export async function POST(
   const userInput = await req.json();
 
   let { model } = userInput;
-  if (model === "cedar/smart") {
-    model = "meta-llama/llama-3.3-70b-instruct";
+  if (model === "cedar/auto") {
+    model = "openrouter/auto";
+  } else if (model === "cedar/smart") {
+    model = "mistralai/mistral-small-24b-instruct-2501";
   } else if (model === "cedar/fast") {
     model = "google/gemini-2.0-flash-lite-001";
   } else if (model === "cedar/reasoning") {
