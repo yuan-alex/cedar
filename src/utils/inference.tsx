@@ -227,6 +227,24 @@ export const providers: IProvider[] = [
       },
     ],
   },
+  {
+    name: "Cohere",
+    models: [
+      {
+        id: "cohere/command-r-plus-08-2024",
+        name: "Command R+",
+      },
+      {
+        id: "cohere/command-r-08-2024",
+        name: "Command R",
+      },
+      {
+        id: "cohere/command-r7b-12-2024",
+        name: "Command R 7B",
+        fast: true,
+      },
+    ],
+  },
 ];
 export const modelIds = [
   ...providers.flatMap((provider) => provider.models.map((model) => model.id)),
