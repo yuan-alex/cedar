@@ -74,13 +74,13 @@ export const providers: IProvider[] = [
     icon: <SiOpenai />,
     models: [
       {
-        id: "openai/o1",
-        name: "o1",
+        id: "openai/o3-mini",
+        name: "o3 mini",
         reasoning: true,
       },
       {
-        id: "openai/o3-mini",
-        name: "o3 mini",
+        id: "openai/o3-mini-high",
+        name: "o3 mini high",
         reasoning: true,
       },
       {
