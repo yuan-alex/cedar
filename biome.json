@@ -11,7 +11,8 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "formatWithErrors": true
   },
   "organizeImports": {
     "enabled": true
@@ -28,6 +29,11 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true
     }
   }
 }

@@ -1,20 +1,24 @@
-"use client";
-
-import { UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/clerk-react";
 import { Button } from "@radix-ui/themes";
-import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FiPlus, FiSidebar } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
-import useSWR from "swr";
+import { Link } from "react-router";
 
 import { ThreadButton } from "@/components/ThreadButton";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+const createQueryFn = (endpoint: string) => async () => {
+  return fetch(endpoint).then((response) => response.json());
+};
 
 export function Sidebar() {
-  const { data: threads } = useSWR("/api/threads?take=10", fetcher);
   const [open, setOpen] = useState<boolean>(true);
+
+  const { data: threads } = useQuery({
+    queryKey: ["sidebarThreads"],
+    queryFn: createQueryFn("/api/threads?take=10"),
+  });
 
   useEffect(() => {
     function listener(event: KeyboardEvent) {
@@ -43,7 +47,7 @@ export function Sidebar() {
       <div className="p-3 flex flex-col items-center space-y-5">
         <img className="w-6 h-6" src="/cedar.svg" />
         <SidebarToggle />
-        <Link href="/">
+        <Link to="/">
           <FiPlus />
         </Link>
         <div className="grow" />
@@ -61,7 +65,7 @@ export function Sidebar() {
           <div className="grow" />
           <SidebarToggle />
         </div>
-        <Link href="/">
+        <Link to="/">
           <Button variant="soft" style={{ width: "100%" }}>
             <FiPlusCircle />
             New chat
@@ -72,15 +76,17 @@ export function Sidebar() {
       <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
         {threads?.map((thread) => (
           <ThreadButton
-            key={thread.id}
+            key={thread.token}
             className="first:mt-2 last:mb-2"
             thread={thread}
           />
         ))}
       </div>
-      {threads?.length > 10 && (
-        <Link href="/chats" className="text-sm font-medium px-3">
-          See all
+      {threads?.length > 0 && (
+        <Link to="/chats" className="mx-3">
+          <Button size="1" variant="soft" style={{ width: "100%" }}>
+            See all threads
+          </Button>
         </Link>
       )}
       <div className="grow" />

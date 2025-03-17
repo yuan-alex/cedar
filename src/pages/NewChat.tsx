@@ -1,16 +1,11 @@
-"use client";
-
-import { redirect } from "next/navigation";
+import { useNavigate } from "react-router";
 
 import { InputBox } from "@/components/InputBox";
 import { $model, $prompt } from "@/utils/stores";
-import dynamic from "next/dynamic";
 
-const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
-  ssr: false,
-});
+export function NewChat() {
+  const navigate = useNavigate();
 
-export default function NewChat() {
   function handleCreateThread(event) {
     event.preventDefault();
 
@@ -25,7 +20,7 @@ export default function NewChat() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => redirect(`/chat/${data.token}`));
+      .then((data) => navigate(`/chat/${data.token}`));
   }
 
   return (

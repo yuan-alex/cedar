@@ -1,8 +1,5 @@
-"use client";
-
 import { useStore } from "@nanostores/react";
 import { Badge, Button, Inset, Popover, Tabs } from "@radix-ui/themes";
-import type React from "react";
 import { BiBrain } from "react-icons/bi";
 import { MdBolt } from "react-icons/md";
 
@@ -14,7 +11,7 @@ import {
 } from "@/utils/inference";
 import { $model } from "@/utils/stores";
 
-export default function ModelSelector() {
+export function ModelSelector() {
   const model = useStore($model);
 
   function onModelSelect(model) {
@@ -27,7 +24,7 @@ export default function ModelSelector() {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <Button variant="surface">
+        <Button variant="soft">
           {model.id === "cedar/reasoning" && <BiBrain />}
           {model.id === "cedar/fast" && <MdBolt />}
           {model.name}

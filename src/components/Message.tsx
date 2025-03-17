@@ -5,7 +5,7 @@ import { FiCopy, FiInfo } from "react-icons/fi";
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
 
 export function Message(props) {
-  const { message, thread } = props;
+  const { message } = props;
 
   function handleCopyText() {
     navigator.clipboard

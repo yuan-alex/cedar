@@ -1,4 +1,4 @@
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/clerk-react";
 import { Button } from "@radix-ui/themes";
 
 export function LandingPage() {

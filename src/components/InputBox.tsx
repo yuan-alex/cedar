@@ -1,11 +1,6 @@
-"use client";
-
-import dynamic from "next/dynamic";
 import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
 
-const ModelSelector = dynamic(() => import("@/components/ModelSelector"), {
-  ssr: false,
-});
+import { ModelSelector } from "@/components/ModelSelector";
 
 export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);

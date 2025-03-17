@@ -1,24 +1,31 @@
 import { ContextMenu } from "@radix-ui/themes";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { mutate } from "swr";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from "react-router";
 
 export function ThreadButton(props) {
   const { thread } = props;
 
-  function handleDeleteThread() {
-    fetch(`/api/threads/${thread.token}`, {
-      method: "DELETE",
-    }).then(() => {
-      mutate("/api/threads?take=10");
-      redirect("/");
-    });
-  }
+  const { threadToken } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/threads/${thread.token}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
+      if (threadToken === thread.token) {
+        navigate("/");
+      }
+    },
+  });
 
   return (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
-        <Link key={thread.id} href={`/chat/${thread.token}`} {...props}>
+        <Link key={thread.id} to={`/chat/${thread.token}`} {...props}>
           <div
             key={thread.id}
             className="px-3 py-1 text-sm rounded-sm truncate hover:bg-zinc-200 dark:hover:bg-zinc-800"
@@ -31,7 +38,7 @@ export function ThreadButton(props) {
         <ContextMenu.Item
           shortcut="⌘ ⌫"
           color="red"
-          onClick={handleDeleteThread}
+          onClick={() => mutation.mutate()}
         >
           Delete
         </ContextMenu.Item>

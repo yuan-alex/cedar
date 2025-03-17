@@ -1,28 +1,29 @@
-"use client";
-
 import { useChat } from "@ai-sdk/react";
-import { redirect } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { mutate } from "swr";
+import { useNavigate, useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
 import { Message } from "@/components/Message";
 import { $model, $prompt } from "@/utils/stores";
 
-export function Chat(props) {
-  const { thread } = props;
+export function Chat() {
+  const navigate = useNavigate();
+  const { threadToken } = useParams();
+  const queryClient = useQueryClient();
 
-  const { messages, input, handleInputChange, handleSubmit, append } = useChat({
-    api: `/api/threads/${thread.token}`,
-    id: thread.token,
-    initialMessages: thread.messages.map((msg) => ({
-      ...msg,
-      id: msg.token,
-      role: msg.isAssistant ? "assistant" : "user",
-    })),
+  const {
+    messages,
+    setMessages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    append,
+  } = useChat({
+    api: `/api/threads/${threadToken}`,
+    id: threadToken,
     experimental_prepareRequestBody: ({ messages }) => {
-      // e.g. only the text of the last message:
       return {
         model: $model?.get().id,
         content: messages[messages.length - 1].content,
@@ -30,20 +31,37 @@ export function Chat(props) {
     },
     experimental_throttle: 50,
     onFinish: () => {
-      mutate("/api/threads?take=10");
+      queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
     },
   });
 
   useEffect(() => {
     const prompt = $prompt.value;
-    if (thread.messages.length === 0 && prompt) {
-      append({ role: "user", content: prompt });
-      $prompt.set("");
-    }
 
+    if (threadToken) {
+      fetch(`/api/threads/${threadToken}`)
+        .then((response) => response.json())
+        .then((thread) => {
+          if (thread.messages.length === 0 && prompt) {
+            append({ role: "user", content: prompt });
+            $prompt.set("");
+          } else {
+            setMessages(
+              thread.messages.map((msg) => ({
+                id: msg.token,
+                role: msg.isAssistant ? "assistant" : "user",
+                content: msg.content,
+              })),
+            );
+          }
+        });
+    }
+  }, [threadToken, append, setMessages]);
+
+  useEffect(() => {
     function listener(event: KeyboardEvent) {
       if (event.key === "Ctrl+k" || (event.metaKey && event.key === "k")) {
-        redirect("/");
+        navigate("/");
       }
     }
     document.addEventListener("keydown", listener);
@@ -51,10 +69,10 @@ export function Chat(props) {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [append, thread.messages.length]);
+  }, [navigate]);
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       {process.env.NODE_ENV === "development" && (
         <pre className="fixed p-5 m-3 text-sm bottom-0 right-0 w-60 h-4/5 rounded overflow-auto border bg-black text-green-200">
           {JSON.stringify(messages, undefined, 2)}
@@ -67,7 +85,7 @@ export function Chat(props) {
       >
         <StickToBottom.Content className="flex flex-col w-full max-w-3xl mx-auto my-10">
           {messages.map((msg, i) => (
-            <Message key={msg.id} index={i} thread={thread} message={msg} />
+            <Message key={msg.id} index={i} message={msg} />
           ))}
         </StickToBottom.Content>
       </StickToBottom>
@@ -76,6 +94,6 @@ export function Chat(props) {
           <InputBox rows={1} value={input} onChange={handleInputChange} />
         </form>
       </div>
-    </>
+    </div>
   );
 }
