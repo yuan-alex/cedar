@@ -1,7 +1,8 @@
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { serve } from "@hono/node-server";
+import { serveStatic } from "@hono/node-server/serve-static";
 import { smoothStream, streamText } from "ai";
 import { Hono } from "hono";
-import { serveStatic } from "hono/bun";
 
 import {
   convertMessagesToOpenAiFormat,
@@ -244,8 +245,7 @@ if (process.env.NODE_ENV === "production") {
   app.get("/*", serveStatic({ root: "./dist/client" }));
 }
 
-export default {
-  port: process.env.PORT || 3001,
+serve({
   fetch: app.fetch,
-  idleTimeout: 30,
-};
+  port: Number.parseInt(process.env.PORT || "3001"),
+});

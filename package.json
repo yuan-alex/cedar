@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "prisma generate --no-engine && vite build",
-    "lint": "eslint .",
+    "build": "prisma generate --no-engine && tsup && vite build",
+    "start": "node ./dist/server/main.js",
     "preview": "vite preview",
     "format": "biome format . --write",
     "db:studio": "prisma studio --browser none"
