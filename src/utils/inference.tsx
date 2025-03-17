@@ -108,6 +108,11 @@ export const providers: IProvider[] = [
         fast: true,
       },
       {
+        id: "google/gemma-3-27b-it",
+        name: "Gemma 3",
+        fast: true,
+      },
+      {
         id: "google/gemini-2.0-flash-lite-001",
         name: "Gemini 2.0 Flash Lite",
         fast: true,
