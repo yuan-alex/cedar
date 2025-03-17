@@ -178,7 +178,7 @@ export const providers: IProvider[] = [
     icon: <RiMixtralFill />,
     models: [
       {
-        id: "mistralai/mistral-small-24b-instruct-2501",
+        id: "mistralai/mistral-small-3.1-24b-instruct-2503",
         name: "Mistral Small 3",
       },
       {
