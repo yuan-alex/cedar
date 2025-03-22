@@ -1,2 +1,2 @@
-web: corepack pnpm run start
-release: corepack pnpm run db:deploy
+web: bun run start
+release: bun run db:deploy

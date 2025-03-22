@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite --port 3000",
-    "build": "prisma generate --no-engine && tsup && vite build",
-    "start": "node ./dist/server/main.js",
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "dev:server": "bun run --watch ./server/main.ts",
+    "dev:client": "vite --port 3000",
+    "build": "prisma generate --no-engine && vite build",
+    "start": "bun run ./server/main.ts",
     "preview": "vite preview",
     "format": "biome format . --write",
-    "db:studio": "prisma studio --browser none"
+    "db:studio": "prisma studio --browser none",
+    "db:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.1.22",
@@ -42,11 +45,13 @@
     "@biomejs/biome": "^1.9.4",
     "@nanostores/logger": "^0.4.0",
     "@tailwindcss/postcss": "^4.0.13",
+    "@types/bun": "^1.2.5",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react-swc": "^3.8.0",
+    "concurrently": "^9.1.2",
     "lefthook": "^1.11.3",
     "postcss": "^8.5.3",
     "prisma": "^6.5.0",
