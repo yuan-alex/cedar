@@ -27,21 +27,19 @@ export function NewChat() {
     <form className="h-full flex flex-col" onSubmit={handleCreateThread}>
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
-          <div className="flex items-center justify-center mb-5 space-x-3">
-            <p className="text-3xl font-medium">Hey there, how can I help?</p>
+          <div className="flex items-center justify-center mb-5 space-x-4">
+            <img className="w-12 h-12" src="/cedar.svg" />
+            <p className="text-5xl font-medium">Cedar</p>
           </div>
-          <InputBox
-            name="message"
-            rows={3}
-            onChange={(event) => $prompt.set(event.target.value)}
-          />
         </div>
       </div>
-      <footer className="mb-5">
-        <p className="text-xs text-center">
-          Language models can make critical mistakes.
-        </p>
-      </footer>
+      <div className="w-full max-w-3xl mx-auto mb-2">
+        <InputBox
+          name="message"
+          rows={3}
+          onChange={(event) => $prompt.set(event.target.value)}
+        />
+      </div>
     </form>
   );
 }
