@@ -35,6 +35,7 @@ export function Chat() {
     },
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const prompt = $prompt.value;
 
@@ -56,7 +57,7 @@ export function Chat() {
           }
         });
     }
-  }, [threadToken, append, setMessages]);
+  }, [threadToken]);
 
   useEffect(() => {
     function listener(event: KeyboardEvent) {
