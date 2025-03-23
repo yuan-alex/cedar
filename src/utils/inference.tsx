@@ -36,6 +36,11 @@ export const simpleModels: IModel[] = [
     description: "Best choice for everyday tasks",
   },
   {
+    id: "cedar/creative",
+    name: "Creative",
+    description: "Best choice for creative writing",
+  },
+  {
     id: "cedar/fast",
     name: "Fast",
     description: "Fastest and lightest model for basic tasks",
@@ -184,7 +189,8 @@ export const providers: IProvider[] = [
     models: [
       {
         id: "mistralai/mistral-small-3.1-24b-instruct-2503",
-        name: "Mistral Small 3",
+        name: "Mistral Small 3.1 24B",
+        fast: true,
       },
       {
         id: "mistralai/mistral-nemo",

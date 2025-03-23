@@ -1,8 +1,8 @@
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
-import { serve } from "@hono/node-server";
-import { serveStatic } from "@hono/node-server/serve-static";
 import { smoothStream, streamText } from "ai";
+import { serve } from "bun";
 import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
 
 import {
   convertMessagesToOpenAiFormat,
@@ -14,6 +14,10 @@ import prisma from "./utils/prisma";
 const app = new Hono();
 
 app.use("/api/*", clerkMiddleware());
+
+app.get("/api/health", async (c) => {
+  return c.html("good");
+});
 
 // get threads
 app.get("/api/threads", async (c) => {
@@ -117,14 +121,22 @@ app.post("/api/threads/:threadToken", async (c) => {
   const userInput = await c.req.json();
 
   let { model } = userInput;
-  if (model === "cedar/auto") {
-    model = "openrouter/auto";
-  } else if (model === "cedar/smart") {
-    model = "mistralai/mistral-small-24b-instruct-2501";
-  } else if (model === "cedar/fast") {
-    model = "google/gemini-2.0-flash-lite-001";
-  } else if (model === "cedar/reasoning") {
-    model = "deepseek/deepseek-r1-distill-llama-70b";
+  switch (model) {
+    case "cedar/auto":
+      model = "openrouter/auto";
+      break;
+    case "cedar/smart":
+      model = "mistralai/mistral-small-3.1-24b-instruct";
+      break;
+    case "cedar/creative":
+      model = "google/gemma-3-27b-it";
+      break;
+    case "cedar/fast":
+      model = "google/gemini-2.0-flash-lite-001";
+      break;
+    case "cedar/reasoning":
+      model = "deepseek/deepseek-r1-distill-llama-70b";
+      break;
   }
 
   const thread = await prisma.thread.findUnique({
@@ -245,7 +257,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("/*", serveStatic({ root: "./dist/client" }));
 }
 
-serve({
+const server = serve({
   fetch: app.fetch,
   port: Number.parseInt(process.env.PORT || "3001"),
 });
+
+console.log(`Listening on ${server.url}`);

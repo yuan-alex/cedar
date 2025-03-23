@@ -30,7 +30,7 @@ export function ModelSelector() {
           {model.name}
         </Button>
       </Popover.Trigger>
-      <Popover.Content width="350px" maxHeight="300px">
+      <Popover.Content width="350px" maxHeight="400px">
         <Inset>
           <Tabs.Root defaultValue="simple" className="relative dark:bg-black">
             <Tabs.List>
