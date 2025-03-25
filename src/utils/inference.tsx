@@ -1,14 +1,17 @@
-import type { ReactElement } from "react";
-import { RiMixtralFill } from "react-icons/ri";
-import { RiMicrosoftFill } from "react-icons/ri";
 import {
-  SiAlibabacloud,
-  SiClaude,
-  SiGooglegemini,
-  SiMeta,
-  SiOpenai,
-  SiPerplexity,
-} from "react-icons/si";
+  Alibaba,
+  Claude,
+  Cohere,
+  DeepSeek,
+  Gemini,
+  Meta,
+  Microsoft,
+  Mistral,
+  OpenAI,
+  Perplexity,
+  Qwen,
+} from "@lobehub/icons";
+import type { ReactElement } from "react";
 
 export interface IProvider {
   name: string;
@@ -66,7 +69,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "OpenAI",
-    icon: <SiOpenai />,
+    icon: <OpenAI />,
     models: [
       {
         id: "openai/o3-mini",
@@ -91,7 +94,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Anthropic",
-    icon: <SiClaude />,
+    icon: <Claude.Color />,
     models: [
       {
         id: "anthropic/claude-3.7-sonnet",
@@ -105,7 +108,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Google",
-    icon: <SiGooglegemini />,
+    icon: <Gemini.Color />,
     models: [
       {
         id: "google/gemini-2.0-flash-001",
@@ -135,6 +138,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "DeepSeek",
+    icon: <DeepSeek.Color />,
     models: [
       {
         id: "deepseek/deepseek-r1",
@@ -159,7 +163,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Meta",
-    icon: <SiMeta />,
+    icon: <Meta.Color />,
     models: [
       {
         id: "meta-llama/llama-3.3-70b-instruct",
@@ -174,7 +178,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Qwen by Alibaba",
-    icon: <SiAlibabacloud />,
+    icon: <Qwen.Color />,
     models: [
       {
         id: "qwen/qwq-32b",
@@ -185,7 +189,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Mistral AI",
-    icon: <RiMixtralFill />,
+    icon: <Mistral.Color />,
     models: [
       {
         id: "mistralai/mistral-small-3.1-24b-instruct-2503",
@@ -201,7 +205,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Microsoft",
-    icon: <RiMicrosoftFill />,
+    icon: <Microsoft.Color />,
     models: [
       {
         id: "microsoft/phi-4-multimodal-instruct",
@@ -215,7 +219,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Perplexity",
-    icon: <SiPerplexity />,
+    icon: <Perplexity.Color />,
     models: [
       {
         id: "perplexity/r1-1776",
@@ -235,6 +239,7 @@ export const providers: IProvider[] = [
   },
   {
     name: "Cohere",
+    icon: <Cohere.Color />,
     models: [
       {
         id: "cohere/command-r-plus-08-2024",
