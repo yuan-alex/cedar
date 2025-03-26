@@ -1,5 +1,4 @@
 import {
-  Alibaba,
   Claude,
   Cohere,
   DeepSeek,
@@ -156,7 +155,7 @@ export const providers: IProvider[] = [
         reasoning: true,
       },
       {
-        id: "deepseek/deepseek-chat",
+        id: "deepseek/deepseek-chat-v3-0324",
         name: "DeepSeek V3",
       },
     ],
@@ -227,9 +226,18 @@ export const providers: IProvider[] = [
         reasoning: true,
       },
       {
+        id: "perplexity/sonar-reasoning-pro",
+        name: "Sonar Reasoning Pro",
+        reasoning: true,
+      },
+      {
         id: "perplexity/sonar-reasoning",
         name: "Sonar Reasoning",
         reasoning: true,
+      },
+      {
+        id: "perplexity/sonar-pro",
+        name: "Sonar Pro",
       },
       {
         id: "perplexity/sonar",
@@ -241,6 +249,10 @@ export const providers: IProvider[] = [
     name: "Cohere",
     icon: <Cohere.Color />,
     models: [
+      {
+        id: "cohere/command-a",
+        name: "Command A",
+      },
       {
         id: "cohere/command-r-plus-08-2024",
         name: "Command R+",
