@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
-import { Message } from "@/components/Message";
+import { CedarMessage } from "@/components/Message";
 import { $model, $prompt } from "@/utils/stores";
 
 export function Chat() {
@@ -49,6 +49,7 @@ export function Chat() {
           } else {
             setMessages(
               thread.messages.map((msg) => ({
+                ...msg,
                 id: msg.token,
                 role: msg.isAssistant ? "assistant" : "user",
                 content: msg.content,
@@ -86,7 +87,7 @@ export function Chat() {
       >
         <StickToBottom.Content className="flex flex-col w-full max-w-3xl mx-auto my-10">
           {messages.map((msg, i) => (
-            <Message key={msg.id} index={i} message={msg} />
+            <CedarMessage key={msg.id} message={msg} />
           ))}
         </StickToBottom.Content>
       </StickToBottom>
