@@ -116,7 +116,12 @@ export const providers: IProvider[] = [
       },
       {
         id: "google/gemma-3-27b-it",
-        name: "Gemma 3",
+        name: "Gemma 3 27B",
+        fast: true,
+      },
+      {
+        id: "google/gemma-3-12b-it",
+        name: "Gemma 3 12B",
         fast: true,
       },
       {
