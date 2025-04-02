@@ -32,39 +32,41 @@ export function ModelSelector() {
       </Popover.Trigger>
       <Popover.Content width="350px" maxHeight="400px">
         <Inset>
-          <Tabs.Root defaultValue="simple" className="relative dark:bg-black">
+          <Tabs.Root defaultValue="simple" className="dark:bg-black">
             <Tabs.List>
               <Tabs.Trigger value="simple">Simple</Tabs.Trigger>
               <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
             </Tabs.List>
-            <Tabs.Content value="simple">
-              <div className="p-3 flex flex-col">
-                {simpleModels.map((m) => (
-                  <ModelItem
-                    key={m.id}
-                    model={m}
-                    isSelected={m.id === model.id}
-                    onModelSelect={onModelSelect}
-                  />
-                ))}
-              </div>
+            <Tabs.Content
+              value="simple"
+              className="grow p-3 flex flex-col overflow-y-auto"
+            >
+              {simpleModels.map((m) => (
+                <ModelItem
+                  key={m.id}
+                  model={m}
+                  isSelected={m.id === model.id}
+                  onModelSelect={onModelSelect}
+                />
+              ))}
             </Tabs.Content>
-            <Tabs.Content value="advanced">
-              <div className="p-3 flex flex-col">
-                {providers.map((p) => (
-                  <span key={p.name}>
-                    {p.models.map((m) => (
-                      <ModelItem
-                        key={m.id}
-                        provider={p}
-                        model={m}
-                        isSelected={m.id === model.id}
-                        onModelSelect={onModelSelect}
-                      />
-                    ))}
-                  </span>
-                ))}
-              </div>
+            <Tabs.Content
+              value="advanced"
+              className="grow p-3 flex flex-col overflow-y-auto"
+            >
+              {providers.map((p) => (
+                <span key={p.name}>
+                  {p.models.map((m) => (
+                    <ModelItem
+                      key={m.id}
+                      provider={p}
+                      model={m}
+                      isSelected={m.id === model.id}
+                      onModelSelect={onModelSelect}
+                    />
+                  ))}
+                </span>
+              ))}
             </Tabs.Content>
           </Tabs.Root>
         </Inset>
@@ -86,7 +88,7 @@ function ModelItem(props: IModelItemProps) {
   return (
     <Popover.Close
       key={model.id}
-      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 ${isSelected ? "bg-zinc-50 dark:bg-zinc-900" : ""}`}
+      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 ${isSelected ? "bg-zinc-100 dark:bg-zinc-900" : ""}`}
       onClick={() => onModelSelect(model)}
     >
       <div className="flex items-center space-x-3">

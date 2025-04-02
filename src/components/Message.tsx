@@ -25,20 +25,10 @@ export function CedarMessage(props: IMessageProps) {
   }
 
   return (
-    <>
-      {process.env.NODE_ENV === "development" && (
-        <details>
-          <summary>show debugging info</summary>
-          <div>
-            <pre className="p-3 text-xs overflow-hidden text-white bg-black rounded">
-              {JSON.stringify(message, undefined, 4)}
-            </pre>
-          </div>
-        </details>
-      )}
-      <div className="flex items-start space-x-4 m-5">
+    <div>
+      <div className="prose dark:prose-invert max-w-none w-full flex items-start space-x-4">
         <div
-          className={`prose max-w-none dark:prose-invert overflow-x-auto ${message.role === "assistant" ? "" : "py-3 px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
+          className={`overflow-x-auto ${message.role === "assistant" ? "" : "px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
         >
           {message.parts?.map((part, i) => {
             switch (part.type) {
@@ -54,7 +44,7 @@ export function CedarMessage(props: IMessageProps) {
                 return (
                   <details key={message.id}>
                     <summary>Show reasoning</summary>
-                    <div className="prose dark:prose-invert border-l-3 dark:border-zinc-700 pl-8 my-10">
+                    <div className="text-sm prose max-w-none dark:prose-invert border dark:border-zinc-700 shadow rounded-xl p-5 mb-10sm">
                       <MemoizedMarkdown
                         id={`${message.id}:reasoning`}
                         content={part.reasoning}
@@ -66,13 +56,13 @@ export function CedarMessage(props: IMessageProps) {
           })}
         </div>
       </div>
-      <div
-        className={`${message.role === "assistant" ? "flex justify-end gap-4 mb-4" : "invisible"}`}
-      >
-        <IconButton variant="ghost" size="2">
-          <FiCopy onClick={handleCopyText} />
-        </IconButton>
-      </div>
-    </>
+      {message.role === "assistant" ? (
+        <div className="flex justify-end gap-4 mb-4">
+          <IconButton variant="ghost" size="2">
+            <FiCopy onClick={handleCopyText} />
+          </IconButton>
+        </div>
+      ) : null}
+    </div>
   );
 }

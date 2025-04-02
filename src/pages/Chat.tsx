@@ -74,27 +74,24 @@ export function Chat() {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col h-screen">
-      {process.env.NODE_ENV === "development" && (
-        <pre className="fixed p-5 m-3 text-sm bottom-0 right-0 w-60 h-4/5 rounded overflow-auto border bg-black text-green-200">
-          {JSON.stringify(messages, undefined, 2)}
-        </pre>
-      )}
-      <StickToBottom
-        className="grow overflow-auto w-full"
-        resize="smooth"
-        initial="instant"
-      >
-        <StickToBottom.Content className="flex flex-col w-full max-w-3xl mx-auto my-10">
-          {messages.map((msg, i) => (
-            <CedarMessage key={msg.id} message={msg} />
-          ))}
-        </StickToBottom.Content>
-      </StickToBottom>
-      <div className="w-full max-w-3xl mx-auto mb-2">
-        <form onSubmit={handleSubmit}>
-          <InputBox rows={1} value={input} onChange={handleInputChange} />
-        </form>
+    <div className="flex divide-x h-full">
+      <div className="grow flex flex-col overflow-y-auto">
+        <StickToBottom
+          className="grow overflow-auto w-full"
+          resize="smooth"
+          initial="instant"
+        >
+          <StickToBottom.Content className="flex flex-col max-w-4xl mx-auto space-y-5 p-5">
+            {messages.map((msg, i) => (
+              <CedarMessage key={msg.id} message={msg} />
+            ))}
+          </StickToBottom.Content>
+        </StickToBottom>
+        <div className="basis-0 w-full max-w-4xl mx-auto mb-2">
+          <form onSubmit={handleSubmit}>
+            <InputBox rows={1} value={input} onChange={handleInputChange} />
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -15,19 +15,35 @@ const MemoizedMarkdownBlock = memo(
     return (
       <ReactMarkdown
         components={{
+          pre(props) {
+            return (
+              <pre
+                className="not-prose p-2 my-5 rounded text-white"
+                style={{ backgroundColor: "rgb(29, 31, 33)" }}
+              >
+                {props.children}
+              </pre>
+            );
+          },
           code(props) {
             const { children, className, node, ...rest } = props;
             const match = /language-(\w+)/.exec(className || "");
             return match ? (
-              <SyntaxHighlighter
-                {...rest}
-                className="not-prose"
-                PreTag="div"
-                language={match[1]}
-                style={atomDark}
-              >
-                {String(children).replace(/\n$/, "")}
-              </SyntaxHighlighter>
+              <div className="text-sm">
+                <nav className="flex">
+                  <p className="font-sans">{match[1]}</p>
+                </nav>
+                <SyntaxHighlighter
+                  {...rest}
+                  className="not-prose"
+                  PreTag="div"
+                  language={match[1]}
+                  style={atomDark}
+                  showLineNumbers
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </div>
             ) : (
               <code {...rest} className={className}>
                 {children}
@@ -53,8 +69,8 @@ export const MemoizedMarkdown = memo(
   ({ content, id }: { content: string; id: string }) => {
     const blocks = useMemo(() => parseMarkdownIntoBlocks(content), [content]);
 
-    return blocks.map((block, index) => (
-      <MemoizedMarkdownBlock content={block} key={`${id}-block_${index}`} />
+    return blocks.map((block) => (
+      <MemoizedMarkdownBlock content={block} key={`${id}-block`} />
     ));
   },
 );
