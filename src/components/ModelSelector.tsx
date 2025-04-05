@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { Badge, Button, Inset, Popover, Tabs } from "@radix-ui/themes";
 import { BiBrain } from "react-icons/bi";
-import { MdBolt } from "react-icons/md";
+import { MdBolt, MdCode } from "react-icons/md";
 
 import {
   type IModel,
@@ -56,15 +56,21 @@ export function ModelSelector() {
             >
               {providers.map((p) => (
                 <span key={p.name}>
-                  {p.models.map((m) => (
-                    <ModelItem
-                      key={m.id}
-                      provider={p}
-                      model={m}
-                      isSelected={m.id === model.id}
-                      onModelSelect={onModelSelect}
-                    />
-                  ))}
+                  {p.models
+                    .filter(
+                      (m) =>
+                        import.meta.env.DEV ||
+                        (!import.meta.env.DEV && m.devOnly),
+                    )
+                    .map((m) => (
+                      <ModelItem
+                        key={m.id}
+                        provider={p}
+                        model={m}
+                        isSelected={m.id === model.id}
+                        onModelSelect={onModelSelect}
+                      />
+                    ))}
                 </span>
               ))}
             </Tabs.Content>
@@ -94,10 +100,17 @@ function ModelItem(props: IModelItemProps) {
       <div className="flex items-center space-x-3">
         {provider?.icon && <div>{provider.icon}</div>}
         <div>
-          <p className="text-sm">{model.name}</p>
+          <p className={`${model.devOnly ? "text-green-500" : ""}`}>
+            {model.name}
+          </p>
           <p className="text-xs text-zinc-500">{model.description}</p>
         </div>
         <div className="grow" />
+        {model.devOnly && (
+          <Badge color="green">
+            <MdCode />
+          </Badge>
+        )}
         {model.fast && (
           <Badge color="orange">
             <MdBolt />

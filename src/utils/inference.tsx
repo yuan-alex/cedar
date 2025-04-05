@@ -24,6 +24,7 @@ export interface IModel {
   description?: string;
   reasoning?: boolean;
   fast?: boolean;
+  devOnly?: boolean;
 }
 
 export const simpleModels: IModel[] = [
