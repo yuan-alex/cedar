@@ -1,4 +1,5 @@
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { zValidator } from "@hono/zod-validator";
 import {
   defaultSettingsMiddleware,
   smoothStream,
@@ -8,6 +9,7 @@ import {
 import { serve } from "bun";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
+import { z } from "zod";
 
 import {
   convertMessagesToOpenAiFormat,
@@ -59,36 +61,46 @@ app.get("/api/threads", async (c) => {
 });
 
 // create thread
-app.post("/api/threads", async (c) => {
-  const auth = getAuth(c);
-  const userId = auth?.userId;
+app.post(
+  "/api/threads",
+  zValidator(
+    "json",
+    z.object({
+      model: z.string(),
+      prompt: z.string(),
+    }),
+  ),
+  async (c) => {
+    const auth = getAuth(c);
+    const userId = auth?.userId;
 
-  const { model, prompt } = await c.req.json();
+    const { model, prompt } = await c.req.json();
 
-  if (!userId || !prompt || !model) {
-    return new Response("invalid parameters", { status: 400 });
-  }
+    if (!userId || !prompt || !model) {
+      return new Response("invalid parameters", { status: 400 });
+    }
 
-  const thread = await prisma.thread.create({
-    data: {
-      model: model,
-      userId,
-    },
-  });
-
-  generateTitle(prompt).then(async (response) => {
-    await prisma.thread.update({
-      where: {
-        id: thread.id,
-      },
+    const thread = await prisma.thread.create({
       data: {
-        name: response.text,
+        model: model,
+        userId,
       },
     });
-  });
 
-  return Response.json(thread);
-});
+    generateTitle(prompt).then(async (response) => {
+      await prisma.thread.update({
+        where: {
+          id: thread.id,
+        },
+        data: {
+          name: response.text,
+        },
+      });
+    });
+
+    return Response.json(thread);
+  },
+);
 
 // Get thread
 app.get("/api/threads/:threadToken", async (c) => {
@@ -118,124 +130,130 @@ app.get("/api/threads/:threadToken", async (c) => {
 });
 
 // Create new message in thread
-app.post("/api/threads/:threadToken", async (c) => {
-  const auth = getAuth(c);
-  const userId = auth?.userId;
+app.post(
+  "/api/threads/:threadToken",
+  zValidator(
+    "json",
+    z.object({
+      model: z.string(),
+      content: z.string(),
+    }),
+  ),
+  async (c) => {
+    const auth = getAuth(c);
+    const userId = auth?.userId;
 
-  const threadToken = c.req.param("threadToken");
-  const userInput = await c.req.json();
+    const threadToken = c.req.param("threadToken");
+    const userInput = await c.req.json();
 
-  let { model } = userInput;
-  switch (model) {
-    case "cedar/auto":
-      model = "openrouter/auto";
-      break;
-    case "cedar/smart":
-      model = "mistralai/mistral-small-3.1-24b-instruct";
-      break;
-    case "cedar/creative":
-      model = "google/gemma-3-27b-it";
-      break;
-    case "cedar/fast":
-      model = "google/gemini-2.0-flash-lite-001";
-      break;
-    case "cedar/reasoning":
-      model = "deepseek/deepseek-r1-distill-llama-70b";
-      break;
-  }
+    let { model } = userInput;
+    switch (model) {
+      case "cedar/auto":
+        model = "openrouter/auto";
+        break;
+      case "cedar/smart":
+        model = "mistralai/mistral-small-3.1-24b-instruct";
+        break;
+      case "cedar/creative":
+        model = "google/gemma-3-27b-it";
+        break;
+      case "cedar/fast":
+        model = "google/gemini-2.0-flash-lite-001";
+        break;
+      case "cedar/reasoning":
+        model = "deepseek/deepseek-r1-distill-llama-70b";
+        break;
+    }
 
-  const thread = await prisma.thread.findUnique({
-    where: {
-      token: threadToken,
-    },
-  });
-
-  if (!thread || thread.userId !== userId) {
-    return c.notFound();
-  }
-
-  if (!userInput.content) {
-    return new Response("invalid parameters", { status: 400 });
-  }
-
-  await prisma.thread.update({
-    where: {
-      id: thread.id,
-    },
-    data: {
-      lastMessagedAt: new Date(),
-      messages: {
-        create: {
-          isAssistant: false,
-          content: userInput.content,
-        },
+    const thread = await prisma.thread.findUnique({
+      where: {
+        token: threadToken,
       },
-    },
-  });
+    });
 
-  const run = await prisma.run.create({
-    data: {
-      threadId: thread.id,
-      status: "inProgress",
-    },
-  });
+    if (!thread || thread.userId !== userId) {
+      return c.notFound();
+    }
 
-  const messages = await prisma.chatMessage.findMany({
-    where: {
-      threadId: thread.id,
-    },
-    orderBy: {
-      id: "asc",
-    },
-  });
-
-  const settingsMiddleware = defaultSettingsMiddleware({
-    settings: {
-      temperature: 0.3,
-      maxTokens: 2048,
-    },
-  });
-
-  const wrappedLanguageModel = wrapLanguageModel({
-    model: openrouter(model),
-    middleware: [settingsMiddleware],
-  });
-
-  const result = streamText({
-    model: wrappedLanguageModel,
-    messages: convertMessagesToOpenAiFormat(messages),
-    experimental_transform: smoothStream({ chunking: "word" }),
-    onFinish: async (event) => {
-      await prisma.run.update({
-        where: {
-          id: run.id,
-        },
-        data: {
-          status: "completed",
-          steps: {
-            create: {
-              message: {
-                create: {
-                  threadId: thread.id,
-                  isAssistant: true,
-                  content: event.text,
-                  reasoning: event.reasoning,
-                },
-              },
-              type: "generation",
-              generationProviderToken: event.response.id,
-              generationModel: event.response.modelId,
-            },
+    await prisma.thread.update({
+      where: {
+        id: thread.id,
+      },
+      data: {
+        lastMessagedAt: new Date(),
+        messages: {
+          create: {
+            isAssistant: false,
+            content: userInput.content,
           },
         },
-      });
-    },
-  });
+      },
+    });
 
-  return result.toDataStreamResponse({
-    sendReasoning: true,
-  });
-});
+    const run = await prisma.run.create({
+      data: {
+        threadId: thread.id,
+        status: "inProgress",
+      },
+    });
+
+    const messages = await prisma.chatMessage.findMany({
+      where: {
+        threadId: thread.id,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    const settingsMiddleware = defaultSettingsMiddleware({
+      settings: {
+        temperature: 0.3,
+        maxTokens: 2048,
+      },
+    });
+
+    const wrappedLanguageModel = wrapLanguageModel({
+      model: openrouter(model),
+      middleware: [settingsMiddleware],
+    });
+
+    const result = streamText({
+      model: wrappedLanguageModel,
+      messages: convertMessagesToOpenAiFormat(messages),
+      experimental_transform: smoothStream({ chunking: "word" }),
+      onFinish: async (event) => {
+        await prisma.run.update({
+          where: {
+            id: run.id,
+          },
+          data: {
+            status: "completed",
+            steps: {
+              create: {
+                message: {
+                  create: {
+                    threadId: thread.id,
+                    isAssistant: true,
+                    content: event.text,
+                    reasoning: event.reasoning,
+                  },
+                },
+                type: "generation",
+                generationProviderToken: event.response.id,
+                generationModel: event.response.modelId,
+              },
+            },
+          },
+        });
+      },
+    });
+
+    return result.toDataStreamResponse({
+      sendReasoning: true,
+    });
+  },
+);
 
 app.delete("/api/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
