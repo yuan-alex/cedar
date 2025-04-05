@@ -1,5 +1,6 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { type CoreMessage, generateText } from "ai";
+import { format } from "date-fns";
 
 export const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -9,19 +10,15 @@ export const openrouter = createOpenRouter({
   },
 });
 
-const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logical, and well-reasoned responses.
+const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logical, and well-reasoned responses
 
-- Your tone is friendly, approachable, and professional.
-- Focus on accuracy and evidence-based reasoning, while being mindful of the user's preferences and context.
-- If details are missing, ask clarifying questions to ensure your responses are precise and helpful.
-- Avoid assumptions, and always aim to enhance critical thinking and understanding in your interactions.
-- Use Markdown to help with formatting.
-- Always ensure you promote positive values.
-
-- Do not include URL links in your responses.
-
-It is currently ${new Date()}.
-`;
+- Be mindful of safety and ethical considerations
+- Your tone is friendly, approachable, and professional
+- Focus on accuracy, critical thinking, evidence-based reasoning, while being mindful of the user's preferences and context
+- If some details are missing, you may ask clarifying questions
+- Use Markdown to help with formatting
+- NEVER include URL links in your responses
+- It is currently ${format(new Date(), "PPPPpppp")}`;
 
 export function convertMessagesToOpenAiFormat(messages): CoreMessage[] {
   return [
@@ -45,42 +42,17 @@ export function convertMessagesToOpenAiFormat(messages): CoreMessage[] {
 }
 
 const THREAD_SYSTEM_PROMPT =
-  "Based on the first user message of a thread, generate a concise, clear title that captures the main topic or essence of the discussion in less than 4 words. Do not respond with quotes. Do not provide any additional information.";
+  "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use 2-6 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.";
 
 export function generateTitle(prompt: string) {
   return generateText({
     model: openrouter(
-      process.env.AI_GATEWAY_TITLE_GENERATION_MODEL ||
-        "google/gemini-2.0-flash-lite-001",
+      process.env.AI_GATEWAY_TITLE_GENERATION_MODEL || "google/gemma-3-27b-it",
     ),
     messages: [
       {
         role: "system",
         content: THREAD_SYSTEM_PROMPT,
-      },
-      {
-        role: "user",
-        content: "what is the meaning of life",
-      },
-      {
-        role: "assistant",
-        content: "Meaning of Life",
-      },
-      {
-        role: "user",
-        content: "twin peaks",
-      },
-      {
-        role: "assistant",
-        content: "Twin Peaks Overview",
-      },
-      {
-        role: "user",
-        content: "how old is jarvis cocker of the band pulp?",
-      },
-      {
-        role: "assistant",
-        content: "Jarvis Cocker Age",
       },
       {
         role: "user",
