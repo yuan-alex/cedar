@@ -1,5 +1,10 @@
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
-import { smoothStream, streamText } from "ai";
+import {
+  defaultSettingsMiddleware,
+  smoothStream,
+  streamText,
+  wrapLanguageModel,
+} from "ai";
 import { serve } from "bun";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
@@ -184,10 +189,22 @@ app.post("/api/threads/:threadToken", async (c) => {
     },
   });
 
-  const result = streamText({
+  const settingsMiddleware = defaultSettingsMiddleware({
+    settings: {
+      temperature: 0.3,
+      maxTokens: 2048,
+    },
+  });
+
+  const wrappedLanguageModel = wrapLanguageModel({
     model: openrouter(model),
-    maxTokens: 8192,
+    middleware: [settingsMiddleware],
+  });
+
+  const result = streamText({
+    model: wrappedLanguageModel,
     messages: convertMessagesToOpenAiFormat(messages),
+    experimental_transform: smoothStream({ chunking: "word" }),
     onFinish: async (event) => {
       await prisma.run.update({
         where: {
@@ -213,7 +230,6 @@ app.post("/api/threads/:threadToken", async (c) => {
         },
       });
     },
-    experimental_transform: smoothStream(),
   });
 
   return result.toDataStreamResponse({
