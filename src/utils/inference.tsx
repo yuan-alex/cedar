@@ -1,12 +1,12 @@
 import {
   Claude,
-  Cohere,
   DeepSeek,
   Gemini,
   Meta,
   Microsoft,
   Mistral,
   OpenAI,
+  OpenRouter,
   Perplexity,
   Qwen,
 } from "@lobehub/icons";
@@ -28,11 +28,6 @@ export interface IModel {
 }
 
 export const simpleModels: IModel[] = [
-  {
-    id: "cedar/auto",
-    name: "Auto",
-    description: "Automatically pick the best model",
-  },
   {
     id: "cedar/smart",
     name: "Smart",
@@ -60,10 +55,17 @@ export const simpleModels: IModel[] = [
 export const providers: IProvider[] = [
   {
     name: "OpenRouter",
+    icon: <OpenRouter />,
     models: [
       {
         id: "openrouter/auto",
         name: "OpenRouter Auto",
+      },
+      {
+        id: "openrouter/quasar-alpha",
+        name: "Quasar Alpha",
+        fast: true,
+        devOnly: true,
       },
     ],
   },
@@ -111,8 +113,17 @@ export const providers: IProvider[] = [
     icon: <Gemini.Color />,
     models: [
       {
+        id: "google/gemini-2.5-pro-preview-03-25",
+        name: "Gemini 2.5 Pro Preview",
+      },
+      {
         id: "google/gemini-2.0-flash-001",
         name: "Gemini 2.0 Flash",
+        fast: true,
+      },
+      {
+        id: "google/gemini-2.0-flash-lite-001",
+        name: "Gemini 2.0 Flash Lite",
         fast: true,
       },
       {
@@ -124,11 +135,7 @@ export const providers: IProvider[] = [
         id: "google/gemma-3-12b-it",
         name: "Gemma 3 12B",
         fast: true,
-      },
-      {
-        id: "google/gemini-2.0-flash-lite-001",
-        name: "Gemini 2.0 Flash Lite",
-        fast: true,
+        devOnly: true,
       },
       {
         id: "google/gemini-flash-1.5-8b",
@@ -136,8 +143,10 @@ export const providers: IProvider[] = [
         fast: true,
       },
       {
-        id: "google/gemini-pro-1.5",
-        name: "Gemini Pro 1.5",
+        id: "google/gemma-3-4b-it",
+        name: "Gemma 3 4B",
+        fast: true,
+        devOnly: true,
       },
     ],
   },
@@ -190,6 +199,20 @@ export const providers: IProvider[] = [
         name: "QwQ 32b",
         reasoning: true,
       },
+      {
+        id: "qwen/qwen-2.5-72b-instruct",
+        name: "Qwen 2.5 72B",
+      },
+      {
+        id: "qwen/qwen-2.5-coder-32b-instruct",
+        name: "Qwen 2.5 Coder 32B",
+      },
+      {
+        id: "qwen/qwen-2.5-7b-instruct",
+        name: "Qwen 2.5 7B",
+        fast: true,
+        devOnly: true,
+      },
     ],
   },
   {
@@ -205,6 +228,24 @@ export const providers: IProvider[] = [
         id: "mistralai/mistral-nemo",
         name: "Mistral Nemo",
         fast: true,
+      },
+      {
+        id: "mistralai/mixtral-8x22b-instruct",
+        name: "Mixtral 8x22B",
+        fast: true,
+        devOnly: true,
+      },
+      {
+        id: "mistralai/mixtral-8x7b-instruct",
+        name: "Mixtral 8x7B",
+        fast: true,
+        devOnly: true,
+      },
+      {
+        id: "mistralai/mistral-7b-instruct",
+        name: "Mistral 7B",
+        fast: true,
+        devOnly: true,
       },
     ],
   },
@@ -248,29 +289,6 @@ export const providers: IProvider[] = [
       {
         id: "perplexity/sonar",
         name: "Sonar",
-      },
-    ],
-  },
-  {
-    name: "Cohere",
-    icon: <Cohere.Color />,
-    models: [
-      {
-        id: "cohere/command-a",
-        name: "Command A",
-      },
-      {
-        id: "cohere/command-r-plus-08-2024",
-        name: "Command R+",
-      },
-      {
-        id: "cohere/command-r-08-2024",
-        name: "Command R",
-      },
-      {
-        id: "cohere/command-r7b-12-2024",
-        name: "Command R 7B",
-        fast: true,
       },
     ],
   },
