@@ -28,7 +28,7 @@ export function CedarMessage(props: IMessageProps) {
     <div>
       <div className="prose dark:prose-invert max-w-none w-full flex items-start space-x-4">
         <div
-          className={`overflow-x-auto ${message.role === "assistant" ? "" : "px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
+          className={`overflow-x-auto ${message.role === "assistant" ? "w-full" : "px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
         >
           {message.parts?.map((part, i) => {
             switch (part.type) {
@@ -44,7 +44,7 @@ export function CedarMessage(props: IMessageProps) {
                 return (
                   <details key={message.id}>
                     <summary>Show reasoning</summary>
-                    <div className="text-sm prose max-w-none dark:prose-invert border dark:border-zinc-700 shadow rounded-xl p-5 mb-10sm">
+                    <div className="p-8 text-sm prose dark:prose-invert max-w-none border dark:border-zinc-700 shadow rounded-xl my-10 h-92 overflow-auto">
                       <MemoizedMarkdown
                         id={`${message.id}:reasoning`}
                         content={part.reasoning}
