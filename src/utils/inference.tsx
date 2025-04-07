@@ -117,6 +117,11 @@ export const providers: IProvider[] = [
         name: "Gemini 2.5 Pro Preview",
       },
       {
+        id: "google/gemini-2.5-pro-exp-03-25:free",
+        name: "Gemini 2.5 Pro Experimental",
+        devOnly: true,
+      },
+      {
         id: "google/gemini-2.0-flash-001",
         name: "Gemini 2.0 Flash",
         fast: true,
