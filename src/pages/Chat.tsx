@@ -1,17 +1,23 @@
 import { useChat } from "@ai-sdk/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
 import { CedarMessage } from "@/components/Message";
+import { createQueryFn } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
 
 export function Chat() {
   const navigate = useNavigate();
   const { threadToken } = useParams();
   const queryClient = useQueryClient();
+
+  const { data: thread } = useQuery({
+    queryKey: [`thread_${threadToken}`],
+    queryFn: createQueryFn(`/api/threads/${threadToken}`),
+  });
 
   const {
     messages,
@@ -39,26 +45,22 @@ export function Chat() {
   useEffect(() => {
     const prompt = $prompt.value;
 
-    if (threadToken) {
-      fetch(`/api/threads/${threadToken}`)
-        .then((response) => response.json())
-        .then((thread) => {
-          if (thread.messages.length === 0 && prompt) {
-            append({ role: "user", content: prompt });
-            $prompt.set("");
-          } else {
-            setMessages(
-              thread.messages.map((msg) => ({
-                ...msg,
-                id: msg.token,
-                role: msg.isAssistant ? "assistant" : "user",
-                content: msg.content,
-              })),
-            );
-          }
-        });
+    if (threadToken && thread) {
+      if (thread.messages.length === 0 && prompt) {
+        append({ role: "user", content: prompt });
+        $prompt.set("");
+      } else {
+        setMessages(
+          thread.messages.map((msg) => ({
+            ...msg,
+            id: msg.token,
+            role: msg.isAssistant ? "assistant" : "user",
+            content: msg.content,
+          })),
+        );
+      }
     }
-  }, [threadToken]);
+  }, [thread, threadToken]);
 
   useEffect(() => {
     function listener(event: KeyboardEvent) {

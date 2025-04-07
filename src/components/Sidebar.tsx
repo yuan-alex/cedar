@@ -7,10 +7,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { Link } from "react-router";
 
 import { ThreadButton } from "@/components/ThreadButton";
-
-const createQueryFn = (endpoint: string) => async () => {
-  return fetch(endpoint).then((response) => response.json());
-};
+import { createQueryFn } from "@/utils/queries";
 
 export function Sidebar() {
   const [open, setOpen] = useState<boolean>(true);
