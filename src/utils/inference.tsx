@@ -185,6 +185,15 @@ export const providers: IProvider[] = [
     icon: <Meta.Color />,
     models: [
       {
+        id: "meta-llama/llama-4-maverick",
+        name: "Llama 4 Maverick",
+      },
+      {
+        id: "meta-llama/llama-4-scout",
+        name: "Llama 4 Scout",
+        fast: true,
+      },
+      {
         id: "meta-llama/llama-3.3-70b-instruct",
         name: "Llama 3.3 70B",
       },
