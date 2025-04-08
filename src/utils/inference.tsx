@@ -2,6 +2,7 @@ import {
   Claude,
   DeepSeek,
   Gemini,
+  Gemma,
   Meta,
   Microsoft,
   Mistral,
@@ -118,7 +119,7 @@ export const providers: IProvider[] = [
       },
       {
         id: "google/gemini-2.5-pro-exp-03-25:free",
-        name: "Gemini 2.5 Pro Experimental",
+        name: "Gemini 2.5 Pro Exp",
         devOnly: true,
       },
       {
@@ -132,6 +133,17 @@ export const providers: IProvider[] = [
         fast: true,
       },
       {
+        id: "google/gemini-flash-1.5-8b",
+        name: "Gemini 1.5 Flash 8B",
+        fast: true,
+      },
+    ],
+  },
+  {
+    name: "Gemma",
+    icon: <Gemma.Color />,
+    models: [
+      {
         id: "google/gemma-3-27b-it",
         name: "Gemma 3 27B",
         fast: true,
@@ -141,11 +153,6 @@ export const providers: IProvider[] = [
         name: "Gemma 3 12B",
         fast: true,
         devOnly: true,
-      },
-      {
-        id: "google/gemini-flash-1.5-8b",
-        name: "Gemini 1.5 Flash 8B",
-        fast: true,
       },
       {
         id: "google/gemma-3-4b-it",
@@ -166,12 +173,12 @@ export const providers: IProvider[] = [
       },
       {
         id: "deepseek/deepseek-r1-distill-llama-70b",
-        name: "DeepSeek R1 Distill Llama 70B",
+        name: "DeepSeek R1 Llama 70B",
         reasoning: true,
       },
       {
         id: "deepseek/deepseek-r1-distill-qwen-32b",
-        name: "DeepSeek R1 Distill Qwen 32B",
+        name: "DeepSeek R1 Qwen 32B",
         reasoning: true,
       },
       {
