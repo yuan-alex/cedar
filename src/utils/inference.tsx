@@ -312,3 +312,12 @@ export const modelIds = [
   ...providers.flatMap((provider) => provider.models.map((model) => model.id)),
   ...simpleModels.map((m) => m.id),
 ];
+
+export function findModelById(id: string) {
+  return (
+    simpleModels.find((model) => model.id === id) ||
+    providers
+      .flatMap((provider) => provider.models)
+      .find((model) => model.id === id) || { id: "unknown", name: "Unknown" }
+  );
+}

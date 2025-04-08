@@ -1,6 +1,13 @@
-import { ContextMenu } from "@radix-ui/themes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router";
+
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 export function ThreadButton(props) {
   const { thread } = props;
@@ -23,8 +30,8 @@ export function ThreadButton(props) {
   });
 
   return (
-    <ContextMenu.Root>
-      <ContextMenu.Trigger>
+    <ContextMenu>
+      <ContextMenuTrigger>
         <Link key={thread.id} to={`/chat/${thread.token}`} {...props}>
           <div
             key={thread.id}
@@ -33,16 +40,13 @@ export function ThreadButton(props) {
             {thread.name}
           </div>
         </Link>
-      </ContextMenu.Trigger>
-      <ContextMenu.Content>
-        <ContextMenu.Item
-          shortcut="⌘ ⌫"
-          color="red"
-          onClick={() => mutation.mutate()}
-        >
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem color="red" onClick={() => mutation.mutate()}>
+          <ContextMenuShortcut>⌘ ⌫</ContextMenuShortcut>
           Delete
-        </ContextMenu.Item>
-      </ContextMenu.Content>
-    </ContextMenu.Root>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }

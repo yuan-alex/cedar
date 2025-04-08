@@ -1,5 +1,6 @@
 import { SignInButton } from "@clerk/clerk-react";
-import { Button } from "@radix-ui/themes";
+
+import { Button } from "@/components/ui/button";
 
 export function LandingPage() {
   return (
@@ -16,9 +17,7 @@ export function LandingPage() {
           The enterprise-ready AI platform built for productivity.
         </p>
         <SignInButton>
-          <Button size="4" variant="outline">
-            Sign in
-          </Button>
+          <Button size="lg">Sign in</Button>
         </SignInButton>
       </div>
     </div>

@@ -1,20 +1,26 @@
 import { useStore } from "@nanostores/react";
-import { Badge, Button, Inset, Popover, Tabs } from "@radix-ui/themes";
+import React from "react";
 import { BiBrain } from "react-icons/bi";
-import { MdBolt, MdCode } from "react-icons/md";
+import { MdBolt } from "react-icons/md";
 
+import { Badge } from "@/components/ui/badge";
 import {
-  type IModel,
-  type IProvider,
-  providers,
-  simpleModels,
-} from "@/utils/inference";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { findModelById, providers, simpleModels } from "@/utils/inference";
 import { $model } from "@/utils/stores";
 
 export function ModelSelector() {
   const model = useStore($model);
 
-  function onModelSelect(model) {
+  function onModelSelect(modelId: string) {
+    const model = findModelById(modelId);
     $model.set({
       id: model.id,
       name: model.name,
@@ -22,106 +28,48 @@ export function ModelSelector() {
   }
 
   return (
-    <Popover.Root>
-      <Popover.Trigger>
-        <Button variant="soft">
-          {model.id === "cedar/reasoning" && <BiBrain />}
-          {model.id === "cedar/fast" && <MdBolt />}
-          {model.name}
-        </Button>
-      </Popover.Trigger>
-      <Popover.Content width="350px" maxHeight="400px">
-        <Inset>
-          <Tabs.Root defaultValue="simple" className="dark:bg-black">
-            <Tabs.List>
-              <Tabs.Trigger value="simple">Simple</Tabs.Trigger>
-              <Tabs.Trigger value="advanced">Advanced</Tabs.Trigger>
-            </Tabs.List>
-            <Tabs.Content
-              value="simple"
-              className="grow p-3 flex flex-col overflow-y-auto"
-            >
-              {simpleModels.map((m) => (
-                <ModelItem
-                  key={m.id}
-                  model={m}
-                  isSelected={m.id === model.id}
-                  onModelSelect={onModelSelect}
-                />
-              ))}
-            </Tabs.Content>
-            <Tabs.Content
-              value="advanced"
-              className="grow p-3 flex flex-col overflow-y-auto"
-            >
-              {providers.map((p) => (
-                <span key={p.name}>
-                  {p.models
-                    .filter(
-                      (m) =>
-                        import.meta.env.DEV ||
-                        (!import.meta.env.DEV && m.devOnly),
-                    )
-                    .map((m) => (
-                      <ModelItem
-                        key={m.id}
-                        provider={p}
-                        model={m}
-                        isSelected={m.id === model.id}
-                        onModelSelect={onModelSelect}
-                      />
-                    ))}
-                </span>
-              ))}
-            </Tabs.Content>
-          </Tabs.Root>
-        </Inset>
-      </Popover.Content>
-    </Popover.Root>
-  );
-}
-
-interface IModelItemProps {
-  model: IModel;
-  provider?: IProvider;
-  isSelected: boolean;
-  onModelSelect: (model: IModel) => void;
-}
-
-function ModelItem(props: IModelItemProps) {
-  const { model, provider, isSelected, onModelSelect } = props;
-
-  return (
-    <Popover.Close
-      key={model.id}
-      className={`px-3 py-2 text-sm rounded cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-900 ${isSelected ? "bg-zinc-100 dark:bg-zinc-900" : ""}`}
-      onClick={() => onModelSelect(model)}
-    >
-      <div className="flex items-center space-x-3">
-        {provider?.icon && <div>{provider.icon}</div>}
-        <div>
-          <p className={`${model.devOnly ? "text-green-500" : ""}`}>
+    <Select onValueChange={onModelSelect}>
+      <SelectTrigger className="w-[250px]">
+        <SelectValue placeholder={model.name} />
+      </SelectTrigger>
+      <SelectContent className="max-h-[400px]">
+        {simpleModels.map((model) => (
+          <SelectItem key={model.id} value={model.id}>
             {model.name}
-          </p>
-          <p className="text-xs text-zinc-500">{model.description}</p>
-        </div>
-        <div className="grow" />
-        {model.devOnly && (
-          <Badge color="green">
-            <MdCode />
-          </Badge>
-        )}
-        {model.fast && (
-          <Badge color="orange">
-            <MdBolt />
-          </Badge>
-        )}
-        {model.reasoning && (
-          <Badge color="blue">
-            <BiBrain />
-          </Badge>
-        )}
-      </div>
-    </Popover.Close>
+          </SelectItem>
+        ))}
+        {providers.map((provider) => (
+          <SelectGroup key={provider.name}>
+            <SelectLabel>{provider.name}</SelectLabel>
+            {provider.models.map((model) => (
+              <SelectItem
+                key={model.id}
+                className="flex w-full"
+                value={model.id}
+              >
+                {provider?.icon && <div>{provider.icon}</div>}
+                <div>
+                  <p className={`${model.devOnly ? "text-green-500" : ""}`}>
+                    {model.name}
+                  </p>
+                  <p className="text-xs text-zinc-500">{model.description}</p>
+                </div>
+                <div className="grow" />
+                {model.fast && (
+                  <Badge variant="outline" className="text-xs px-1">
+                    <MdBolt className="text-yellow-500" />
+                  </Badge>
+                )}
+                {model.reasoning && (
+                  <Badge variant="outline" className="text-xs px-1">
+                    <BiBrain className="text-blue-500" />
+                  </Badge>
+                )}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

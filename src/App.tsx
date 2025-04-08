@@ -1,6 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { Theme, ThemePanel } from "@radix-ui/themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -12,7 +11,6 @@ import { Chat } from "@/pages/Chat";
 import { ChatHistory } from "@/pages/ChatHistory";
 import { NewChat } from "@/pages/NewChat";
 
-import "@radix-ui/themes/styles.css";
 import "./index.css";
 
 // Import your Publishable Key
@@ -29,36 +27,33 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <ThemeProvider attribute="class">
-          <Theme accentColor="gray" radius="large">
-            <ThemePanel defaultOpen={false} />
-            <BrowserRouter>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <>
-                      <SignedIn>
-                        <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-zinc-900">
-                          <Sidebar />
-                          <div className="bg-white dark:bg-black grow overflow-y-auto">
-                            <Outlet />
-                          </div>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <SignedIn>
+                      <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-zinc-900">
+                        <Sidebar />
+                        <div className="bg-white dark:bg-black grow overflow-y-auto">
+                          <Outlet />
                         </div>
-                      </SignedIn>
-                      <SignedOut>
-                        <LandingPage />
-                      </SignedOut>
-                    </>
-                  }
-                >
-                  <Route index element={<NewChat />} />
-                  <Route path="/chats" element={<ChatHistory />} />
-                  <Route path="/chat/:threadToken" element={<Chat />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-            <Toaster />
-          </Theme>
+                      </div>
+                    </SignedIn>
+                    <SignedOut>
+                      <LandingPage />
+                    </SignedOut>
+                  </>
+                }
+              >
+                <Route index element={<NewChat />} />
+                <Route path="/chats" element={<ChatHistory />} />
+                <Route path="/chat/:threadToken" element={<Chat />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
         </ThemeProvider>
       </ClerkProvider>
     </QueryClientProvider>

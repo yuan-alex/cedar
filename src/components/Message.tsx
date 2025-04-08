@@ -1,9 +1,9 @@
-import { IconButton } from "@radix-ui/themes";
 import type { Message } from "ai";
 import toast from "react-hot-toast";
 import { FiCopy } from "react-icons/fi";
 
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
+import { Button } from "@/components/ui/button";
 
 interface IMessageProps {
   message: Message;
@@ -58,9 +58,9 @@ export function CedarMessage(props: IMessageProps) {
       </div>
       {message.role === "assistant" ? (
         <div className="flex justify-end gap-4 mb-4">
-          <IconButton variant="ghost" size="2">
+          <Button variant="outline">
             <FiCopy onClick={handleCopyText} />
-          </IconButton>
+          </Button>
         </div>
       ) : null}
     </div>

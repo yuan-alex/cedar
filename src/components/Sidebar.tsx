@@ -1,5 +1,4 @@
 import { UserButton } from "@clerk/clerk-react";
-import { Button } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FiPlus, FiSidebar } from "react-icons/fi";
@@ -7,6 +6,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { Link } from "react-router";
 
 import { ThreadButton } from "@/components/ThreadButton";
+import { Button } from "@/components/ui/button";
 import { createQueryFn } from "@/utils/queries";
 
 export function Sidebar() {
@@ -63,14 +63,14 @@ export function Sidebar() {
           <SidebarToggle />
         </div>
         <Link to="/">
-          <Button variant="soft" style={{ width: "100%" }}>
+          <Button variant="outline" style={{ width: "100%" }}>
             <FiPlusCircle />
             New chat
           </Button>
         </Link>
       </div>
-      <p className="px-3 font-medium">Recent chats</p>
-      <div className="px-2 flex flex-col space-y-1 overflow-y-auto">
+      <p className="px-3 font-medium mb-2">Recent chats</p>
+      <div className="px-2 flex flex-col space-y-1 overflow-y-auto mb-2">
         {threads?.map((thread) => (
           <ThreadButton
             key={thread.token}
@@ -81,7 +81,7 @@ export function Sidebar() {
       </div>
       {threads?.length > 0 && (
         <Link to="/chats" className="mx-3">
-          <Button size="1" variant="soft" style={{ width: "100%" }}>
+          <Button variant="outline" style={{ width: "100%" }}>
             See all threads
           </Button>
         </Link>
