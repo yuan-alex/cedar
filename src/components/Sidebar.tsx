@@ -1,6 +1,7 @@
 import { UserButton } from "@clerk/clerk-react";
+import { useStore } from "@nanostores/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiPlus, FiSidebar } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
 import { Link } from "react-router";
@@ -8,20 +9,30 @@ import { Link } from "react-router";
 import { ThreadButton } from "@/components/ThreadButton";
 import { Button } from "@/components/ui/button";
 import { createQueryFn } from "@/utils/queries";
+import { $sidebarOpen } from "@/utils/stores";
 
 export function Sidebar() {
-  const [open, setOpen] = useState<boolean>(true);
+  const sidebarOpen = useStore($sidebarOpen);
 
   const { data: threads } = useQuery({
     queryKey: ["sidebarThreads"],
     queryFn: createQueryFn("/api/threads?take=10"),
   });
 
+  function toggleSidebar() {
+    if ($sidebarOpen.get() === "true") {
+      $sidebarOpen.set("false");
+    } else {
+      $sidebarOpen.set("true");
+    }
+  }
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     function listener(event: KeyboardEvent) {
       if (event.shiftKey && event.metaKey && event.key === "s") {
         event.preventDefault();
-        setOpen((prev) => !prev);
+        toggleSidebar();
       }
     }
     document.addEventListener("keydown", listener);
@@ -33,13 +44,13 @@ export function Sidebar() {
 
   function SidebarToggle() {
     return (
-      <div className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
+      <div className="cursor-pointer" onClick={toggleSidebar}>
         <FiSidebar />
       </div>
     );
   }
 
-  if (!open) {
+  if (sidebarOpen === "false") {
     return (
       <div className="p-3 flex flex-col items-center space-y-5">
         <img className="w-6 h-6" src="/cedar.svg" />
