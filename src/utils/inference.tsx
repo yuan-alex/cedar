@@ -42,13 +42,13 @@ export const simpleModels: IModel[] = [
   {
     id: "cedar/fast",
     name: "Fast",
-    description: "Fastest and lightest model for basic tasks",
+    description: "Fast and best for basic tasks",
     fast: true,
   },
   {
     id: "cedar/reasoning",
     name: "Reasoning",
-    description: "Smartest and best for math and science",
+    description: "Smartest and best for STEM",
     reasoning: true,
   },
 ];
