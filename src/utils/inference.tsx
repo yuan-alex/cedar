@@ -271,6 +271,21 @@ export const providers: IProvider[] = [
     ],
   },
   {
+    name: "Grok",
+    icon: <Grok />,
+    models: [
+      {
+        id: "x-ai/grok-3-beta",
+        name: "Grok 3 Beta",
+      },
+      {
+        id: "x-ai/grok-3-mini-beta",
+        name: "Grok 3 Mini Beta",
+        fast: true,
+      },
+    ],
+  },
+  {
     name: "Microsoft",
     icon: <Microsoft.Color />,
     models: [
