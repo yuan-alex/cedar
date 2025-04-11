@@ -63,8 +63,8 @@ export const providers: IProvider[] = [
         name: "OpenRouter Auto",
       },
       {
-        id: "openrouter/quasar-alpha",
-        name: "Quasar Alpha",
+        id: "openrouter/optimus-alpha",
+        name: "Optimus Alpha",
         fast: true,
         devOnly: true,
       },
