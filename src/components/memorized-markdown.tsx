@@ -5,6 +5,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 
+import { Button } from "@/components/ui/button";
+
 function parseMarkdownIntoBlocks(markdown: string): string[] {
   const tokens = marked.lexer(markdown);
   return tokens.map((token) => token.raw);
@@ -17,31 +19,35 @@ const MemoizedMarkdownBlock = memo(
         components={{
           pre(props) {
             return (
-              <pre
-                className="not-prose p-2 my-5 rounded text-white"
-                style={{ backgroundColor: "rgb(29, 31, 33)" }}
-              >
-                {props.children}
-              </pre>
+              <pre className="not-prose p-2 my-5 rounded">{props.children}</pre>
             );
           },
           code(props) {
             const { children, className, node, ...rest } = props;
             const match = /language-(\w+)/.exec(className || "");
+            const content = String(children).replace(/\n$/, "");
             return match ? (
-              <div className="text-sm">
-                <nav className="flex">
-                  <p className="font-sans">{match[1]}</p>
+              <div>
+                <nav className="flex items-center font-sans">
+                  <p className="text-sm">{match[1]}</p>
+                  <div className="grow" />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigator?.clipboard?.writeText(content)}
+                  >
+                    Copy
+                  </Button>
                 </nav>
                 <SyntaxHighlighter
                   {...rest}
-                  className="not-prose"
+                  className="not-prose text-sm"
                   PreTag="div"
                   language={match[1]}
                   style={atomDark}
                   showLineNumbers
                 >
-                  {String(children).replace(/\n$/, "")}
+                  {content}
                 </SyntaxHighlighter>
               </div>
             ) : (
