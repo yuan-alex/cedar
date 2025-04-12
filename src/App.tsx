@@ -1,7 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 
@@ -26,7 +25,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-        <ThemeProvider attribute="class">
+        <ThemeProvider defaultTheme="system" storageKey="cedar-ui-theme">
           <BrowserRouter>
             <Routes>
               <Route
