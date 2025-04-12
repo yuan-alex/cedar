@@ -1,6 +1,6 @@
 import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
 
-import { ModelSelector } from "@/components/ModelSelector";
+import { ModelPopover } from "@/components/model-popover";
 
 export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -51,7 +51,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
         {...props}
       />
       <div className="flex gap-2 mt-1">
-        <ModelSelector />
+        <ModelPopover />
       </div>
     </>
   );
