@@ -78,11 +78,17 @@ function ModelItem(props: {
 
   return (
     <CommandItem
-      className="flex w-full"
+      className="flex w-full space-x-1"
       value={model.id}
       onSelect={onModelSelect}
     >
-      {provider?.icon && <div>{provider.icon}</div>}
+      <div>
+        {model.icon ? (
+          <span>{model.icon}</span>
+        ) : provider?.icon ? (
+          <span>{provider.icon}</span>
+        ) : null}
+      </div>
       <div>
         <p className={`${model.devOnly ? "text-blue-500" : ""}`}>
           {model.name}

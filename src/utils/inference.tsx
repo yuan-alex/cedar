@@ -12,6 +12,7 @@ import {
   Perplexity,
   Qwen,
 } from "@lobehub/icons";
+import { BrainIcon, PaletteIcon, SparklesIcon, ZapIcon } from "lucide-react";
 import type { ReactElement } from "react";
 
 export interface IProvider {
@@ -27,27 +28,32 @@ export interface IModel {
   reasoning?: boolean;
   fast?: boolean;
   devOnly?: boolean;
+  icon?: ReactElement;
 }
 
 export const simpleModels: IModel[] = [
   {
     id: "cedar/smart",
+    icon: <SparklesIcon />,
     name: "Smart",
     description: "Best choice for everyday tasks",
   },
   {
     id: "cedar/creative",
+    icon: <PaletteIcon />,
     name: "Creative",
     description: "Best choice for creative writing",
   },
   {
     id: "cedar/fast",
+    icon: <ZapIcon />,
     name: "Fast",
     description: "Fast and best for basic tasks",
     fast: true,
   },
   {
     id: "cedar/reasoning",
+    icon: <BrainIcon />,
     name: "Reasoning",
     description: "Smartest and best for STEM",
     reasoning: true,
