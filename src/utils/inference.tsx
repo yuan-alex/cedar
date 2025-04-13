@@ -107,12 +107,22 @@ export const providers: IProvider[] = [
     icon: <Claude.Color />,
     models: [
       {
+        id: "anthropic/claude-3.7-sonnet:thinking",
+        name: "Claude 3.7 Sonnet Thinking",
+        reasoning: true,
+      },
+      {
         id: "anthropic/claude-3.7-sonnet",
         name: "Claude 3.7 Sonnet",
       },
       {
+        id: "anthropic/claude-3.5-sonnet",
+        name: "Claude 3.5 Sonnet",
+      },
+      {
         id: "anthropic/claude-3.5-haiku",
         name: "Claude 3.5 Haiku",
+        fast: true,
       },
     ],
   },
