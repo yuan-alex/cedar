@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { Brain, Zap } from "lucide-react";
-import React from "react";
+import { Fragment } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -52,7 +52,7 @@ export function ModelCommandMenu(props: {
         <CommandSeparator />
         <CommandGroup>
           {providers.map((provider) => (
-            <React.Fragment key={provider.name}>
+            <Fragment key={provider.name}>
               {provider.models.map((model) => (
                 <ModelItem
                   key={model.id}
@@ -61,7 +61,7 @@ export function ModelCommandMenu(props: {
                   onModelSelect={onModelSelect}
                 />
               ))}
-            </React.Fragment>
+            </Fragment>
           ))}
         </CommandGroup>
       </CommandList>
