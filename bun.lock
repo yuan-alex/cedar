@@ -4,66 +4,69 @@
     "": {
       "name": "chatbot-ui",
       "dependencies": {
-        "@ai-sdk/react": "latest",
-        "@clerk/backend": "latest",
-        "@clerk/clerk-react": "latest",
-        "@hono/clerk-auth": "latest",
-        "@hono/node-server": "latest",
-        "@hono/zod-validator": "latest",
-        "@lobehub/icons": "latest",
-        "@nanostores/persistent": "latest",
-        "@nanostores/react": "latest",
-        "@openrouter/ai-sdk-provider": "latest",
-        "@prisma/client": "latest",
-        "@radix-ui/react-context-menu": "latest",
-        "@radix-ui/react-dialog": "latest",
-        "@radix-ui/react-popover": "latest",
-        "@radix-ui/react-select": "latest",
-        "@radix-ui/react-slot": "latest",
-        "@radix-ui/react-tabs": "latest",
-        "@tailwindcss/typography": "latest",
-        "@tanstack/react-query": "latest",
-        "ai": "latest",
-        "class-variance-authority": "latest",
-        "clsx": "latest",
-        "cmdk": "latest",
-        "date-fns": "latest",
-        "hono": "latest",
-        "lucide-react": "latest",
-        "marked": "latest",
-        "nanostores": "latest",
-        "react": "latest",
-        "react-dom": "latest",
-        "react-hot-toast": "latest",
-        "react-icons": "latest",
-        "react-markdown": "latest",
-        "react-router": "latest",
-        "react-syntax-highlighter": "latest",
-        "remark-gfm": "latest",
-        "tailwind-merge": "latest",
-        "tw-animate-css": "latest",
-        "use-stick-to-bottom": "latest",
-        "zod": "latest",
+        "@ai-sdk/react": "^1.2.8",
+        "@clerk/backend": "^1.27.3",
+        "@clerk/clerk-react": "^5.27.0",
+        "@hono/clerk-auth": "^2.0.0",
+        "@hono/node-server": "^1.14.1",
+        "@hono/zod-validator": "^0.4.3",
+        "@lobehub/icons": "^1.96.0",
+        "@nanostores/persistent": "^1.0.0",
+        "@nanostores/react": "^1.0.0",
+        "@openrouter/ai-sdk-provider": "^0.4.5",
+        "@prisma/client": "^6.6.0",
+        "@radix-ui/react-context-menu": "^2.2.7",
+        "@radix-ui/react-dialog": "^1.1.7",
+        "@radix-ui/react-popover": "^1.1.7",
+        "@radix-ui/react-select": "^2.1.7",
+        "@radix-ui/react-slot": "^1.2.0",
+        "@radix-ui/react-tabs": "^1.1.4",
+        "@tailwindcss/typography": "^0.5.16",
+        "@tanstack/react-query": "^5.73.3",
+        "ai": "^4.3.5",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "cmdk": "^1.1.1",
+        "date-fns": "^4.1.0",
+        "hono": "^4.7.6",
+        "katex": "^0.16.22",
+        "lucide-react": "^0.487.0",
+        "marked": "^15.0.8",
+        "nanostores": "^1.0.1",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "react-hot-toast": "^2.5.2",
+        "react-icons": "^5.5.0",
+        "react-markdown": "^10.1.0",
+        "react-router": "^7.5.0",
+        "react-syntax-highlighter": "^15.6.1",
+        "rehype-katex": "^7.0.1",
+        "remark-gfm": "^4.0.1",
+        "remark-math": "^6.0.0",
+        "tailwind-merge": "^3.2.0",
+        "tw-animate-css": "^1.2.5",
+        "use-stick-to-bottom": "^1.1.0",
+        "zod": "^3.24.2",
       },
       "devDependencies": {
-        "@biomejs/biome": "latest",
-        "@nanostores/logger": "latest",
-        "@tailwindcss/postcss": "latest",
-        "@types/bun": "latest",
-        "@types/node": "latest",
-        "@types/react": "latest",
-        "@types/react-dom": "latest",
-        "@types/react-syntax-highlighter": "latest",
-        "@vitejs/plugin-react-swc": "latest",
-        "concurrently": "latest",
-        "lefthook": "latest",
-        "postcss": "latest",
-        "prisma": "latest",
-        "tailwindcss": "latest",
-        "tsup": "latest",
-        "typescript": "latest",
-        "vite": "latest",
-        "vite-tsconfig-paths": "latest",
+        "@biomejs/biome": "^1.9.4",
+        "@nanostores/logger": "^0.4.0",
+        "@tailwindcss/postcss": "^4.1.3",
+        "@types/bun": "^1.2.9",
+        "@types/node": "^22.14.1",
+        "@types/react": "^19.1.1",
+        "@types/react-dom": "^19.1.2",
+        "@types/react-syntax-highlighter": "^15.5.13",
+        "@vitejs/plugin-react-swc": "^3.8.1",
+        "concurrently": "^9.1.2",
+        "lefthook": "^1.11.9",
+        "postcss": "^8.5.3",
+        "prisma": "^6.6.0",
+        "tailwindcss": "^4.1.3",
+        "tsup": "^8.4.0",
+        "typescript": "^5.8.3",
+        "vite": "^6.2.6",
+        "vite-tsconfig-paths": "^5.1.4",
       },
     },
   },
@@ -744,7 +747,7 @@
 
     "comma-separated-tokens": ["comma-separated-tokens@2.0.3", "", {}, "sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg=="],
 
-    "commander": ["commander@4.1.1", "", {}, "sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA=="],
+    "commander": ["commander@8.3.0", "", {}, "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="],
 
     "compute-scroll-into-view": ["compute-scroll-into-view@3.1.1", "", {}, "sha512-VRhuHOLoKYOy4UbilLbUzbYg93XLjv2PncJC50EuTWPA3gaja1UjBsUP/D/9/juV3vQFr6XBEzn9KCAHdUvOHw=="],
 
@@ -1072,7 +1075,7 @@
 
     "jsondiffpatch": ["jsondiffpatch@0.6.0", "", { "dependencies": { "@types/diff-match-patch": "^1.0.36", "chalk": "^5.3.0", "diff-match-patch": "^1.0.5" }, "bin": { "jsondiffpatch": "bin/jsondiffpatch.js" } }, "sha512-3QItJOXp2AP1uv7waBkao5nCvhEv+QmJAd38Ybq7wNI74Q+BBmnLn4EDKz6yI9xGAIQoUF87qHt+kc1IVxB4zQ=="],
 
-    "katex": ["katex@0.16.21", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A=="],
+    "katex": ["katex@0.16.22", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XCHRdUw4lf3SKBaJe4EvgqIuWwkPSo9XoeO8GjQW94Bp7TWv9hNhzZjZ+OH9yf1UmLygb7DIT5GSFQiyt16zYg=="],
 
     "khroma": ["khroma@2.1.0", "", {}, "sha512-Ls993zuzfayK269Svk9hzpeGUKob/sIgZzyHYdjQoAdQetRKpOLj+k/QQQ/6Qi0Yz65mlROrfd+Ev+1+7dz9Kw=="],
 
@@ -1888,13 +1891,15 @@
 
     "jsondiffpatch/chalk": ["chalk@5.4.1", "", {}, "sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w=="],
 
-    "katex/commander": ["commander@8.3.0", "", {}, "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="],
-
     "leva/@radix-ui/react-portal": ["@radix-ui/react-portal@1.0.2", "", { "dependencies": { "@babel/runtime": "^7.13.10", "@radix-ui/react-primitive": "1.0.2" }, "peerDependencies": { "react": "^16.8 || ^17.0 || ^18.0", "react-dom": "^16.8 || ^17.0 || ^18.0" } }, "sha512-swu32idoCW7KA2VEiUZGBSu9nB6qwGdV6k6HYhUoOo3M1FFpD+VgLzUqtt3mwL1ssz7r2x8MggpLSQach2Xy/Q=="],
 
     "mdast-util-find-and-replace/escape-string-regexp": ["escape-string-regexp@5.0.0", "", {}, "sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw=="],
 
     "mdast-util-mdx-jsx/parse-entities": ["parse-entities@4.0.2", "", { "dependencies": { "@types/unist": "^2.0.0", "character-entities-legacy": "^3.0.0", "character-reference-invalid": "^2.0.0", "decode-named-character-reference": "^1.0.0", "is-alphanumerical": "^2.0.0", "is-decimal": "^2.0.0", "is-hexadecimal": "^2.0.0" } }, "sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw=="],
+
+    "mermaid/katex": ["katex@0.16.21", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A=="],
+
+    "micromark-extension-math/katex": ["katex@0.16.21", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A=="],
 
     "mlly/pkg-types": ["pkg-types@1.3.1", "", { "dependencies": { "confbox": "^0.1.8", "mlly": "^1.7.4", "pathe": "^2.0.1" } }, "sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ=="],
 
@@ -1906,11 +1911,15 @@
 
     "refractor/prismjs": ["prismjs@1.27.0", "", {}, "sha512-t13BGPUlFDR7wRB5kQDG4jjl7XeuH6jbJGt11JHPL96qwsEHNX2+68tFXqc1/k+/jALsbSWJKUOT/hcYAZ5LkA=="],
 
+    "rehype-katex/katex": ["katex@0.16.21", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A=="],
+
     "set-value/is-extendable": ["is-extendable@0.1.1", "", {}, "sha512-5BMULNob1vgFX6EjQw5izWDxrecWK9AM72rugNr0TFldMOi0fj6Jk+zeKIt0xGj4cEfQIJth4w3OKWOJ4f+AFw=="],
 
     "split-string/extend-shallow": ["extend-shallow@3.0.2", "", { "dependencies": { "assign-symbols": "^1.0.0", "is-extendable": "^1.0.1" } }, "sha512-BwY5b5Ql4+qZoefgMj2NUmx+tehVTH/Kf4k1ZEtOHNFcm2wSxMRo992l6X3TIgni2eZVTZ85xMOjF31fwZAj6Q=="],
 
     "stringify-entities/character-entities-legacy": ["character-entities-legacy@3.0.0", "", {}, "sha512-RpPp0asT/6ufRm//AJVwpViZbGM/MkjQFxJccQRHmISF/22NBtsHqAWmL+/pmkPWoIUJdWyeVleTl1wydHATVQ=="],
+
+    "sucrase/commander": ["commander@4.1.1", "", {}, "sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA=="],
 
     "@isaacs/cliui/string-width/emoji-regex": ["emoji-regex@9.2.2", "", {}, "sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg=="],
 
@@ -1993,6 +2002,8 @@
     "@lobehub/fluent-emoji/@lobehub/ui/leva/@radix-ui/react-portal": ["@radix-ui/react-portal@1.0.2", "", { "dependencies": { "@babel/runtime": "^7.13.10", "@radix-ui/react-primitive": "1.0.2" }, "peerDependencies": { "react": "^16.8 || ^17.0 || ^18.0", "react-dom": "^16.8 || ^17.0 || ^18.0" } }, "sha512-swu32idoCW7KA2VEiUZGBSu9nB6qwGdV6k6HYhUoOo3M1FFpD+VgLzUqtt3mwL1ssz7r2x8MggpLSQach2Xy/Q=="],
 
     "@lobehub/fluent-emoji/@lobehub/ui/mermaid/@mermaid-js/parser": ["@mermaid-js/parser@0.3.0", "", { "dependencies": { "langium": "3.0.0" } }, "sha512-HsvL6zgE5sUPGgkIDlmAWR1HTNHz2Iy11BAWPTa4Jjabkpguy4Ze2gzfLrg6pdRuBvFwgUYyxiaNqZwrEEXepA=="],
+
+    "@lobehub/fluent-emoji/@lobehub/ui/mermaid/katex": ["katex@0.16.21", "", { "dependencies": { "commander": "^8.3.0" }, "bin": { "katex": "cli.js" } }, "sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A=="],
 
     "@lobehub/fluent-emoji/@lobehub/ui/mermaid/marked": ["marked@15.0.7", "", { "bin": { "marked": "bin/marked.js" } }, "sha512-dgLIeKGLx5FwziAnsk4ONoGwHwGPJzselimvlVskE9XLN4Orv9u2VA3GWw/lYUqjfA0rUT/6fqKwfZJapP9BEg=="],
 
