@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
-import { CommandMenu } from "@/components/CommandMenu";
-import { Sidebar } from "@/components/Sidebar";
+import { CommandMenu } from "@/components/command-menu";
+import { Sidebar } from "@/components/sidebar";
 
 export function AuthenticatedApp() {
   return (

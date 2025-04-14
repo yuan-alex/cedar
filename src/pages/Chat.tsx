@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
-import { InputBox } from "@/components/InputBox";
-import { CedarMessage } from "@/components/Message";
+import { InputBox } from "@/components/input-box";
+import { CedarMessage } from "@/components/message";
 import { createQueryFn } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
 

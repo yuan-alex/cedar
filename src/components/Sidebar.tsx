@@ -6,7 +6,7 @@ import { FiPlus, FiSidebar } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
 import { Link } from "react-router";
 
-import { ThreadButton } from "@/components/ThreadButton";
+import { ThreadButton } from "@/components/thread-item";
 import { Button } from "@/components/ui/button";
 import { createQueryFn } from "@/utils/queries";
 import { $sidebarOpen } from "@/utils/stores";

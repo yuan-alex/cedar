@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 
-import { InputBox } from "@/components/InputBox";
+import { InputBox } from "@/components/input-box";
 import { $model, $prompt } from "@/utils/stores";
 
 export function NewChat() {

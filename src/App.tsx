@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router";
 
-import { AuthenticatedApp } from "@/components/AuthenticatedApp";
+import { AuthenticatedApp } from "@/components/authenticated-app";
 import { LandingPage } from "@/components/landing-page";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Chat } from "@/pages/Chat";
