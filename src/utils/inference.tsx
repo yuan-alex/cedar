@@ -8,7 +8,6 @@ import {
   Microsoft,
   Mistral,
   OpenAI,
-  OpenRouter,
   Perplexity,
   Qwen,
 } from "@lobehub/icons";
@@ -61,22 +60,6 @@ export const simpleModels: IModel[] = [
 ];
 
 export const providers: IProvider[] = [
-  {
-    name: "OpenRouter",
-    icon: <OpenRouter />,
-    models: [
-      {
-        id: "openrouter/auto",
-        name: "OpenRouter Auto",
-      },
-      {
-        id: "openrouter/optimus-alpha",
-        name: "Optimus Alpha",
-        fast: true,
-        devOnly: true,
-      },
-    ],
-  },
   {
     name: "OpenAI",
     icon: <OpenAI />,
