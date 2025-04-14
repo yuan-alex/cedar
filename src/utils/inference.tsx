@@ -92,13 +92,22 @@ export const providers: IProvider[] = [
         reasoning: true,
       },
       {
-        id: "openai/gpt-4o",
-        name: "GPT-4o",
+        id: "openai/gpt-4.1",
+        name: "GPT-4.1",
       },
       {
-        id: "openai/gpt-4o-mini",
-        name: "GPT-4o mini",
+        id: "openai/gpt-4.1-mini",
+        name: "GPT-4.1 mini",
         fast: true,
+      },
+      {
+        id: "openai/gpt-4.1-nano",
+        name: "GPT-4.1 nano",
+        fast: true,
+      },
+      {
+        id: "openai/gpt-4o",
+        name: "GPT-4o",
       },
     ],
   },
