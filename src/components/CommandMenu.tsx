@@ -83,7 +83,7 @@ export function CommandMenu() {
           </CommandList>
         </>
       ) : tab === "model" ? (
-        <ModelCommandMenu handleClose={handleClose} onlyContent />
+        <ModelCommandMenu handleClose={handleClose} />
       ) : null}
     </CommandDialog>
   );
