@@ -15,7 +15,7 @@ export function Chat() {
 
   const { data: thread } = useQuery({
     queryKey: [`thread_${threadToken}`],
-    queryFn: createQueryFn(`/api/threads/${threadToken}`),
+    queryFn: createQueryFn(`/api/v1/threads/${threadToken}`),
   });
 
   const {
@@ -26,7 +26,7 @@ export function Chat() {
     handleSubmit,
     append,
   } = useChat({
-    api: `/api/threads/${threadToken}`,
+    api: `/api/v1/threads/${threadToken}`,
     id: threadToken,
     experimental_prepareRequestBody: ({ messages }) => {
       return {

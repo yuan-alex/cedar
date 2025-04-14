@@ -17,7 +17,7 @@ export function ThreadButton(props) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => {
-      return fetch(`/api/threads/${thread.token}`, {
+      return fetch(`/api/v1/threads/${thread.token}`, {
         method: "DELETE",
       });
     },

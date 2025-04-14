@@ -16,7 +16,7 @@ export function Sidebar() {
 
   const { data: threads } = useQuery({
     queryKey: ["sidebarThreads"],
-    queryFn: createQueryFn("/api/threads?take=10"),
+    queryFn: createQueryFn("/api/v1/threads?take=10"),
   });
 
   function toggleSidebar() {

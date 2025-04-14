@@ -22,12 +22,12 @@ const app = new Hono();
 
 app.use("/api/*", clerkMiddleware());
 
-app.get("/api/health", async (c) => {
+app.get("/api/v1/health", async (c) => {
   return c.html("good");
 });
 
 // get threads
-app.get("/api/threads", async (c) => {
+app.get("/api/v1/threads", async (c) => {
   const auth = getAuth(c);
 
   if (!auth?.userId) {
@@ -62,7 +62,7 @@ app.get("/api/threads", async (c) => {
 
 // create thread
 app.post(
-  "/api/threads",
+  "/api/v1/threads",
   zValidator(
     "json",
     z.object({
@@ -103,7 +103,7 @@ app.post(
 );
 
 // Get thread
-app.get("/api/threads/:threadToken", async (c) => {
+app.get("/api/v1/threads/:threadToken", async (c) => {
   const thread = await prisma.thread.findUnique({
     where: {
       token: c.req.param("threadToken"),
@@ -131,7 +131,7 @@ app.get("/api/threads/:threadToken", async (c) => {
 
 // Create new message in thread
 app.post(
-  "/api/threads/:threadToken",
+  "/api/v1/threads/:threadToken",
   zValidator(
     "json",
     z.object({
@@ -255,7 +255,7 @@ app.post(
   },
 );
 
-app.delete("/api/threads/:threadToken", async (c) => {
+app.delete("/api/v1/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
   const auth = getAuth(c);
   const userId = auth?.userId;

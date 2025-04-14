@@ -9,7 +9,7 @@ export function NewChat() {
   function handleCreateThread(event) {
     event.preventDefault();
 
-    fetch("/api/threads", {
+    fetch("/api/v1/threads", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

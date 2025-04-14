@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/card";
 
 export function ChatHistory() {
-  const fetchAllThreads = () => fetch("/api/threads").then((res) => res.json());
+  const fetchAllThreads = () =>
+    fetch("/api/v1/threads").then((res) => res.json());
 
   const { data: threads } = useQuery({
     queryKey: ["allThreads"],
