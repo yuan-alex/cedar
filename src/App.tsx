@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Chat } from "@/pages/Chat";
 import { ChatHistory } from "@/pages/ChatHistory";
 import { NewChat } from "@/pages/NewChat";
+import { Testing } from "@/pages/Testing";
 
 import "./index.css";
 
@@ -45,6 +46,7 @@ export function App() {
                 <Route index element={<NewChat />} />
                 <Route path="/chats" element={<ChatHistory />} />
                 <Route path="/chat/:threadToken" element={<Chat />} />
+                <Route path="/testing" element={<Testing />} />
               </Route>
             </Routes>
           </BrowserRouter>
