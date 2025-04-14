@@ -37,7 +37,7 @@ export function ModelCommandMenu(props: {
 
   return (
     <Command defaultValue={model.id}>
-      <CommandInput placeholder="Search model..." />
+      <CommandInput placeholder="Search model..." autoFocus />
       <CommandList>
         <CommandEmpty>No model found.</CommandEmpty>
         <CommandGroup>

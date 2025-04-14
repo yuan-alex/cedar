@@ -2,10 +2,11 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 
-import { Sidebar } from "@/components/Sidebar";
+import { AuthenticatedApp } from "@/components/AuthenticatedApp";
 import { LandingPage } from "@/components/landing-page";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Chat } from "@/pages/Chat";
 import { ChatHistory } from "@/pages/ChatHistory";
 import { NewChat } from "@/pages/NewChat";
@@ -33,12 +34,7 @@ export function App() {
                 element={
                   <>
                     <SignedIn>
-                      <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-zinc-900">
-                        <Sidebar />
-                        <div className="bg-white dark:bg-black grow overflow-y-auto">
-                          <Outlet />
-                        </div>
-                      </div>
+                      <AuthenticatedApp />
                     </SignedIn>
                     <SignedOut>
                       <LandingPage />

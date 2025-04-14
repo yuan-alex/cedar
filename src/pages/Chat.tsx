@@ -1,7 +1,7 @@
 import { useChat } from "@ai-sdk/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/InputBox";
@@ -10,7 +10,6 @@ import { createQueryFn } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
 
 export function Chat() {
-  const navigate = useNavigate();
   const { threadToken } = useParams();
   const queryClient = useQueryClient();
 
@@ -61,19 +60,6 @@ export function Chat() {
       }
     }
   }, [thread, threadToken]);
-
-  useEffect(() => {
-    function listener(event: KeyboardEvent) {
-      if (event.key === "Ctrl+k" || (event.metaKey && event.key === "k")) {
-        navigate("/");
-      }
-    }
-    document.addEventListener("keydown", listener);
-
-    return () => {
-      document.removeEventListener("keydown", listener);
-    };
-  }, [navigate]);
 
   return (
     <div className="flex divide-x h-full">
