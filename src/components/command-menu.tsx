@@ -73,6 +73,7 @@ export function CommandMenu() {
               <CommandItem onSelect={handleNewThread}>
                 <MessageCircle />
                 <span>New chat</span>
+                <CommandShortcut>⌘⇧O</CommandShortcut>
               </CommandItem>
               <CommandItem onSelect={() => setTab("model")}>
                 <Sparkle />
