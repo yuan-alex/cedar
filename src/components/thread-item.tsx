@@ -1,21 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MoreHorizontalIcon } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router";
 
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuShortcut,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "./ui/sidebar";
 
-export function ThreadButton(props) {
+export function ThreadSidebarMenuItem(props) {
   const { thread } = props;
 
   const { threadToken } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const deleteThreadMutation = useMutation({
     mutationFn: () => {
       return fetch(`/api/v1/threads/${thread.token}`, {
         method: "DELETE",
@@ -30,23 +35,27 @@ export function ThreadButton(props) {
   });
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <Link key={thread.id} to={`/chat/${thread.token}`} {...props}>
-          <div
-            key={thread.id}
-            className="px-3 py-1 text-sm rounded-sm truncate hover:bg-zinc-200 dark:hover:bg-zinc-800"
-          >
-            {thread.name}
-          </div>
+    <SidebarMenuItem key={thread.token}>
+      <SidebarMenuButton asChild>
+        <Link to={`/chat/${thread.token}`}>
+          <span>{thread.name}</span>
         </Link>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem color="red" onClick={() => mutation.mutate()}>
-          <ContextMenuShortcut>⌘ ⌫</ContextMenuShortcut>
-          Delete
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+      </SidebarMenuButton>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction>
+            <MoreHorizontalIcon />
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" align="start">
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => deleteThreadMutation.mutate()}
+          >
+            <span>Delete thread</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </SidebarMenuItem>
   );
 }

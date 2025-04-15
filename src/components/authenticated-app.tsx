@@ -1,16 +1,18 @@
 import { Outlet } from "react-router";
 
 import { CommandMenu } from "@/components/command-menu";
-import { Sidebar } from "@/components/sidebar";
+import { CedarSidebar } from "@/components/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export function AuthenticatedApp() {
   return (
-    <div className="flex divide-x divide-zinc-200 dark:divide-zinc-800 w-screen h-screen bg-zinc-100 dark:bg-zinc-900">
+    <SidebarProvider className="h-screen w-screen">
       <CommandMenu />
-      <Sidebar />
-      <div className="bg-white dark:bg-black grow overflow-y-auto">
+      <CedarSidebar />
+      <main className="w-full">
+        <SidebarTrigger className="fixed m-2" />
         <Outlet />
-      </div>
-    </div>
+      </main>
+    </SidebarProvider>
   );
 }

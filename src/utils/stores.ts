@@ -12,10 +12,8 @@ export const $model = persistentMap<ModelValue>("model", {
 });
 export const $prompt = persistentAtom<string>("prompt");
 
-export const $sidebarOpen = persistentAtom<string>("sidebarOpen", "true");
-
 if (process.env.NODE_ENV === "development") {
-  const destroy = logger({
+  logger({
     Model: $model,
   });
 }

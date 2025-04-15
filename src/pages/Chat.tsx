@@ -62,24 +62,22 @@ export function Chat() {
   }, [thread, threadToken]);
 
   return (
-    <div className="flex divide-x h-full">
-      <div className="grow flex flex-col overflow-y-auto">
-        <StickToBottom
-          className="grow overflow-auto w-full"
-          resize="smooth"
-          initial="instant"
-        >
-          <StickToBottom.Content className="flex flex-col max-w-4xl mx-auto space-y-5 p-5">
-            {messages.map((msg, i) => (
-              <CedarMessage key={msg.id} message={msg} />
-            ))}
-          </StickToBottom.Content>
-        </StickToBottom>
-        <div className="basis-0 w-full max-w-4xl mx-auto mb-2">
-          <form onSubmit={handleSubmit}>
-            <InputBox rows={1} value={input} onChange={handleInputChange} />
-          </form>
-        </div>
+    <div className="flex flex-col h-full w-full">
+      <StickToBottom
+        className="grow overflow-auto"
+        resize="smooth"
+        initial="instant"
+      >
+        <StickToBottom.Content className="flex flex-col max-w-4xl mx-auto space-y-5 p-5">
+          {messages.map((msg, i) => (
+            <CedarMessage key={msg.id} message={msg} />
+          ))}
+        </StickToBottom.Content>
+      </StickToBottom>
+      <div className="basis-0 w-full max-w-4xl mx-auto mb-2">
+        <form onSubmit={handleSubmit}>
+          <InputBox rows={1} value={input} onChange={handleInputChange} />
+        </form>
       </div>
     </div>
   );
