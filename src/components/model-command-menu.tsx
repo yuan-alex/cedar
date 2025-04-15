@@ -40,7 +40,7 @@ export function ModelCommandMenu(props: {
       <CommandInput placeholder="Search model..." autoFocus />
       <CommandList>
         <CommandEmpty>No model found.</CommandEmpty>
-        <CommandGroup>
+        <CommandGroup heading="Recommended">
           {simpleModels.map((model) => (
             <ModelItem
               key={model.id}
@@ -50,7 +50,7 @@ export function ModelCommandMenu(props: {
           ))}
         </CommandGroup>
         <CommandSeparator />
-        <CommandGroup>
+        <CommandGroup heading="All models">
           {providers.map((provider) => (
             <Fragment key={provider.name}>
               {provider.models.map((model) => (
@@ -78,7 +78,7 @@ function ModelItem(props: {
 
   return (
     <CommandItem
-      className="flex w-full space-x-1"
+      className="flex w-full space-x-1 h-9"
       value={model.id}
       onSelect={onModelSelect}
     >
@@ -93,7 +93,6 @@ function ModelItem(props: {
         <p className={`${model.devOnly ? "text-blue-500" : ""}`}>
           {model.name}
         </p>
-        <p className="text-xs text-zinc-500">{model.description}</p>
       </div>
       <div className="grow" />
       {model.fast && (
