@@ -74,7 +74,7 @@ export function Chat() {
           ))}
         </StickToBottom.Content>
       </StickToBottom>
-      <div className="basis-0 w-full max-w-4xl mx-auto mb-2">
+      <div className="basis-0 p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
         <form onSubmit={handleSubmit}>
           <InputBox rows={1} value={input} onChange={handleInputChange} />
         </form>

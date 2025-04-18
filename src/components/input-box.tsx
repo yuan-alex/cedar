@@ -43,7 +43,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
     <>
       <textarea
         ref={textareaRef}
-        className="w-full px-5 py-4 rounded-xl resize-none min-h-10 shadow border dark:border-zinc-800 dark:bg-zinc-900 focus:outline-hidden"
+        className="w-full px-5 py-4 rounded-xl resize-none min-h-10 border bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 focus:outline-hidden"
         placeholder="Send assistant a message…"
         onChange={handleChange}
         onKeyDown={handleKeyDown}

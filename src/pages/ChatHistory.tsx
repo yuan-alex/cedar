@@ -19,7 +19,7 @@ export function ChatHistory() {
   });
 
   return (
-    <div className="p-4 w-2xl mx-auto my-10">
+    <div className="w-2xl mx-auto my-10">
       <p className="text-2xl mb-5">Recent chats</p>
       <div className="flex flex-col space-y-2">
         {threads?.map((thread) => (

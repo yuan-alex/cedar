@@ -47,6 +47,7 @@ export function App() {
                 <Route path="/chats" element={<ChatHistory />} />
                 <Route path="/chat/:threadToken" element={<Chat />} />
                 <Route path="/testing" element={<Testing />} />
+                <Route path="*" element={<p>404</p>} />
               </Route>
             </Routes>
           </BrowserRouter>

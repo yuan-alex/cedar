@@ -28,9 +28,9 @@ export function CedarMessage(props: IMessageProps) {
     <div>
       <div className="prose dark:prose-invert max-w-none w-full flex items-start space-x-4">
         <div
-          className={`overflow-x-auto ${message.role === "assistant" ? "w-full" : "px-5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl ml-auto"}`}
+          className={`overflow-x-auto ${message.role === "assistant" ? "w-full" : "px-5 border rounded-2xl ml-auto"}`}
         >
-          {message.parts?.map((part, i) => {
+          {message.parts?.map((part) => {
             switch (part.type) {
               case "text":
                 return (
@@ -58,7 +58,7 @@ export function CedarMessage(props: IMessageProps) {
       </div>
       {message.role === "assistant" ? (
         <div className="flex justify-end gap-4 mb-4">
-          <Button variant="outline">
+          <Button variant="ghost">
             <FiCopy onClick={handleCopyText} />
           </Button>
         </div>

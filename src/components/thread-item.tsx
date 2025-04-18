@@ -36,7 +36,7 @@ export function ThreadSidebarMenuItem(props) {
 
   return (
     <SidebarMenuItem key={thread.token}>
-      <SidebarMenuButton asChild>
+      <SidebarMenuButton asChild isActive={threadToken === thread.token}>
         <Link to={`/chat/${thread.token}`}>
           <span>{thread.name}</span>
         </Link>
