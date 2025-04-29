@@ -69,7 +69,7 @@ export function Chat() {
         initial="instant"
       >
         <StickToBottom.Content className="flex flex-col max-w-4xl mx-auto space-y-5 p-5">
-          {messages.map((msg, i) => (
+          {messages.map((msg) => (
             <CedarMessage key={msg.id} message={msg} />
           ))}
         </StickToBottom.Content>

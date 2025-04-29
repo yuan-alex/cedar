@@ -1,6 +1,6 @@
 import type { Message } from "ai";
-import toast from "react-hot-toast";
 import { FiCopy } from "react-icons/fi";
+import { toast } from "sonner";
 
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
 import { Button } from "@/components/ui/button";
