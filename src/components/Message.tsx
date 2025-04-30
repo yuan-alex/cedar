@@ -62,8 +62,12 @@ export function CedarMessage(props: IMessageProps) {
       </div>
       {message.role === "assistant" ? (
         <div className="flex justify-end gap-4 mb-4">
-          <Button variant="ghost">
-            <FiCopy onClick={handleCopyText} />
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={handleCopyText}
+          >
+            <FiCopy />
           </Button>
         </div>
       ) : null}
