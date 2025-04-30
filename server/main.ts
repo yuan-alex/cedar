@@ -145,6 +145,10 @@ app.post(
     const auth = getAuth(c);
     const userId = auth?.userId;
 
+    if (!userId) {
+      return c.notFound();
+    }
+
     const threadToken = c.req.param("threadToken");
     const userInput = await c.req.json();
 
