@@ -14,8 +14,8 @@ import { z } from "zod";
 
 import {
   convertMessagesToOpenAiFormat,
-  generateTitle,
   createSdkModel,
+  generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
 

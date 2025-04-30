@@ -28,5 +28,5 @@
       "@/server/*": ["./server/*"]
     }
   },
-  "include": ["src", "utils/inference.tsx", "utils/prisma.ts", "server/threads"]
+  "include": ["src", "server"]
 }
