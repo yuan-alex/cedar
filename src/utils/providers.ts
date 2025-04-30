@@ -1,24 +1,6 @@
-import {
-  Claude,
-  DeepSeek,
-  Gemini,
-  Gemma,
-  Grok,
-  LmStudio,
-  Meta,
-  Microsoft,
-  Mistral,
-  OpenAI,
-  Perplexity,
-  Qwen,
-} from "@lobehub/icons";
-import { BrainIcon, PaletteIcon, SparklesIcon, ZapIcon } from "lucide-react";
-import type { ReactElement } from "react";
-
 export interface IProvider {
   name: string;
   models: IModel[];
-  icon?: ReactElement;
 }
 
 export interface IModel {
@@ -28,32 +10,27 @@ export interface IModel {
   reasoning?: boolean;
   fast?: boolean;
   devOnly?: boolean;
-  icon?: ReactElement;
 }
 
 export const simpleModels: IModel[] = [
   {
     id: "cedar/smart",
-    icon: <SparklesIcon />,
     name: "Smart",
     description: "Best choice for everyday tasks",
   },
   {
     id: "cedar/creative",
-    icon: <PaletteIcon />,
     name: "Creative",
     description: "Best choice for creative writing",
   },
   {
     id: "cedar/fast",
-    icon: <ZapIcon />,
     name: "Fast",
     description: "Fast and best for basic tasks",
     fast: true,
   },
   {
     id: "cedar/reasoning",
-    icon: <BrainIcon />,
     name: "Reasoning",
     description: "Smartest and best for STEM",
     reasoning: true,
@@ -63,7 +40,6 @@ export const simpleModels: IModel[] = [
 export const providers: IProvider[] = [
   {
     name: "OpenAI",
-    icon: <OpenAI />,
     models: [
       {
         id: "openai/o4-mini",
@@ -97,7 +73,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Anthropic",
-    icon: <Claude.Color />,
     models: [
       {
         id: "anthropic/claude-3.7-sonnet:thinking",
@@ -121,7 +96,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Google",
-    icon: <Gemini.Color />,
     models: [
       {
         id: "google/gemini-2.5-pro-preview-03-25",
@@ -162,7 +136,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Gemma",
-    icon: <Gemma.Color />,
     models: [
       {
         id: "google/gemma-3-27b-it",
@@ -185,7 +158,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "DeepSeek",
-    icon: <DeepSeek.Color />,
     models: [
       {
         id: "deepseek/deepseek-r1",
@@ -210,7 +182,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Meta",
-    icon: <Meta.Color />,
     models: [
       {
         id: "meta-llama/llama-4-maverick",
@@ -234,7 +205,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Qwen by Alibaba",
-    icon: <Qwen.Color />,
     models: [
       {
         id: "qwen/qwen3-235b-a22b",
@@ -282,7 +252,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Mistral AI",
-    icon: <Mistral.Color />,
     models: [
       {
         id: "mistralai/mistral-small-3.1-24b-instruct-2503",
@@ -316,7 +285,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Grok",
-    icon: <Grok />,
     models: [
       {
         id: "x-ai/grok-3-beta",
@@ -331,7 +299,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Microsoft",
-    icon: <Microsoft.Color />,
     models: [
       {
         id: "microsoft/phi-4-multimodal-instruct",
@@ -345,7 +312,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "Perplexity",
-    icon: <Perplexity.Color />,
     models: [
       {
         id: "perplexity/r1-1776",
@@ -385,7 +351,6 @@ export const providers: IProvider[] = [
   },
   {
     name: "LM Studio",
-    icon: <LmStudio />,
     models: [
       {
         id: "cedar/lmstudio/qwen3-0.6b",
@@ -399,9 +364,12 @@ export const providers: IProvider[] = [
 ];
 
 export const models = [
-  ...simpleModels.map(({ icon, ...rest }) => rest),
+  ...simpleModels,
   ...providers.flatMap((provider) =>
-    provider.models.map(({ icon, ...rest }) => rest),
+    provider.models.map((model) => ({
+      ...model,
+      provider: provider.name,
+    })),
   ),
 ];
 

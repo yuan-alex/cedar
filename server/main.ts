@@ -16,7 +16,7 @@ import {
   generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
-import { modelIds, models } from "@/utils/inference";
+import { modelIds, models } from "@/utils/providers";
 
 export const app = new Hono().basePath("/api");
 

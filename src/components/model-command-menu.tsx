@@ -12,18 +12,16 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { getModelIconById } from "@/utils/provider-icons";
 import {
   type IModel,
-  type IProvider,
   findModelById,
   providers,
   simpleModels,
-} from "@/utils/inference";
+} from "@/utils/providers";
 import { $model } from "@/utils/stores";
 
-export function ModelCommandMenu(props: {
-  handleClose: () => void;
-}) {
+export function ModelCommandMenu(props: { handleClose: () => void }) {
   const model = useStore($model);
 
   function onModelSelect(modelId: string) {
@@ -57,7 +55,6 @@ export function ModelCommandMenu(props: {
                 <ModelItem
                   key={model.id}
                   model={model}
-                  provider={provider}
                   onModelSelect={onModelSelect}
                 />
               ))}
@@ -71,10 +68,9 @@ export function ModelCommandMenu(props: {
 
 function ModelItem(props: {
   model: IModel;
-  provider?: IProvider;
   onModelSelect?: (modelId: string) => void;
 }) {
-  const { model, provider, onModelSelect } = props;
+  const { model, onModelSelect } = props;
 
   return (
     <CommandItem
@@ -82,13 +78,7 @@ function ModelItem(props: {
       value={model.id}
       onSelect={onModelSelect}
     >
-      <div>
-        {model.icon ? (
-          <span>{model.icon}</span>
-        ) : provider?.icon ? (
-          <span>{provider.icon}</span>
-        ) : null}
-      </div>
+      <div>{getModelIconById(model.id)}</div>
       <div>
         <p className={`${model.devOnly ? "text-blue-500" : ""}`}>
           {model.name}
