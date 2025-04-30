@@ -258,6 +258,26 @@ export const providers: IProvider[] = [
         reasoning: true,
         fast: true,
       },
+      {
+        id: "qwen/qwen3-8b",
+        name: "Qwen3 8B",
+        reasoning: true,
+        fast: true,
+      },
+      {
+        id: "qwen/qwen3-4b:free",
+        name: "Qwen3 4B",
+        reasoning: true,
+        fast: true,
+        devOnly: true,
+      },
+      {
+        id: "qwen/qwen3-1.7b:free",
+        name: "Qwen3 1.7B",
+        reasoning: true,
+        fast: true,
+        devOnly: true,
+      },
     ],
   },
   {
