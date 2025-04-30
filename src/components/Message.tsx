@@ -1,5 +1,5 @@
 import type { Message } from "ai";
-import { FiCopy } from "react-icons/fi";
+import { CopyIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
@@ -47,7 +47,9 @@ export function CedarMessage(props: IMessageProps) {
               case "reasoning":
                 return (
                   <details key={i}>
-                    <summary>Show reasoning</summary>
+                    <summary className="p-3 w-full cursor-pointer border rounded-xl">
+                      Show reasoning
+                    </summary>
                     <div className="p-8 text-sm prose dark:prose-invert max-w-none border dark:border-zinc-700 shadow rounded-xl my-10 h-92 overflow-auto">
                       <MemoizedMarkdown
                         id={`${message.id}:reasoning`}
@@ -67,7 +69,7 @@ export function CedarMessage(props: IMessageProps) {
             variant="outline"
             onClick={handleCopyText}
           >
-            <FiCopy />
+            <CopyIcon />
           </Button>
         </div>
       ) : null}

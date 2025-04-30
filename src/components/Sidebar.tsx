@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
-import { FiPlusCircle } from "react-icons/fi";
+import { PlusCircleIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import { ThreadSidebarMenuItem } from "@/components/thread-item";
@@ -33,7 +33,7 @@ export function CedarSidebar() {
         </div>
         <Link to="/">
           <Button variant="outline" style={{ width: "100%" }}>
-            <FiPlusCircle />
+            <PlusCircleIcon />
             New chat
           </Button>
         </Link>
