@@ -28,21 +28,25 @@ export function CedarMessage(props: IMessageProps) {
     <div>
       <div className="prose dark:prose-invert max-w-none w-full flex items-start space-x-4">
         <div
-          className={`overflow-x-auto ${message.role === "assistant" ? "w-full" : "px-5 border rounded-2xl ml-auto"}`}
+          className={`overflow-x-auto ${
+            message.role === "assistant"
+              ? "w-full"
+              : "px-5 border rounded-2xl ml-auto"
+          }`}
         >
-          {message.parts?.map((part) => {
+          {message.parts?.map((part, i) => {
             switch (part.type) {
               case "text":
                 return (
                   <MemoizedMarkdown
+                    key={i}
                     id={message.id}
-                    key={message.id}
                     content={part.text}
                   />
                 );
               case "reasoning":
                 return (
-                  <details key={message.id}>
+                  <details key={i}>
                     <summary>Show reasoning</summary>
                     <div className="p-8 text-sm prose dark:prose-invert max-w-none border dark:border-zinc-700 shadow rounded-xl my-10 h-92 overflow-auto">
                       <MemoizedMarkdown
