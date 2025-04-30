@@ -47,7 +47,7 @@ export function convertMessagesToOpenAiFormat(messages): CoreMessage[] {
 }
 
 const THREAD_SYSTEM_PROMPT =
-  "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use 2-6 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.";
+  "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use ~3 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.";
 
 export function generateTitle(prompt: string) {
   return generateText({
