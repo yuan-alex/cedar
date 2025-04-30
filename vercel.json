@@ -1,4 +1,8 @@
 {
+  "buildCommand": "prisma generate --no-engine --no-hints && vite build",
+  "outputDirectory": "./dist/client",
+  "installCommand": "bun install",
+  "devCommand": "bun run dev",
   "rewrites": [
     {
       "source": "/api/(.*)",
