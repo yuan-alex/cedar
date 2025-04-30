@@ -1,2 +1,2 @@
 web: bun run ./server/main.ts 
-release: bun run prisma migrate deploy
+release: bunx prisma migrate deploy
