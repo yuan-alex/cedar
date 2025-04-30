@@ -7,10 +7,10 @@ import { AuthenticatedApp } from "@/components/authenticated-app";
 import { LandingPage } from "@/components/landing-page";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Chat } from "@/pages/Chat";
-import { ChatHistory } from "@/pages/ChatHistory";
-import { NewChat } from "@/pages/NewChat";
-import { Testing } from "@/pages/Testing";
+import { Chat } from "@/pages/chat";
+import { ChatHistory } from "@/pages/chat-history";
+import { NewChat } from "@/pages/new-chat";
+import { Testing } from "@/pages/testing";
 
 import "./index.css";
 
