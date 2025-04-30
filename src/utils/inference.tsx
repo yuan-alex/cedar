@@ -236,23 +236,26 @@ export const providers: IProvider[] = [
     icon: <Qwen.Color />,
     models: [
       {
-        id: "qwen/qwq-32b",
-        name: "QwQ 32b",
+        id: "qwen/qwen3-235b-a22b",
+        name: "Qwen3 235B A22B",
         reasoning: true,
       },
       {
-        id: "qwen/qwen-2.5-72b-instruct",
-        name: "Qwen 2.5 72B",
-      },
-      {
-        id: "qwen/qwen-2.5-coder-32b-instruct",
-        name: "Qwen 2.5 Coder 32B",
-      },
-      {
-        id: "qwen/qwen-2.5-7b-instruct",
-        name: "Qwen 2.5 7B",
+        id: "qwen/qwen3-30b-a3b",
+        name: "Qwen3 30B A3B",
+        reasoning: true,
         fast: true,
-        devOnly: true,
+      },
+      {
+        id: "qwen/qwen3-32b",
+        name: "Qwen3 32B",
+        reasoning: true,
+      },
+      {
+        id: "qwen/qwen3-14b",
+        name: "Qwen3 14B",
+        reasoning: true,
+        fast: true,
       },
     ],
   },
