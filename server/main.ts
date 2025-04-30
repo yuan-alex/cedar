@@ -18,6 +18,7 @@ import {
   generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
+import { modelIds } from "@/utils/inference";
 
 const app = new Hono();
 
@@ -172,7 +173,7 @@ app.post(
       },
     });
 
-    if (!thread || thread.userId !== userId) {
+    if (!thread || thread.userId !== userId || !modelIds.includes(model)) {
       return c.notFound();
     }
 
