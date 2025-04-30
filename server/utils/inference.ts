@@ -1,3 +1,4 @@
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { type CoreMessage, generateText } from "ai";
 import { format } from "date-fns";
@@ -9,6 +10,19 @@ export const openrouter = createOpenRouter({
     sort: "throughput",
   },
 });
+
+export function createSdkModel(model: string) {
+  if (process.env.NODE_ENV === "development") {
+    if (model.startsWith("cedar/lmstudio/")) {
+      const lmstudio = createOpenAICompatible({
+        name: "lmstudio",
+        baseURL: "http://localhost:1234/v1",
+      });
+      return lmstudio(model.slice("cedar/lmstudio/".length));
+    }
+  }
+  return openrouter(model);
+}
 
 const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logical, and well-reasoned responses.
 

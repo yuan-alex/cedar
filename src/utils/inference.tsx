@@ -4,6 +4,7 @@ import {
   Gemini,
   Gemma,
   Grok,
+  LmStudio,
   Meta,
   Microsoft,
   Mistral,
@@ -348,6 +349,19 @@ export const providers: IProvider[] = [
       {
         id: "perplexity/sonar",
         name: "Sonar",
+      },
+    ],
+  },
+  {
+    name: "LM Studio",
+    icon: <LmStudio />,
+    models: [
+      {
+        id: "cedar/lmstudio/qwen3-0.6b",
+        name: "Qwen3 0.6B",
+        devOnly: true,
+        fast: true,
+        reasoning: true,
       },
     ],
   },

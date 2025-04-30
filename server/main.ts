@@ -2,6 +2,7 @@ import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import {
   defaultSettingsMiddleware,
+  extractReasoningMiddleware,
   smoothStream,
   streamText,
   wrapLanguageModel,
@@ -14,9 +15,9 @@ import { z } from "zod";
 import {
   convertMessagesToOpenAiFormat,
   generateTitle,
-  openrouter,
-} from "./utils/inference";
-import prisma from "./utils/prisma";
+  createSdkModel,
+} from "@/server/utils/inference";
+import prisma from "@/server/utils/prisma";
 
 const app = new Hono();
 
@@ -206,6 +207,11 @@ app.post(
       },
     });
 
+    const extractReasoning = extractReasoningMiddleware({
+      tagName: "think",
+      separator: "\n",
+    });
+
     const settingsMiddleware = defaultSettingsMiddleware({
       settings: {
         temperature: 0.3,
@@ -214,8 +220,8 @@ app.post(
     });
 
     const wrappedLanguageModel = wrapLanguageModel({
-      model: openrouter(model),
-      middleware: [settingsMiddleware],
+      model: createSdkModel(model),
+      middleware: [settingsMiddleware, extractReasoning],
     });
 
     const result = streamText({
