@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
-    "dev:server": "bun run --watch ./server/main.ts",
+    "dev:server": "bun run --watch ./server/bun.ts",
     "dev:client": "vite --port 3000",
     "build": "prisma generate --no-engine --no-hints && vite build",
     "preview": "vite preview",

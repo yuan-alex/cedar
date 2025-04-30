@@ -7,9 +7,7 @@ import {
   streamText,
   wrapLanguageModel,
 } from "ai";
-import { serve } from "bun";
 import { Hono } from "hono";
-import { serveStatic } from "hono/bun";
 import { z } from "zod";
 
 import {
@@ -18,18 +16,18 @@ import {
   generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
-import { modelIds, models, providers } from "@/utils/inference";
+import { modelIds, models } from "@/utils/inference";
 
-const app = new Hono();
+export const app = new Hono().basePath("/api");
 
-app.use("/api/*", clerkMiddleware());
+app.use("*", clerkMiddleware());
 
-app.get("/api/v1/health", async (c) => {
+app.get("/v1/health", async (c) => {
   return c.html("good");
 });
 
 // get threads
-app.get("/api/v1/threads", async (c) => {
+app.get("/v1/threads", async (c) => {
   const auth = getAuth(c);
 
   if (!auth?.userId) {
@@ -64,7 +62,7 @@ app.get("/api/v1/threads", async (c) => {
 
 // create thread
 app.post(
-  "/api/v1/threads",
+  "/v1/threads",
   zValidator(
     "json",
     z.object({
@@ -105,7 +103,7 @@ app.post(
 );
 
 // Get thread
-app.get("/api/v1/threads/:threadToken", async (c) => {
+app.get("/v1/threads/:threadToken", async (c) => {
   const thread = await prisma.thread.findUnique({
     where: {
       token: c.req.param("threadToken"),
@@ -133,7 +131,7 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
 
 // Create new message in thread
 app.post(
-  "/api/v1/threads/:threadToken",
+  "/v1/threads/:threadToken",
   zValidator(
     "json",
     z.object({
@@ -266,7 +264,7 @@ app.post(
   },
 );
 
-app.delete("/api/v1/threads/:threadToken", async (c) => {
+app.delete("/v1/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
   const auth = getAuth(c);
   const userId = auth?.userId;
@@ -298,17 +296,6 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
   return new Response("ok");
 });
 
-app.get("/api/v1/models", async (c) => {
+app.get("/v1/models", async (c) => {
   return c.json(models);
 });
-
-if (process.env.NODE_ENV === "production") {
-  app.get("/*", serveStatic({ root: "./dist/client" }));
-}
-
-const server = serve({
-  fetch: app.fetch,
-  port: Number.parseInt(process.env.PORT || "3001"),
-});
-
-console.log(`Listening on ${server.url}`);
