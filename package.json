@@ -6,12 +6,10 @@
     "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
     "dev:server": "bun run --watch ./server/main.ts",
     "dev:client": "vite --port 3000",
-    "build": "prisma generate --no-engine && vite build",
-    "start": "bun run ./server/main.ts",
+    "build": "prisma generate --no-engine --no-hints && vite build",
     "preview": "vite preview",
     "format": "biome format . --write",
-    "db:studio": "prisma studio --browser none",
-    "db:deploy": "prisma migrate deploy"
+    "db:studio": "prisma studio --browser none"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^0.2.13",
