@@ -18,7 +18,7 @@ import {
   generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
-import { modelIds } from "@/utils/inference";
+import { modelIds, models, providers } from "@/utils/inference";
 
 const app = new Hono();
 
@@ -292,6 +292,10 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
   await prisma.$transaction([deleteMessages, deleteThread]);
 
   return new Response("ok");
+});
+
+app.get("/api/v1/models", async (c) => {
+  return c.json(models);
 });
 
 if (process.env.NODE_ENV === "production") {

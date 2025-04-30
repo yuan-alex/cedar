@@ -367,10 +367,14 @@ export const providers: IProvider[] = [
   },
 ];
 
-export const modelIds = [
-  ...providers.flatMap((provider) => provider.models.map((model) => model.id)),
-  ...simpleModels.map((m) => m.id),
+export const models = [
+  ...simpleModels.map(({ icon, ...rest }) => rest),
+  ...providers.flatMap((provider) =>
+    provider.models.map(({ icon, ...rest }) => rest),
+  ),
 ];
+
+export const modelIds = models.map((m) => m.id);
 
 export function findModelById(id: string) {
   return (
