@@ -373,6 +373,17 @@ export const providers: IProvider[] = [
     ],
   },
   {
+    name: "Inception",
+    models: [
+      {
+        id: "inception/mercury-coder-small-beta",
+        name: "Mercury Coder Small Beta",
+        fast: true,
+        devOnly: true,
+      },
+    ],
+  },
+  {
     name: "LM Studio",
     icon: <LmStudio />,
     models: [
