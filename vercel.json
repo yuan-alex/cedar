@@ -1,10 +1,13 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "bun run build:vercel",
   "outputDirectory": "./dist/client",
   "installCommand": "bun install",
   "devCommand": "bun run dev",
   "functions": {
-    "dist/api/**/*.js": {}
+    "dist/api/**/*.js": {
+      "maxDuration": 60
+    }
   },
   "rewrites": [
     {
