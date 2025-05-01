@@ -1,7 +1,7 @@
+import { serveStatic } from "hono/bun";
 import { app } from "./main";
 
 if (process.env.NODE_ENV === "production") {
-  const { serveStatic } = await import("hono/bun");
   app.get("/*", serveStatic({ root: "./dist/client" }));
 }
 
