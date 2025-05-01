@@ -8,11 +8,12 @@
     "dev:server": "bun run --watch ./server/bun.ts",
     "dev:client": "vite --port 3000",
     "start": "bun run ./server/bun.ts",
-    "build": "prisma generate --no-engine --no-hints && vite build",
+    "build": "vite build",
     "build:vercel": "prisma generate --no-engine --no-hints && prisma migrate deploy && vite build && bun build ./api/index.ts --format=esm --minify --sourcemap --outdir=./dist/api",
     "preview": "vite preview",
     "format": "biome format . --write",
     "db:studio": "prisma studio --browser none",
+    "db:generate": "prisma generate --no-engine --no-hints",
     "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
