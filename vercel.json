@@ -1,8 +1,11 @@
 {
-  "buildCommand": "prisma generate --no-engine --no-hints && prisma migrate deploy && vite build",
+  "buildCommand": "bun run build:vercel",
   "outputDirectory": "./dist/client",
   "installCommand": "bun install",
   "devCommand": "bun run dev",
+  "functions": {
+    "dist/api/**/*.js": { "runtime": "nodejs22.x" }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
