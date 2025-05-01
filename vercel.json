@@ -1,5 +1,5 @@
 {
-  "buildCommand": "prisma generate --no-engine --no-hints && vite build",
+  "buildCommand": "prisma generate --no-engine --no-hints && prisma migrate deploy && vite build",
   "outputDirectory": "./dist/client",
   "installCommand": "bun install",
   "devCommand": "bun run dev",
