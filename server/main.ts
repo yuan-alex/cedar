@@ -18,16 +18,16 @@ import {
 import prisma from "@/server/utils/prisma";
 import { modelIds, models } from "@/utils/providers";
 
-export const app = new Hono().basePath("/api");
+export const app = new Hono();
 
 app.use("*", clerkMiddleware());
 
-app.get("/v1/health", async (c) => {
+app.get("/api/v1/health", async (c) => {
   return c.html("good");
 });
 
 // get threads
-app.get("/v1/threads", async (c) => {
+app.get("/api/v1/threads", async (c) => {
   const auth = getAuth(c);
 
   if (!auth?.userId) {
@@ -103,7 +103,7 @@ app.post(
 );
 
 // Get thread
-app.get("/v1/threads/:threadToken", async (c) => {
+app.get("/api/v1/threads/:threadToken", async (c) => {
   const thread = await prisma.thread.findUnique({
     where: {
       token: c.req.param("threadToken"),
@@ -296,6 +296,6 @@ app.delete("/v1/threads/:threadToken", async (c) => {
   return new Response("ok");
 });
 
-app.get("/v1/models", async (c) => {
+app.get("/api/v1/models", async (c) => {
   return c.json(models);
 });
