@@ -301,6 +301,11 @@ export const providers: IProvider[] = [
     name: "Microsoft",
     models: [
       {
+        id: "microsoft/phi-4-reasoning-plus",
+        name: "Phi-4 Reasoning Plus",
+        reasoning: true,
+      },
+      {
         id: "microsoft/phi-4-multimodal-instruct",
         name: "Phi-4 Multimodal",
       },
