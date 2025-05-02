@@ -4,7 +4,7 @@
     "buildCommand": "bun install && bun run db:generate && bun run build"
   },
   "deploy": {
-    "preDeployCommand": ["bun run db:generate && bun run db:migrate"],
+    "preDeployCommand": ["bun run db:migrate"],
     "startCommand": "bun run start",
     "healthcheckPath": "/api/v1/health",
     "healthcheckTimeout": 5,
