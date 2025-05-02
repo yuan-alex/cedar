@@ -39,3 +39,6 @@ next-env.d.ts
 
 # data
 *.db
+
+# Keep the generated Prisma Client + query engine out of version control
+/server/utils/prisma-client
