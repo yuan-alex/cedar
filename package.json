@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "format": "biome format . --write",
     "db:studio": "prisma studio --browser none",
-    "db:generate": "prisma generate --no-engine --no-hints",
+    "db:generate": "prisma generate --no-hints",
     "db:migrate": "prisma migrate deploy"
   },
   "dependencies": {
