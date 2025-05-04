@@ -376,7 +376,7 @@ export const models = [
       provider: provider.name,
     })),
   ),
-];
+].filter((m) => (process.env.NODE_ENV === "production" ? !m.devOnly : true));
 
 export const modelIds = models.map((m) => m.id);
 

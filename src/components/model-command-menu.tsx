@@ -1,6 +1,5 @@
 import { useStore } from "@nanostores/react";
 import { Brain, Zap } from "lucide-react";
-import { Fragment } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,7 +15,7 @@ import { getModelIconById } from "@/utils/provider-icons";
 import {
   type IModel,
   findModelById,
-  providers,
+  models,
   simpleModels,
 } from "@/utils/providers";
 import { $model } from "@/utils/stores";
@@ -49,16 +48,12 @@ export function ModelCommandMenu(props: { handleClose: () => void }) {
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="All models">
-          {providers.map((provider) => (
-            <Fragment key={provider.name}>
-              {provider.models.map((model) => (
-                <ModelItem
-                  key={model.id}
-                  model={model}
-                  onModelSelect={onModelSelect}
-                />
-              ))}
-            </Fragment>
+          {models.map((model) => (
+            <ModelItem
+              key={model.id}
+              model={model}
+              onModelSelect={onModelSelect}
+            />
           ))}
         </CommandGroup>
       </CommandList>
