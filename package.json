@@ -14,7 +14,7 @@
     "format": "biome format . --write",
     "db:studio": "prisma studio --browser none",
     "db:generate": "prisma generate --no-hints",
-    "db:migrate": "prisma migrate deploy"
+    "db:migrate": "prisma generate --no-engine && prisma migrate deploy"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^0.2.13",
