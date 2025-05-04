@@ -62,7 +62,7 @@ app.get("/api/v1/threads", async (c) => {
 
 // create thread
 app.post(
-  "/v1/threads",
+  "/api/v1/threads",
   zValidator(
     "json",
     z.object({
@@ -131,7 +131,7 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
 
 // Create new message in thread
 app.post(
-  "/v1/threads/:threadToken",
+  "/api/v1/threads/:threadToken",
   zValidator(
     "json",
     z.object({
@@ -264,7 +264,7 @@ app.post(
   },
 );
 
-app.delete("/v1/threads/:threadToken", async (c) => {
+app.delete("/api/v1/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
   const auth = getAuth(c);
   const userId = auth?.userId;
