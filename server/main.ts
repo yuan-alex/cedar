@@ -104,6 +104,13 @@ app.post(
 
 // Get thread
 app.get("/api/v1/threads/:threadToken", async (c) => {
+  const auth = getAuth(c);
+  const userId = auth?.userId;
+
+  if (!userId) {
+    return c.notFound();
+  }
+
   const thread = await prisma.thread.findUnique({
     where: {
       token: c.req.param("threadToken"),
@@ -125,6 +132,10 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
       },
     },
   });
+
+  if (!thread || thread?.userId !== userId) {
+    return c.notFound();
+  }
 
   return Response.json(thread);
 });
