@@ -46,11 +46,14 @@ export function CedarMessage(props: IMessageProps) {
                 );
               case "reasoning":
                 return (
-                  <details key={i}>
-                    <summary className="p-3 w-full cursor-pointer border rounded-xl">
+                  <details
+                    key={i}
+                    className="border rounded-xl dark:border-zinc-800"
+                  >
+                    <summary className="p-3 w-full cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-xl border-b">
                       Show reasoning
                     </summary>
-                    <div className="p-8 text-sm prose dark:prose-invert max-w-none border dark:border-zinc-700 shadow rounded-xl my-10 h-92 overflow-auto">
+                    <div className="p-6 text-sm prose dark:prose-invert max-w-none overflow-auto">
                       <MemoizedMarkdown
                         id={`${message.id}:reasoning`}
                         content={part.reasoning}
