@@ -1,9 +1,8 @@
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {} from "@tanstack/react-router-devtools";
-import { ThemeProvider } from "next-themes";
 import ReactDOM from "react-dom/client";
 
+import { ThemeProvider } from "@/components/theme-provider";
 import { RouterWithContext } from "@/utils/router";
 
 import "./index.css";
