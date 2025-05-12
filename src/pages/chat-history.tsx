@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
-import { Link } from "react-router";
 
 import {
   Card,
@@ -23,7 +23,11 @@ export function ChatHistory() {
       <p className="text-2xl mb-5">Recent chats</p>
       <div className="flex flex-col space-y-2">
         {threads?.map((thread) => (
-          <Link key={thread.token} to={`/chat/${thread.token}`}>
+          <Link
+            key={thread.token}
+            to="/chat/$threadToken"
+            params={{ threadToken: thread.token }}
+          >
             <Card>
               <CardHeader>
                 <CardTitle>{thread.name}</CardTitle>

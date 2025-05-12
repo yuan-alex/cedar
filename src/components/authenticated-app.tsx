@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet } from "@tanstack/react-router";
 
 import { CommandMenu } from "@/components/command-menu";
 import { CedarSidebar } from "@/components/sidebar";

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { MoreHorizontalIcon } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router";
 
 import {
   DropdownMenu,
@@ -17,7 +17,10 @@ import {
 export function ThreadSidebarMenuItem(props) {
   const { thread } = props;
 
-  const { threadToken } = useParams();
+  const params = useParams({
+    from: "/chat/$threadToken",
+    shouldThrow: false,
+  });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const deleteThreadMutation = useMutation({
@@ -28,16 +31,19 @@ export function ThreadSidebarMenuItem(props) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
-      if (threadToken === thread.token) {
-        navigate("/");
+      if (params?.threadToken === thread.token) {
+        navigate({ to: "/" });
       }
     },
   });
 
   return (
     <SidebarMenuItem key={thread.token}>
-      <SidebarMenuButton asChild isActive={threadToken === thread.token}>
-        <Link to={`/chat/${thread.token}`}>
+      <SidebarMenuButton
+        asChild
+        isActive={params?.threadToken === thread.token}
+      >
+        <Link to="/chat/$threadToken" params={{ threadToken: thread.token }}>
           <span>{thread.name}</span>
         </Link>
       </SidebarMenuButton>

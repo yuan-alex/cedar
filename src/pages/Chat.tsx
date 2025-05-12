@@ -1,7 +1,7 @@
 import { useChat } from "@ai-sdk/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useParams } from "react-router";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/input-box";
@@ -10,7 +10,7 @@ import { createQueryFn } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
 
 export function Chat() {
-  const { threadToken } = useParams();
+  const { threadToken } = useParams({ from: "/chat/$threadToken" });
   const queryClient = useQueryClient();
 
   const { data: thread } = useQuery({

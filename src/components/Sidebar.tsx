@@ -1,7 +1,7 @@
 import { UserButton } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { PlusCircleIcon } from "lucide-react";
-import { Link } from "react-router";
 
 import { ThreadSidebarMenuItem } from "@/components/thread-item";
 import { Button } from "@/components/ui/button";

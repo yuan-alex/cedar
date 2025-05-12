@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 import { InputBox } from "@/components/input-box";
 import { $model, $prompt } from "@/utils/stores";
@@ -20,7 +20,12 @@ export function NewChat() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => navigate(`/chat/${data.token}`));
+      .then((data) =>
+        navigate({
+          to: "/chat/$threadToken",
+          params: { threadToken: data.token },
+        }),
+      );
   }
 
   return (

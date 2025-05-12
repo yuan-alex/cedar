@@ -1,6 +1,6 @@
+import { useNavigate } from "@tanstack/react-router";
 import { MessageCircle, Sparkle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
 import { ModelCommandMenu } from "@/components/model-command-menu";
 import {
@@ -51,7 +51,7 @@ export function CommandMenu() {
   }
 
   function handleNewThread() {
-    navigate("/");
+    navigate({ to: "/" });
     setOpen(false);
   }
 
