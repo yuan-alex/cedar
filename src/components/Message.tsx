@@ -31,7 +31,7 @@ export function CedarMessage(props: IMessageProps) {
           className={`overflow-x-auto ${
             message.role === "assistant"
               ? "w-full"
-              : "px-5 border rounded-2xl ml-auto"
+              : "not-prose px-5 py-3 rounded-3xl ml-auto bg-zinc-100 dark:bg-zinc-900"
           }`}
         >
           {message.parts?.map((part, i) => {
@@ -50,7 +50,7 @@ export function CedarMessage(props: IMessageProps) {
                     key={i}
                     className="border rounded-xl dark:border-zinc-800"
                   >
-                    <summary className="p-3 w-full cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-xl border-b">
+                    <summary className="py-2 px-4 w-full cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-xl border-b">
                       Show reasoning
                     </summary>
                     <div className="p-6 text-sm prose dark:prose-invert max-w-none overflow-auto">
