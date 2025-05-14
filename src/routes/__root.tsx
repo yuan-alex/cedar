@@ -1,4 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
@@ -19,6 +20,7 @@ function RootComponent() {
         <Outlet />
       </SignedOut>
       <TanStackRouterDevtools position="top-right" />
+      <ReactQueryDevtools />
     </React.Fragment>
   );
 }
