@@ -37,17 +37,7 @@ export function ModelCommandMenu(props: { handleClose: () => void }) {
       <CommandInput placeholder="Search model..." autoFocus />
       <CommandList>
         <CommandEmpty>No model found.</CommandEmpty>
-        <CommandGroup heading="Recommended">
-          {simpleModels.map((model) => (
-            <ModelItem
-              key={model.id}
-              model={model}
-              onModelSelect={onModelSelect}
-            />
-          ))}
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="All models">
+        <CommandGroup>
           {models.map((model) => (
             <ModelItem
               key={model.id}
