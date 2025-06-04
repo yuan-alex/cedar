@@ -150,23 +150,14 @@ export const providers: IProvider[] = [
     name: "DeepSeek",
     models: [
       {
-        id: "deepseek/deepseek-r1",
-        name: "DeepSeek R1",
+        id: "deepseek/deepseek-r1-0528",
+        name: "DeepSeek R1 0528",
         reasoning: true,
       },
       {
-        id: "deepseek/deepseek-r1-distill-llama-70b",
-        name: "DeepSeek R1 Llama 70B",
+        id: "deepseek/deepseek-r1-0528-qwen3-8b",
+        name: "DeepSeek R1 Qwen 8B",
         reasoning: true,
-      },
-      {
-        id: "deepseek/deepseek-r1-distill-qwen-32b",
-        name: "DeepSeek R1 Qwen 32B",
-        reasoning: true,
-      },
-      {
-        id: "deepseek/deepseek-chat-v3-0324",
-        name: "DeepSeek V3",
       },
     ],
   },
