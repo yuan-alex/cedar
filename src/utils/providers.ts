@@ -75,22 +75,12 @@ export const providers: IProvider[] = [
     name: "Anthropic",
     models: [
       {
-        id: "anthropic/claude-3.7-sonnet:thinking",
-        name: "Claude 3.7 Sonnet Thinking",
-        reasoning: true,
+        id: "anthropic/claude-opus-4",
+        name: "Claude Opus 4",
       },
       {
-        id: "anthropic/claude-3.7-sonnet",
-        name: "Claude 3.7 Sonnet",
-      },
-      {
-        id: "anthropic/claude-3.5-sonnet",
-        name: "Claude 3.5 Sonnet",
-      },
-      {
-        id: "anthropic/claude-3.5-haiku",
-        name: "Claude 3.5 Haiku",
-        fast: true,
+        id: "anthropic/claude-sonnet-4",
+        name: "Claude Sonnet 4",
       },
     ],
   },
