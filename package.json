@@ -72,6 +72,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/react-query-devtools": "^5.81.5",
     "@tanstack/router-plugin": "^1.123.0",
+    "@tauri-apps/cli": "^2.6.2",
     "@types/bun": "^1.2.17",
     "@types/node": "^24.0.7",
     "@types/react": "^19.1.8",
