@@ -8,76 +8,32 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestingRouteImport } from './routes/testing'
+import { Route as ChatsRouteImport } from './routes/chats'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatThreadTokenRouteImport } from './routes/chat.$threadToken'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as TestingImport } from './routes/testing'
-import { Route as ChatsImport } from './routes/chats'
-import { Route as IndexImport } from './routes/index'
-import { Route as ChatThreadTokenImport } from './routes/chat.$threadToken'
-
-// Create/Update Routes
-
-const TestingRoute = TestingImport.update({
+const TestingRoute = TestingRouteImport.update({
   id: '/testing',
   path: '/testing',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ChatsRoute = ChatsImport.update({
+const ChatsRoute = ChatsRouteImport.update({
   id: '/chats',
   path: '/chats',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ChatThreadTokenRoute = ChatThreadTokenImport.update({
+const ChatThreadTokenRoute = ChatThreadTokenRouteImport.update({
   id: '/chat/$threadToken',
   path: '/chat/$threadToken',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/chats': {
-      id: '/chats'
-      path: '/chats'
-      fullPath: '/chats'
-      preLoaderRoute: typeof ChatsImport
-      parentRoute: typeof rootRoute
-    }
-    '/testing': {
-      id: '/testing'
-      path: '/testing'
-      fullPath: '/testing'
-      preLoaderRoute: typeof TestingImport
-      parentRoute: typeof rootRoute
-    }
-    '/chat/$threadToken': {
-      id: '/chat/$threadToken'
-      path: '/chat/$threadToken'
-      fullPath: '/chat/$threadToken'
-      preLoaderRoute: typeof ChatThreadTokenImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -85,22 +41,19 @@ export interface FileRoutesByFullPath {
   '/testing': typeof TestingRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chats': typeof ChatsRoute
   '/testing': typeof TestingRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/chats': typeof ChatsRoute
   '/testing': typeof TestingRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/chats' | '/testing' | '/chat/$threadToken'
@@ -109,12 +62,44 @@ export interface FileRouteTypes {
   id: '__root__' | '/' | '/chats' | '/testing' | '/chat/$threadToken'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatsRoute: typeof ChatsRoute
   TestingRoute: typeof TestingRoute
   ChatThreadTokenRoute: typeof ChatThreadTokenRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/testing': {
+      id: '/testing'
+      path: '/testing'
+      fullPath: '/testing'
+      preLoaderRoute: typeof TestingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chats': {
+      id: '/chats'
+      path: '/chats'
+      fullPath: '/chats'
+      preLoaderRoute: typeof ChatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat/$threadToken': {
+      id: '/chat/$threadToken'
+      path: '/chat/$threadToken'
+      fullPath: '/chat/$threadToken'
+      preLoaderRoute: typeof ChatThreadTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -123,35 +108,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestingRoute: TestingRoute,
   ChatThreadTokenRoute: ChatThreadTokenRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/chats",
-        "/testing",
-        "/chat/$threadToken"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/chats": {
-      "filePath": "chats.tsx"
-    },
-    "/testing": {
-      "filePath": "testing.tsx"
-    },
-    "/chat/$threadToken": {
-      "filePath": "chat.$threadToken.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
