@@ -33,7 +33,7 @@ export function NewChat() {
       <div className="grow flex items-center justify-center my-10">
         <div className="max-w-2xl w-full">
           <div className="flex items-center justify-center mb-5 space-x-4">
-            <img className="w-12 h-12" src="/cedar.svg" />
+            <img className="w-12 h-12" src="/images/cedar.svg" />
             <p className="text-5xl font-medium">Cedar</p>
           </div>
         </div>

@@ -27,7 +27,7 @@ export function CedarSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center space-x-2 mb-2">
-          <img className="w-6 h-6" src="/cedar.svg" />
+          <img className="w-6 h-6" src="/images/cedar.svg" />
           <p className="text-xl font-medium">Cedar</p>
           <div className="grow" />
         </div>
