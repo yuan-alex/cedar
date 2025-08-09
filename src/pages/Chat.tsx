@@ -48,11 +48,16 @@ export function Chat() {
         $prompt.set("");
       } else {
         setMessages(
-          thread.messages.map((msg) => ({
+          thread.messages.map((msg: any) => ({
             ...msg,
             id: msg.token,
             role: msg.isAssistant ? "assistant" : "user",
-            parts: [{ type: "text", text: msg.content }],
+            parts: [
+              ...(msg.reasoning
+                ? [{ type: "reasoning", text: msg.reasoning }]
+                : []),
+              { type: "text", text: msg.content },
+            ],
           })),
         );
       }
