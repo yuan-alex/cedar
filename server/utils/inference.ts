@@ -1,6 +1,6 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { type CoreMessage, generateText } from "ai";
+import { generateText, type ModelMessage } from "ai";
 import { format } from "date-fns";
 
 export const openrouter = createOpenRouter({
@@ -39,7 +39,7 @@ const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logica
 - NEVER include URL links in your responses.
 - It is currently ${format(new Date(), "PPPPpppp")}.`;
 
-export function convertMessagesToOpenAiFormat(messages): CoreMessage[] {
+export function convertMessagesToOpenAiFormat(messages): ModelMessage[] {
   return [
     {
       role: "system" as const,

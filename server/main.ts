@@ -229,7 +229,7 @@ app.post(
     const settingsMiddleware = defaultSettingsMiddleware({
       settings: {
         temperature: 0.3,
-        maxTokens: 2048,
+        maxOutputTokens: 2048,
       },
     });
 
@@ -256,7 +256,7 @@ app.post(
                     threadId: thread.id,
                     isAssistant: true,
                     content: event.text,
-                    reasoning: event.reasoning,
+                    reasoning: event.reasoningText,
                   },
                 },
                 type: "generation",
@@ -269,9 +269,7 @@ app.post(
       },
     });
 
-    return result.toDataStreamResponse({
-      sendReasoning: true,
-    });
+    return result.toUIMessageStreamResponse();
   },
 );
 

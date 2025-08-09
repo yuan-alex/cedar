@@ -1,4 +1,4 @@
-import type { Message } from "ai";
+import type { UIMessage } from "ai";
 import { CopyIcon } from "lucide-react";
 import { toast } from "sonner";
 
@@ -6,7 +6,7 @@ import { MemoizedMarkdown } from "@/components/memorized-markdown";
 import { Button } from "@/components/ui/button";
 
 interface IMessageProps {
-  message: Message;
+  message: UIMessage;
 }
 
 export function CedarMessage(props: IMessageProps) {
@@ -14,7 +14,7 @@ export function CedarMessage(props: IMessageProps) {
 
   function handleCopyText() {
     navigator.clipboard
-      .writeText(message.content)
+      .writeText(message.parts[0].text)
       .then(() => {
         toast.success("Copied to clipboard");
       })
@@ -56,7 +56,7 @@ export function CedarMessage(props: IMessageProps) {
                     <div className="p-6 text-sm prose dark:prose-invert max-w-none overflow-auto">
                       <MemoizedMarkdown
                         id={`${message.id}:reasoning`}
-                        content={part.reasoning}
+                        content={part.text}
                       />
                     </div>
                   </details>

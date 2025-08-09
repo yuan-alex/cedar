@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { memo, useMemo } from "react";
+import { type ComponentType, memo, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -13,7 +13,9 @@ import "katex/dist/katex.min.css";
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {
   const tokens = marked.lexer(markdown);
-  return tokens.map((token) => token.raw);
+  return tokens
+    .map((token) => token.raw ?? "")
+    .filter((block) => typeof block === "string");
 }
 
 const MemoizedMarkdownBlock = memo(
@@ -27,9 +29,19 @@ const MemoizedMarkdownBlock = memo(
             );
           },
           code(props) {
-            const { children, className, node, ...rest } = props;
+            const { children, className, ...rest } = props;
             const match = /language-(\w+)/.exec(className || "");
-            const content = String(children).replace(/\n$/, "");
+            const content =
+              typeof children === "string"
+                ? children
+                : Array.isArray(children)
+                  ? children.join("")
+                  : "";
+            const safeContent = (content || "").replace(/\n$/, "");
+            const CodeHighlighter =
+              SyntaxHighlighter as unknown as ComponentType<
+                Record<string, unknown>
+              >;
             return match ? (
               <div>
                 <nav className="flex items-center font-sans">
@@ -38,12 +50,12 @@ const MemoizedMarkdownBlock = memo(
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => navigator?.clipboard?.writeText(content)}
+                    onClick={() => navigator?.clipboard?.writeText(safeContent)}
                   >
                     Copy
                   </Button>
                 </nav>
-                <SyntaxHighlighter
+                <CodeHighlighter
                   {...rest}
                   className="not-prose text-sm"
                   PreTag="div"
@@ -51,8 +63,8 @@ const MemoizedMarkdownBlock = memo(
                   style={atomDark}
                   showLineNumbers
                 >
-                  {content}
-                </SyntaxHighlighter>
+                  {safeContent}
+                </CodeHighlighter>
               </div>
             ) : (
               <code {...rest} className={className}>
@@ -80,8 +92,12 @@ export const MemoizedMarkdown = memo(
   ({ content, id }: { content: string; id: string }) => {
     const blocks = useMemo(() => parseMarkdownIntoBlocks(content), [content]);
 
+    let sequenceCounter = 0;
     return blocks.map((block) => (
-      <MemoizedMarkdownBlock content={block} key={`${id}-block`} />
+      <MemoizedMarkdownBlock
+        content={block}
+        key={`${id}-block-${sequenceCounter++}`}
+      />
     ));
   },
 );

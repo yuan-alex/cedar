@@ -1,7 +1,8 @@
 import { useChat } from "@ai-sdk/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { DefaultChatTransport } from "ai";
+import { useEffect, useState } from "react";
 import { StickToBottom } from "use-stick-to-bottom";
 
 import { InputBox } from "@/components/input-box";
@@ -18,22 +19,19 @@ export function Chat() {
     queryFn: createQueryFn(`/api/v1/threads/${threadToken}`),
   });
 
-  const {
-    messages,
-    setMessages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    append,
-  } = useChat({
-    api: `/api/v1/threads/${threadToken}`,
+  const [input, setInput] = useState("");
+  const { messages, setMessages, sendMessage } = useChat({
     id: threadToken,
-    experimental_prepareRequestBody: ({ messages }) => {
-      return {
-        model: $model?.get().id,
-        content: messages[messages.length - 1].content,
-      };
-    },
+    transport: new DefaultChatTransport({
+      api: `/api/v1/threads/${threadToken}`,
+      credentials: "include",
+      prepareSendMessagesRequest: ({ messages }) => ({
+        body: {
+          model: $model?.get().id,
+          content: messages[messages.length - 1].parts[0].text,
+        },
+      }),
+    }),
     experimental_throttle: 50,
     onFinish: () => {
       queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
@@ -46,7 +44,7 @@ export function Chat() {
 
     if (threadToken && thread) {
       if (thread.messages.length === 0 && prompt) {
-        append({ role: "user", content: prompt });
+        sendMessage({ text: prompt });
         $prompt.set("");
       } else {
         setMessages(
@@ -54,12 +52,17 @@ export function Chat() {
             ...msg,
             id: msg.token,
             role: msg.isAssistant ? "assistant" : "user",
-            content: msg.content,
+            parts: [{ type: "text", text: msg.content }],
           })),
         );
       }
     }
   }, [thread, threadToken]);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    sendMessage({ text: input });
+  }
 
   return (
     <div className="flex flex-col h-full w-full">
@@ -76,7 +79,11 @@ export function Chat() {
       </StickToBottom>
       <div className="basis-0 p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
         <form onSubmit={handleSubmit}>
-          <InputBox rows={1} value={input} onChange={handleInputChange} />
+          <InputBox
+            rows={1}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
         </form>
       </div>
     </div>
