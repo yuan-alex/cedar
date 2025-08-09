@@ -167,16 +167,16 @@ app.post(
         model = "openrouter/auto";
         break;
       case "cedar/smart":
-        model = "mistralai/mistral-small-3.1-24b-instruct";
+        model = "google/gemini-2.5-flash";
         break;
       case "cedar/creative":
-        model = "google/gemma-3-27b-it";
+        model = "moonshotai/kimi-k2";
         break;
       case "cedar/fast":
-        model = "google/gemini-2.0-flash-lite-001";
+        model = "google/gemini-2.5-flash-lite";
         break;
       case "cedar/reasoning":
-        model = "deepseek/deepseek-r1-distill-llama-70b";
+        model = "openai/gpt-oss-120b";
         break;
     }
 
