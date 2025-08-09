@@ -1,17 +1,13 @@
-import {
-  Claude,
-  DeepSeek,
-  Gemini,
-  Gemma,
-  Grok,
-  LmStudio,
-  Meta,
-  Microsoft,
-  Mistral,
-  OpenAI,
-  Perplexity,
-  Qwen,
-} from "@lobehub/icons";
+import claudeIconUrl from "@lobehub/icons-static-svg/icons/claude-color.svg";
+import deepseekIcon from "@lobehub/icons-static-svg/icons/deepseek-color.svg";
+import geminiIcon from "@lobehub/icons-static-svg/icons/gemini-color.svg";
+import gemmaIcon from "@lobehub/icons-static-svg/icons/gemma-color.svg";
+import grokIcon from "@lobehub/icons-static-svg/icons/grok.svg";
+import metaIcon from "@lobehub/icons-static-svg/icons/meta-color.svg";
+import mistralIcon from "@lobehub/icons-static-svg/icons/mistral-color.svg";
+import openaiIcon from "@lobehub/icons-static-svg/icons/openai.svg";
+import perplexityIcon from "@lobehub/icons-static-svg/icons/perplexity-color.svg";
+import qwenIcon from "@lobehub/icons-static-svg/icons/qwen-color.svg";
 import { BrainIcon, PaletteIcon, SparklesIcon, ZapIcon } from "lucide-react";
 
 export function getModelIconById(modelId: string) {
@@ -29,40 +25,37 @@ export function getModelIconById(modelId: string) {
   }
 
   if (modelId.startsWith("anthropic")) {
-    return <Claude.Color />;
+    return <img src={claudeIconUrl} alt="Claude" className="w-4 h-4" />;
   }
   if (modelId.startsWith("openai")) {
-    return <OpenAI />;
+    return <img src={openaiIcon} alt="OpenAI" className="w-4 h-4" />;
   }
   if (modelId.startsWith("google/gemini")) {
-    return <Gemini.Color />;
+    return <img src={geminiIcon} alt="Gemini" className="w-4 h-4" />;
   }
   if (modelId.startsWith("google/gemma")) {
-    return <Gemma.Color />;
+    return <img src={gemmaIcon} alt="Gemma" className="w-4 h-4" />;
   }
   if (modelId.startsWith("meta-llama")) {
-    return <Meta.Color />;
+    return <img src={metaIcon} alt="Meta" className="w-4 h-4" />;
   }
   if (modelId.startsWith("qwen")) {
-    return <Qwen.Color />;
+    return <img src={qwenIcon} alt="Qwen" className="w-4 h-4" />;
   }
   if (modelId.startsWith("mistral")) {
-    return <Mistral.Color />;
+    return <img src={mistralIcon} alt="Mistral" className="w-4 h-4" />;
   }
   if (modelId.startsWith("x-ai")) {
-    return <Grok />;
-  }
-  if (modelId.startsWith("microsoft")) {
-    return <Microsoft.Color />;
+    return <img src={grokIcon} alt="Grok" className="w-4 h-4" />;
   }
   if (modelId.startsWith("perplexity")) {
-    return <Perplexity.Color />;
+    return <img src={perplexityIcon} alt="Perplexity" className="w-4 h-4" />;
   }
   if (modelId.startsWith("deepseek")) {
-    return <DeepSeek.Color />;
+    return <img src={deepseekIcon} alt="DeepSeek" className="w-4 h-4" />;
   }
   if (modelId.startsWith("cedar/local")) {
-    return <LmStudio />;
+    return <img src={openaiIcon} alt="Local" className="w-4 h-4" />;
   }
 
   return null;

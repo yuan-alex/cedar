@@ -24,7 +24,7 @@
     "@hono/clerk-auth": "^3.0.1",
     "@hono/node-server": "^1.14.4",
     "@hono/zod-validator": "^0.7.0",
-    "@lobehub/icons": "^2.7.0",
+    "@lobehub/icons-static-svg": "^1.62.0",
     "@nanostores/persistent": "^1.0.0",
     "@nanostores/react": "^1.0.0",
     "@openrouter/ai-sdk-provider": "^0.7.2",
