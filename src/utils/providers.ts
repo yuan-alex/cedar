@@ -42,32 +42,31 @@ export const providers: IProvider[] = [
     name: "OpenAI",
     models: [
       {
-        id: "openai/o4-mini",
-        name: "o4 mini",
+        id: "openai/gpt-5",
+        name: "GPT-5",
         reasoning: true,
       },
       {
-        id: "openai/o4-mini-high",
-        name: "o4 mini high",
+        id: "openai/gpt-5-mini",
+        name: "GPT-5 Mini",
+        reasoning: true,
+        fast: true,
+      },
+      {
+        id: "openai/gpt-5-nano",
+        name: "GPT-5 Nano",
+        reasoning: true,
+        fast: true,
+      },
+      {
+        id: "openai/gpt-oss-20b",
+        name: "GPT-OSS 20B",
         reasoning: true,
       },
       {
-        id: "openai/gpt-4.1",
-        name: "GPT-4.1",
-      },
-      {
-        id: "openai/gpt-4.1-mini",
-        name: "GPT-4.1 mini",
-        fast: true,
-      },
-      {
-        id: "openai/gpt-4.1-nano",
-        name: "GPT-4.1 nano",
-        fast: true,
-      },
-      {
-        id: "openai/gpt-4o",
-        name: "GPT-4o",
+        id: "openai/gpt-oss-120b",
+        name: "GPT-OSS 120B",
+        reasoning: true,
       },
     ],
   },
@@ -75,12 +74,16 @@ export const providers: IProvider[] = [
     name: "Anthropic",
     models: [
       {
-        id: "anthropic/claude-opus-4",
-        name: "Claude Opus 4",
+        id: "anthropic/claude-opus-4.1",
+        name: "Claude Opus 4.1",
       },
       {
         id: "anthropic/claude-sonnet-4",
         name: "Claude Sonnet 4",
+      },
+      {
+        id: "anthropic/claude-3.5-haiku",
+        name: "Claude 3.5 Haiku",
       },
     ],
   },
@@ -94,10 +97,11 @@ export const providers: IProvider[] = [
       {
         id: "google/gemini-2.5-flash",
         name: "Gemini 2.5 Flash",
+        fast: true,
       },
       {
-        id: "google/gemini-2.5-flash-lite-preview-06-17",
-        name: "Gemini 2.5 Flash Lite Preview",
+        id: "google/gemini-2.5-flash-lite",
+        name: "Gemini 2.5 Flash Lite",
         fast: true,
       },
     ],
@@ -109,18 +113,6 @@ export const providers: IProvider[] = [
         id: "google/gemma-3-27b-it",
         name: "Gemma 3 27B",
         fast: true,
-      },
-      {
-        id: "google/gemma-3-12b-it",
-        name: "Gemma 3 12B",
-        fast: true,
-        devOnly: true,
-      },
-      {
-        id: "google/gemma-3-4b-it",
-        name: "Gemma 3 4B",
-        fast: true,
-        devOnly: true,
       },
     ],
   },
@@ -155,11 +147,6 @@ export const providers: IProvider[] = [
         id: "meta-llama/llama-3.3-70b-instruct",
         name: "Llama 3.3 70B",
       },
-      {
-        id: "meta-llama/llama-3.1-8b-instruct",
-        name: "Llama 3.1 8B",
-        fast: true,
-      },
     ],
   },
   {
@@ -181,64 +168,21 @@ export const providers: IProvider[] = [
         name: "Qwen3 32B",
         reasoning: true,
       },
-      {
-        id: "qwen/qwen3-14b",
-        name: "Qwen3 14B",
-        reasoning: true,
-        fast: true,
-      },
-      {
-        id: "qwen/qwen3-8b",
-        name: "Qwen3 8B",
-        reasoning: true,
-        fast: true,
-      },
-      {
-        id: "qwen/qwen3-4b:free",
-        name: "Qwen3 4B",
-        reasoning: true,
-        fast: true,
-        devOnly: true,
-      },
-      {
-        id: "qwen/qwen3-1.7b:free",
-        name: "Qwen3 1.7B",
-        reasoning: true,
-        fast: true,
-        devOnly: true,
-      },
     ],
   },
   {
     name: "Mistral AI",
     models: [
       {
-        id: "mistralai/mistral-small-3.1-24b-instruct-2503",
-        name: "Mistral Small 3.1 24B",
+        id: "mistralai/mistral-small-3.2-24b-instruct",
+        name: "Mistral Small 3.2 24B",
         fast: true,
       },
       {
-        id: "mistralai/mistral-nemo",
-        name: "Mistral Nemo",
+        id: "mistralai/magistral-small-2506",
+        name: "Magistral Small 3.2 24B",
         fast: true,
-      },
-      {
-        id: "mistralai/mixtral-8x22b-instruct",
-        name: "Mixtral 8x22B",
-        fast: true,
-        devOnly: true,
-      },
-      {
-        id: "mistralai/mixtral-8x7b-instruct",
-        name: "Mixtral 8x7B",
-        fast: true,
-        devOnly: true,
-      },
-      {
-        id: "mistralai/mistral-7b-instruct",
-        name: "Mistral 7B",
-        fast: true,
-        devOnly: true,
+        reasoning: true,
       },
     ],
   },
@@ -253,24 +197,6 @@ export const providers: IProvider[] = [
         id: "x-ai/grok-3-mini-beta",
         name: "Grok 3 Mini Beta",
         fast: true,
-      },
-    ],
-  },
-  {
-    name: "Microsoft",
-    models: [
-      {
-        id: "microsoft/phi-4-reasoning-plus",
-        name: "Phi-4 Reasoning Plus",
-        reasoning: true,
-      },
-      {
-        id: "microsoft/phi-4-multimodal-instruct",
-        name: "Phi-4 Multimodal",
-      },
-      {
-        id: "microsoft/phi-4",
-        name: "Phi-4",
       },
     ],
   },
@@ -299,29 +225,6 @@ export const providers: IProvider[] = [
       {
         id: "perplexity/sonar",
         name: "Sonar",
-      },
-    ],
-  },
-  {
-    name: "Inception",
-    models: [
-      {
-        id: "inception/mercury-coder-small-beta",
-        name: "Mercury Coder Small Beta",
-        fast: true,
-        devOnly: true,
-      },
-    ],
-  },
-  {
-    name: "LM Studio",
-    models: [
-      {
-        id: "cedar/lmstudio/qwen3-0.6b",
-        name: "Qwen3 0.6B",
-        devOnly: true,
-        fast: true,
-        reasoning: true,
       },
     ],
   },
