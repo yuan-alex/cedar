@@ -5,6 +5,7 @@ import gemmaIcon from "@lobehub/icons-static-svg/icons/gemma-color.svg";
 import grokIcon from "@lobehub/icons-static-svg/icons/grok.svg";
 import metaIcon from "@lobehub/icons-static-svg/icons/meta-color.svg";
 import mistralIcon from "@lobehub/icons-static-svg/icons/mistral-color.svg";
+import moonshotIcon from "@lobehub/icons-static-svg/icons/moonshot.svg";
 import openaiIcon from "@lobehub/icons-static-svg/icons/openai.svg";
 import perplexityIcon from "@lobehub/icons-static-svg/icons/perplexity-color.svg";
 import qwenIcon from "@lobehub/icons-static-svg/icons/qwen-color.svg";
@@ -53,6 +54,9 @@ export function getModelIconById(modelId: string) {
   }
   if (modelId.startsWith("deepseek")) {
     return <img src={deepseekIcon} alt="DeepSeek" className="w-4 h-4" />;
+  }
+  if (modelId.startsWith("moonshotai")) {
+    return <img src={moonshotIcon} alt="Moonshot" className="w-4 h-4" />;
   }
   if (modelId.startsWith("cedar/local")) {
     return <img src={openaiIcon} alt="Local" className="w-4 h-4" />;

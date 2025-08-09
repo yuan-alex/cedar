@@ -132,6 +132,16 @@ export const providers: IProvider[] = [
     ],
   },
   {
+    name: "Moonshot AI",
+    models: [
+      {
+        id: "moonshotai/kimi-k2",
+        name: "Kimi K2",
+        reasoning: true,
+      },
+    ],
+  },
+  {
     name: "Meta",
     models: [
       {
