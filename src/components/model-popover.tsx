@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import { ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 
 import { ModelCommandMenu } from "@/components/model-command-menu";
@@ -9,7 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { $model } from "@/utils/stores";
-import { ChevronsUpDown } from "lucide-react";
+import { getModelIconById } from "@/utils/provider-icons";
 
 export function ModelPopover() {
   const model = useStore($model);
@@ -22,13 +23,16 @@ export function ModelPopover() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between"
+          className="justify-between"
         >
-          {model.name}
+          <div className="flex items-center gap-2">
+            {getModelIconById(model.id)}
+            {model.name}
+          </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent className="w-[340px] p-0" align="start">
         <ModelCommandMenu handleClose={() => setOpen(false)} />
       </PopoverContent>
     </Popover>

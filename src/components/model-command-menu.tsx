@@ -9,15 +9,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "@/components/ui/command";
 import { getModelIconById } from "@/utils/provider-icons";
-import {
-  type IModel,
-  findModelById,
-  models,
-  simpleModels,
-} from "@/utils/providers";
+import { findModelById, type IModel, models } from "@/utils/providers";
 import { $model } from "@/utils/stores";
 
 export function ModelCommandMenu(props: { handleClose: () => void }) {
@@ -59,7 +53,7 @@ function ModelItem(props: {
 
   return (
     <CommandItem
-      className="flex w-full space-x-1 h-9"
+      className="flex w-full space-x-1 min-h-9"
       value={model.id}
       onSelect={onModelSelect}
     >
@@ -68,6 +62,7 @@ function ModelItem(props: {
         <p className={`${model.devOnly ? "text-blue-500" : ""}`}>
           {model.name}
         </p>
+        <p className="text-xs text-muted-foreground">{model.description}</p>
       </div>
       <div className="grow" />
       {model.fast && (
