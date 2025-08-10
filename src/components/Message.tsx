@@ -1,5 +1,5 @@
 import type { UIMessage } from "ai";
-import { CopyIcon } from "lucide-react";
+import { BrainIcon, ChevronDownIcon, CopyIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
@@ -13,8 +13,11 @@ export function CedarMessage(props: IMessageProps) {
   const { message } = props;
 
   function handleCopyText() {
+    const textPart = message.parts?.find((part) => part.type === "text");
+    const textContent = textPart && "text" in textPart ? textPart.text : "";
+
     navigator.clipboard
-      .writeText(message.parts[0].text)
+      .writeText(textContent)
       .then(() => {
         toast.success("Copied to clipboard");
       })
@@ -39,25 +42,31 @@ export function CedarMessage(props: IMessageProps) {
               case "text":
                 return (
                   <MemoizedMarkdown
-                    key={i}
+                    key={`${message.id}-text-${i}`}
                     id={message.id}
-                    content={part.text}
+                    content={"text" in part ? part.text : ""}
                   />
                 );
               case "reasoning":
                 return (
                   <details
-                    key={i}
-                    className="border rounded-xl dark:border-zinc-800"
+                    key={`${message.id}-reasoning-${i}`}
+                    className="group mb-3 border border-zinc-100 dark:border-zinc-800/40 rounded-lg bg-zinc-50/20 dark:bg-zinc-950/10 overflow-hidden"
                   >
-                    <summary className="py-2 px-4 w-full cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-xl border-b">
-                      Show reasoning
+                    <summary className="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-50/40 dark:hover:bg-zinc-900/20 transition-colors duration-200">
+                      <BrainIcon className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400 flex-shrink-0" />
+                      <span className="text-sm text-zinc-600 dark:text-zinc-400 flex-grow">
+                        Reasoning
+                      </span>
+                      <ChevronDownIcon className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
-                    <div className="p-6 text-sm prose dark:prose-invert max-w-none overflow-auto">
-                      <MemoizedMarkdown
-                        id={`${message.id}:reasoning`}
-                        content={part.text}
-                      />
+                    <div className="p-3 bg-white/20 dark:bg-zinc-950/20 text-xs prose dark:prose-invert max-w-none overflow-auto">
+                      <div className="border-l-2 border-zinc-200 dark:border-zinc-700/60 pl-3">
+                        <MemoizedMarkdown
+                          id={`${message.id}:reasoning`}
+                          content={"text" in part ? part.text : ""}
+                        />
+                      </div>
                     </div>
                   </details>
                 );
@@ -66,10 +75,10 @@ export function CedarMessage(props: IMessageProps) {
         </div>
       </div>
       {message.role === "assistant" ? (
-        <div className="flex justify-end gap-4 mb-4">
+        <div className="flex gap-4 mb-4">
           <Button
             className="cursor-pointer"
-            variant="outline"
+            variant="ghost"
             onClick={handleCopyText}
           >
             <CopyIcon />
