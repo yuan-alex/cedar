@@ -163,8 +163,12 @@ export const providers: IProvider[] = [
     name: "Qwen by Alibaba",
     models: [
       {
-        id: "qwen/qwen3-235b-a22b",
+        id: "qwen/qwen3-235b-a22b-2507",
         name: "Qwen3 235B A22B",
+      },
+      {
+        id: "qwen/qwen3-235b-a22b-thinking-2507",
+        name: "Qwen3 235B A22B Thinking",
         reasoning: true,
       },
       {
@@ -174,8 +178,8 @@ export const providers: IProvider[] = [
         fast: true,
       },
       {
-        id: "qwen/qwen3-32b",
-        name: "Qwen3 32B",
+        id: "qwen/qwen3-coder",
+        name: "Qwen3 Coder",
         reasoning: true,
       },
     ],
@@ -199,6 +203,11 @@ export const providers: IProvider[] = [
   {
     name: "Grok",
     models: [
+      {
+        id: "x-ai/grok-4",
+        name: "Grok 4",
+        reasoning: true,
+      },
       {
         id: "x-ai/grok-3-beta",
         name: "Grok 3 Beta",
