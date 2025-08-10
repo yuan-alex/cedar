@@ -67,6 +67,7 @@ export function Chat() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     sendMessage({ text: input });
+    setInput("");
   }
 
   return (
