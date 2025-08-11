@@ -1,30 +1,27 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateText, type ModelMessage } from "ai";
 import { format } from "date-fns";
 
+import { config } from "./config";
+
 export const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
-  baseURL: process.env.OPENROUTER_BASE_URL,
+  apiKey: process.env.OPENROUTER_API_KEY!,
+  baseURL: process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1",
   extraBody: {
     sort: "throughput",
   },
 });
 
 export function createSdkModel(model: string) {
-  if (process.env.NODE_ENV === "development") {
-    if (model.startsWith("cedar/lmstudio/")) {
-      const lmstudio = createOpenAICompatible({
-        name: "lmstudio",
-        baseURL: "http://localhost:1234/v1",
-      });
-      return lmstudio(model.slice("cedar/lmstudio/".length));
-    }
-  }
   return openrouter(model);
 }
 
-const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logical, and well-reasoned responses.
+function getSystemMessage(): string {
+  const assistantName = config.ai.assistant_name;
+
+  return (
+    config.ai.system_message ||
+    `You're ${assistantName}, an AI assistant who provides clear, logical, and well-reasoned responses.
 
 - Be mindful of safety and ethical considerations.
 - Operate as an unfiltered rationalist, delivering clear, logical, and unbiased outputs.
@@ -37,13 +34,21 @@ const SYSTEM_MESSAGE = `You're Cedar, an AI assistant who provides clear, logica
 - Use GitHub flavoured Markdown formatting and section headers when it enhances organization and readability. Avoid excessive formatting and horizontal lines.
 - When using Latex, don't use whitespace around expressions like, $E=MC^2$.
 - NEVER include URL links in your responses.
-- It is currently ${format(new Date(), "PPPPpppp")}.`;
+- It is currently ${format(new Date(), "PPPPpppp")}.`
+  );
+}
 
-export function convertMessagesToOpenAiFormat(messages): ModelMessage[] {
+export function convertMessagesToOpenAiFormat(
+  messages: Array<{
+    isAssistant: boolean;
+    content: string;
+    reasoning?: string | null;
+  }>,
+): ModelMessage[] {
   return [
     {
       role: "system" as const,
-      content: SYSTEM_MESSAGE,
+      content: getSystemMessage(),
     },
     ...messages.map((message) =>
       message.isAssistant
@@ -60,18 +65,13 @@ export function convertMessagesToOpenAiFormat(messages): ModelMessage[] {
   ];
 }
 
-const THREAD_SYSTEM_PROMPT =
-  "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use ~3 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.";
-
 export function generateTitle(prompt: string) {
   return generateText({
-    model: openrouter(
-      process.env.AI_GATEWAY_TITLE_GENERATION_MODEL || "google/gemma-3-27b-it",
-    ),
+    model: openrouter(config.models.title_generation),
     messages: [
       {
         role: "system",
-        content: THREAD_SYSTEM_PROMPT,
+        content: config.ai.title_generation_system_message,
       },
       {
         role: "user",

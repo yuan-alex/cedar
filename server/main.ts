@@ -10,6 +10,7 @@ import {
 import { Hono } from "hono";
 import { z } from "zod";
 
+import { config } from "@/server/utils/config";
 import {
   convertMessagesToOpenAiFormat,
   createSdkModel,
@@ -20,7 +21,13 @@ import { modelIds, models } from "@/utils/providers";
 
 export const app = new Hono();
 
-app.use("*", clerkMiddleware());
+app.use(
+  "*",
+  clerkMiddleware({
+    secretKey: import.meta.env.CLERK_SECRET_KEY,
+    publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
+  }),
+);
 
 app.get("/api/v1/health", async (c) => {
   return c.html("good");
