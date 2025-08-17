@@ -10,14 +10,13 @@ import {
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { config } from "@/server/utils/config";
 import {
   convertMessagesToOpenAiFormat,
   createSdkModel,
   generateTitle,
 } from "@/server/utils/inference";
 import prisma from "@/server/utils/prisma";
-import { modelIds, models } from "@/utils/providers";
+import { modelIds, models } from "@/server/utils/providers";
 
 export const app = new Hono();
 

@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import { useQuery } from "@tanstack/react-query";
 import { Brain, Zap } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -10,16 +11,21 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import type { IModel } from "@/server/utils/providers";
 import { getModelIconById } from "@/utils/provider-icons";
-import { findModelById, type IModel, models } from "@/utils/providers";
+import { createQueryFn } from "@/utils/queries";
 import { $model } from "@/utils/stores";
 
 export function ModelCommandMenu(props: { handleClose: () => void }) {
   const model = useStore($model);
 
-  function onModelSelect(modelId: string) {
+  const { data: modelsData } = useQuery({
+    queryKey: ["models"],
+    queryFn: createQueryFn("/api/v1/models"),
+  });
+
+  function onModelSelect(model: IModel) {
     props.handleClose();
-    const model = findModelById(modelId);
     $model.set({
       id: model.id,
       name: model.name,
@@ -32,11 +38,11 @@ export function ModelCommandMenu(props: { handleClose: () => void }) {
       <CommandList>
         <CommandEmpty>No model found.</CommandEmpty>
         <CommandGroup>
-          {models.map((model) => (
+          {modelsData?.map((model) => (
             <ModelItem
               key={model.id}
               model={model}
-              onModelSelect={onModelSelect}
+              onModelSelect={() => onModelSelect(model)}
             />
           ))}
         </CommandGroup>
