@@ -9,8 +9,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { $model } from "@/utils/stores";
 import { getModelIconById } from "@/utils/provider-icons";
+import { $model } from "@/utils/stores";
 
 export function ModelPopover() {
   const model = useStore($model);
@@ -24,6 +24,7 @@ export function ModelPopover() {
           role="combobox"
           aria-expanded={open}
           className="justify-between"
+          size="sm"
         >
           <div className="flex items-center gap-2">
             {getModelIconById(model.id)}

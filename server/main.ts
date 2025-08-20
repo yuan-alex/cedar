@@ -4,21 +4,25 @@ import {
   defaultSettingsMiddleware,
   extractReasoningMiddleware,
   smoothStream,
+  stepCountIs,
   streamText,
   wrapLanguageModel,
 } from "ai";
 import { Hono } from "hono";
 import { z } from "zod";
-
+import { config } from "@/server/utils/config";
 import {
   convertMessagesToOpenAiFormat,
   createSdkModel,
   generateTitle,
 } from "@/server/utils/inference";
+import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import { modelIds, models } from "@/server/utils/providers";
 
 export const app = new Hono();
+
+const mcpClientManager = new MCPClientManager();
 
 app.use(
   "*",
@@ -30,6 +34,14 @@ app.use(
 
 app.get("/api/v1/health", async (c) => {
   return c.html("good");
+});
+
+app.get("/api/v1/models", async (c) => {
+  return c.json(models);
+});
+
+app.get("/api/v1/mcp/servers", async (c) => {
+  return c.json(config.mcpServers);
 });
 
 // get threads
@@ -154,6 +166,7 @@ app.post(
     z.object({
       model: z.string(),
       content: z.string(),
+      mcpServers: z.array(z.string()),
     }),
   ),
   async (c) => {
@@ -247,7 +260,15 @@ app.post(
     const result = streamText({
       model: wrappedLanguageModel,
       messages: convertMessagesToOpenAiFormat(messages),
+      tools: await mcpClientManager.getAllTools(userInput.mcpServers),
+      stopWhen: stepCountIs(10),
       experimental_transform: smoothStream({ chunking: "word" }),
+      onStepFinish: async (event) => {
+        if (!event) {
+          return;
+        }
+        console.log(event);
+      },
       onFinish: async (event) => {
         await prisma.run.update({
           where: {
@@ -309,8 +330,4 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
   await prisma.$transaction([deleteMessages, deleteThread]);
 
   return new Response("ok");
-});
-
-app.get("/api/v1/models", async (c) => {
-  return c.json(models);
 });

@@ -30,3 +30,15 @@ features:
   enable_model_selection: true
   enable_debug_logging: true     # Enable debug logging in development
 
+mcpServers:
+  claude-code:
+    type: stdio
+    command: claude
+    args: ["mcp", "serve"]
+  everything:
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-everything"
+

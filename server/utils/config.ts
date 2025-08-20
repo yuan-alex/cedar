@@ -40,6 +40,30 @@ const ConfigSchema = z.object({
     enable_model_selection: z.boolean().default(true),
     enable_debug_logging: z.boolean().default(false),
   }),
+
+  mcpServers: z
+    .record(
+      z.string(),
+      z.discriminatedUnion("type", [
+        z.object({
+          type: z.literal("stdio"),
+          command: z.string(),
+          args: z.array(z.string()).optional(),
+          enabled: z.boolean().default(true),
+        }),
+        z.object({
+          type: z.literal("http"),
+          url: z.string(),
+          enabled: z.boolean().default(true),
+        }),
+        z.object({
+          type: z.literal("sse"),
+          url: z.string(),
+          enabled: z.boolean().default(true),
+        }),
+      ]),
+    )
+    .default({}),
 });
 
 function loadConfig() {

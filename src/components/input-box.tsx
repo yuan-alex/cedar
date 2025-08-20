@@ -1,5 +1,5 @@
 import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
-
+import { McpSelector } from "@/components/mcp-selector";
 import { ModelPopover } from "@/components/model-popover";
 
 export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
@@ -60,6 +60,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
       />
       <div className="flex gap-2 mt-1">
         <ModelPopover />
+        <McpSelector />
       </div>
     </>
   );

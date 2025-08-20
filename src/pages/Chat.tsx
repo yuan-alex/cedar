@@ -8,7 +8,7 @@ import { StickToBottom } from "use-stick-to-bottom";
 import { InputBox } from "@/components/input-box";
 import { CedarMessage } from "@/components/message";
 import { createQueryFn } from "@/utils/queries";
-import { $model, $prompt } from "@/utils/stores";
+import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
 
 export function Chat() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });
@@ -29,6 +29,9 @@ export function Chat() {
         body: {
           model: $model?.get().id,
           content: messages[messages.length - 1].parts[0].text,
+          mcpServers: $mcpSelectedServers.value
+            ? $mcpSelectedServers.value.split(",").filter(Boolean)
+            : [],
         },
       }),
     }),

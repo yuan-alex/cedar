@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 import { InputBox } from "@/components/input-box";
@@ -5,6 +6,30 @@ import { $model, $prompt } from "@/utils/stores";
 
 export function NewChat() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const createThreadMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/v1/threads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: $model.get().id,
+          prompt: $prompt.value,
+        }),
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
+      queryClient.invalidateQueries({ queryKey: ["allThreads"] });
+      navigate({
+        to: "/chat/$threadToken",
+        params: { threadToken: data.token },
+      });
+    },
+  });
 
   function handleCreateThread(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -13,23 +38,7 @@ export function NewChat() {
       return;
     }
 
-    fetch("/api/v1/threads", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: $model.get().id,
-        prompt: $prompt.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) =>
-        navigate({
-          to: "/chat/$threadToken",
-          params: { threadToken: data.token },
-        }),
-      );
+    createThreadMutation.mutate();
   }
 
   return (
