@@ -1,0 +1,32 @@
+app:
+  name: "Cedar (Dev)"
+  title: "Cedar Development" 
+  description: "Your AI Assistant - Development Mode"
+
+ai:
+  assistant_name: "Cedar Dev Assistant"
+  system_message: "You are a helpful AI assistant running in development mode. You provide clear, logical, and well-reasoned responses to user questions and requests. You are knowledgeable across many domains and can help with a wide variety of tasks. Debug information may be more verbose in this mode."
+
+models:
+  default: "google/gemini-2.5-flash"
+  temperature: 0.1  # Lower temperature for more consistent dev testing
+  max_tokens: 4096  # Higher token limit for development
+  title_generation: "openai/gpt-oss-20b"
+  mappings:
+    auto: "openrouter/auto"
+    smart: "google/gemini-2.5-flash"
+    creative: "moonshotai/kimi-k2"
+    fast: "google/gemini-2.5-flash-lite"
+    reasoning: "openai/gpt-oss-120b"
+
+ui:
+  chat_placeholder: "Type your message... (Dev Mode)"
+  max_history_items: 100  # More history items for development
+  default_chat_name: "New dev chat"
+
+features:
+  enable_dev_models: true        # Enable dev models in development
+  enable_reasoning_display: true
+  enable_model_selection: true
+  enable_debug_logging: true     # Enable debug logging in development
+

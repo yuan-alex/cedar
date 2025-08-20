@@ -44,9 +44,32 @@ const ConfigSchema = z.object({
 
 function loadConfig() {
   try {
-    const configPath = join(process.cwd(), "config", "default.yml");
-    const yamlContent = readFileSync(configPath, "utf8");
-    const yamlData = parse(yamlContent);
+    // Determine which config file to use based on NODE_ENV
+    const isDevelopment = process.env.NODE_ENV === "development";
+    const configFileName = isDevelopment ? "config.dev.yml" : "config.yml";
+    const configPath = join(process.cwd(), "config", configFileName);
+
+    // Try to load the environment-specific config first
+    let yamlContent: string;
+    let yamlData: unknown;
+
+    try {
+      yamlContent = readFileSync(configPath, "utf8");
+      yamlData = parse(yamlContent);
+      console.log(`Loaded config from: ${configFileName}`);
+    } catch (envConfigError) {
+      // If environment-specific config doesn't exist, fall back to default config.yml
+      if (isDevelopment) {
+        console.warn(
+          "Development config not found, falling back to config.yml",
+        );
+        const fallbackPath = join(process.cwd(), "config", "config.yml");
+        yamlContent = readFileSync(fallbackPath, "utf8");
+        yamlData = parse(yamlContent);
+      } else {
+        throw envConfigError;
+      }
+    }
 
     // Parse and validate with Zod
     const config = ConfigSchema.parse(yamlData);
