@@ -129,6 +129,10 @@ export const providers: IProvider[] = [
         name: "DeepSeek R1 Qwen 8B",
         reasoning: true,
       },
+      {
+        id: "deepseek/deepseek-chat-v3.1",
+        name: "DeepSeek Chat V3.1",
+      },
     ],
   },
   {
@@ -207,15 +211,6 @@ export const providers: IProvider[] = [
         id: "x-ai/grok-4",
         name: "Grok 4",
         reasoning: true,
-      },
-      {
-        id: "x-ai/grok-3-beta",
-        name: "Grok 3 Beta",
-      },
-      {
-        id: "x-ai/grok-3-mini-beta",
-        name: "Grok 3 Mini Beta",
-        fast: true,
       },
     ],
   },
