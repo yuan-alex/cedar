@@ -13,6 +13,8 @@ import { Route as TestingRouteImport } from './routes/testing'
 import { Route as ChatsRouteImport } from './routes/chats'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatThreadTokenRouteImport } from './routes/chat.$threadToken'
+import { Route as AuthAuthViewRouteImport } from './routes/auth.$authView'
+import { Route as AccountAccountViewRouteImport } from './routes/account.$accountView'
 
 const TestingRoute = TestingRouteImport.update({
   id: '/testing',
@@ -34,17 +36,31 @@ const ChatThreadTokenRoute = ChatThreadTokenRouteImport.update({
   path: '/chat/$threadToken',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthAuthViewRoute = AuthAuthViewRouteImport.update({
+  id: '/auth/$authView',
+  path: '/auth/$authView',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountAccountViewRoute = AccountAccountViewRouteImport.update({
+  id: '/account/$accountView',
+  path: '/account/$accountView',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chats': typeof ChatsRoute
   '/testing': typeof TestingRoute
+  '/account/$accountView': typeof AccountAccountViewRoute
+  '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chats': typeof ChatsRoute
   '/testing': typeof TestingRoute
+  '/account/$accountView': typeof AccountAccountViewRoute
+  '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
 export interface FileRoutesById {
@@ -52,20 +68,43 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chats': typeof ChatsRoute
   '/testing': typeof TestingRoute
+  '/account/$accountView': typeof AccountAccountViewRoute
+  '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/chats' | '/testing' | '/chat/$threadToken'
+  fullPaths:
+    | '/'
+    | '/chats'
+    | '/testing'
+    | '/account/$accountView'
+    | '/auth/$authView'
+    | '/chat/$threadToken'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/chats' | '/testing' | '/chat/$threadToken'
-  id: '__root__' | '/' | '/chats' | '/testing' | '/chat/$threadToken'
+  to:
+    | '/'
+    | '/chats'
+    | '/testing'
+    | '/account/$accountView'
+    | '/auth/$authView'
+    | '/chat/$threadToken'
+  id:
+    | '__root__'
+    | '/'
+    | '/chats'
+    | '/testing'
+    | '/account/$accountView'
+    | '/auth/$authView'
+    | '/chat/$threadToken'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatsRoute: typeof ChatsRoute
   TestingRoute: typeof TestingRoute
+  AccountAccountViewRoute: typeof AccountAccountViewRoute
+  AuthAuthViewRoute: typeof AuthAuthViewRoute
   ChatThreadTokenRoute: typeof ChatThreadTokenRoute
 }
 
@@ -99,6 +138,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatThreadTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/$authView': {
+      id: '/auth/$authView'
+      path: '/auth/$authView'
+      fullPath: '/auth/$authView'
+      preLoaderRoute: typeof AuthAuthViewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/$accountView': {
+      id: '/account/$accountView'
+      path: '/account/$accountView'
+      fullPath: '/account/$accountView'
+      preLoaderRoute: typeof AccountAccountViewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -106,6 +159,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatsRoute: ChatsRoute,
   TestingRoute: TestingRoute,
+  AccountAccountViewRoute: AccountAccountViewRoute,
+  AuthAuthViewRoute: AuthAuthViewRoute,
   ChatThreadTokenRoute: ChatThreadTokenRoute,
 }
 export const routeTree = rootRouteImport

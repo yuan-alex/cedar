@@ -1,8 +1,8 @@
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@daveyplate/better-auth-ui";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import * as React from "react";
+import { BetterAuthUiProvider } from "@/better-auth-ui-provider";
 
 import { AuthenticatedApp } from "@/components/authenticated-app";
 
@@ -12,7 +12,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <React.Fragment>
+    <BetterAuthUiProvider>
       <SignedIn>
         <AuthenticatedApp />
       </SignedIn>
@@ -21,6 +21,6 @@ function RootComponent() {
       </SignedOut>
       <TanStackRouterDevtools position="top-right" />
       <ReactQueryDevtools />
-    </React.Fragment>
+    </BetterAuthUiProvider>
   );
 }

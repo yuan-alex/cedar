@@ -1,6 +1,5 @@
-import { useUser } from "@clerk/clerk-react";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { AppProviders } from "@/app-providers";
 import { routeTree } from "@/routeTree.gen";
 
 declare module "@tanstack/react-router" {
@@ -15,7 +14,9 @@ export const router = createRouter({
 });
 
 export function RouterWithContext() {
-  const { isSignedIn } = useUser();
-
-  return <RouterProvider router={router} context={{ auth: { isSignedIn } }} />;
+  return (
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
+  );
 }

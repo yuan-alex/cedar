@@ -1,7 +1,6 @@
-import { SignInButton } from "@clerk/clerk-react";
+import { Link } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-
 import { Button } from "@/components/ui/button";
 
 export function LandingPage() {
@@ -73,17 +72,18 @@ export function LandingPage() {
               onClick={toggleTheme}
               className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition-colors"
               aria-label="Toggle theme"
+              type="button"
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <SignInButton>
+            <Link to="/auth/$path" params={{ path: "signin" }}>
               <Button
                 variant="outline"
                 className="border-gray-300 hover:border-gray-400 dark:border-zinc-700 dark:hover:border-zinc-500 transition-colors"
               >
                 Sign in
               </Button>
-            </SignInButton>
+            </Link>
           </div>
         </div>
       </header>
@@ -94,18 +94,16 @@ export function LandingPage() {
             <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-r from-indigo-500/10 to-purple-600/10 dark:from-indigo-500/20 dark:to-purple-600/20 blur-[120px] rounded-full opacity-30" />
             <div className="relative text-center mb-16">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 mx-auto max-w-4xl leading-tight bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
-                AI for the rest of us
+                The Best AI Chat Platform
               </h1>
               <p className="text-xl md:text-2xl text-zinc-600 dark:text-zinc-400 mb-10 mx-auto max-w-2xl leading-relaxed">
                 The enterprise-ready AI platform built for productivity,
                 security, and performance.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <SignInButton>
-                  <Button size="lg" variant="outline">
-                    Get Started
-                  </Button>
-                </SignInButton>
+                <Button size="lg" variant="outline">
+                  Get Started
+                </Button>
                 <Button size="lg" variant="ghost">
                   View Demo
                 </Button>

@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/clerk-react";
+import { UserButton } from "@daveyplate/better-auth-ui";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { PlusCircleIcon } from "lucide-react";
@@ -56,7 +56,7 @@ export function CedarSidebar() {
         )}
       </SidebarContent>
       <SidebarFooter>
-        <UserButton />
+        <UserButton variant="outline" />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

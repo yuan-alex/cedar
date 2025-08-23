@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@daveyplate/better-auth-ui";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { LandingPage } from "@/components/landing-page";

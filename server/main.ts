@@ -1,4 +1,3 @@
-import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import {
   defaultSettingsMiddleware,
@@ -10,6 +9,8 @@ import {
 } from "ai";
 import { Hono } from "hono";
 import { z } from "zod";
+
+import { auth } from "@/server/utils/auth";
 import { config } from "@/server/utils/config";
 import {
   convertMessagesToOpenAiFormat,
@@ -20,17 +21,40 @@ import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import { modelIds, models } from "@/server/utils/providers";
 
-export const app = new Hono();
-
 const mcpClientManager = new MCPClientManager();
 
-app.use(
-  "*",
-  clerkMiddleware({
-    secretKey: import.meta.env.CLERK_SECRET_KEY,
-    publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
-  }),
-);
+export const app = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
+}>();
+
+app.use("*", async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
+  if (!session) {
+    c.set("user", null);
+    c.set("session", null);
+    return next();
+  }
+
+  c.set("user", session.user);
+  c.set("session", session.session);
+  return next();
+});
+
+app.get("/api/v1/session", (c) => {
+  const session = c.get("session");
+  const user = c.get("user");
+
+  if (!user) return c.body(null, 401);
+
+  return c.json({
+    session,
+    user,
+  });
+});
 
 app.get("/api/v1/health", async (c) => {
   return c.html("good");
@@ -44,13 +68,14 @@ app.get("/api/v1/mcp/servers", async (c) => {
   return c.json(config.mcpServers);
 });
 
+app.on(["POST", "GET"], "/api/auth/*", (c) => {
+  return auth.handler(c.req.raw);
+});
+
 // get threads
 app.get("/api/v1/threads", async (c) => {
-  const auth = getAuth(c);
-
-  if (!auth?.userId) {
-    return c.notFound();
-  }
+  const user = c.get("user");
+  if (!user) return c.body(null, 401);
 
   const take = c.req.query("take")
     ? Number.parseInt(c.req.query("take") as string)
@@ -59,7 +84,7 @@ app.get("/api/v1/threads", async (c) => {
 
   const threads = await prisma.thread.findMany({
     where: {
-      userId: auth?.userId,
+      userId: user.id,
       isDeleted: false,
     },
     take,
@@ -89,19 +114,19 @@ app.post(
     }),
   ),
   async (c) => {
-    const auth = getAuth(c);
-    const userId = auth?.userId;
+    const user = c.get("user");
+    if (!user) return c.body(null, 401);
 
     const { model, prompt } = await c.req.json();
 
-    if (!userId || !prompt || !model) {
+    if (!user.id || !prompt || !model) {
       return new Response("invalid parameters", { status: 400 });
     }
 
     const thread = await prisma.thread.create({
       data: {
         model: model,
-        userId,
+        userId: user.id,
       },
     });
 
@@ -122,12 +147,8 @@ app.post(
 
 // Get thread
 app.get("/api/v1/threads/:threadToken", async (c) => {
-  const auth = getAuth(c);
-  const userId = auth?.userId;
-
-  if (!userId) {
-    return c.notFound();
-  }
+  const user = c.get("user");
+  if (!user) return c.body(null, 401);
 
   const thread = await prisma.thread.findUnique({
     where: {
@@ -151,7 +172,7 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
     },
   });
 
-  if (!thread || thread?.userId !== userId) {
+  if (!thread || thread?.userId !== user.id) {
     return c.notFound();
   }
 
@@ -170,12 +191,8 @@ app.post(
     }),
   ),
   async (c) => {
-    const auth = getAuth(c);
-    const userId = auth?.userId;
-
-    if (!userId) {
-      return c.notFound();
-    }
+    const user = c.get("user");
+    if (!user) return c.body(null, 401);
 
     const threadToken = c.req.param("threadToken");
     const userInput = await c.req.json();
@@ -205,7 +222,7 @@ app.post(
       },
     });
 
-    if (!thread || thread.userId !== userId || !modelIds.includes(model)) {
+    if (!thread || thread.userId !== user.id || !modelIds.includes(model)) {
       return c.notFound();
     }
 
@@ -302,15 +319,11 @@ app.post(
 
 app.delete("/api/v1/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
-  const auth = getAuth(c);
-  const userId = auth?.userId;
-
-  if (!userId) {
-    return c.notFound();
-  }
+  const user = c.get("user");
+  if (!user) return c.body(null, 401);
 
   const thread = await prisma.thread.findUnique({
-    where: { token: threadToken, userId },
+    where: { token: threadToken, userId: user.id },
   });
 
   if (!thread) {
@@ -323,7 +336,7 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
   });
 
   const deleteThread = prisma.thread.update({
-    where: { token: threadToken, userId },
+    where: { token: threadToken, userId: user.id },
     data: { isDeleted: true },
   });
 
