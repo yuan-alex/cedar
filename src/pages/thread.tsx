@@ -5,12 +5,12 @@ import { DefaultChatTransport } from "ai";
 import { useEffect, useState } from "react";
 import { StickToBottom } from "use-stick-to-bottom";
 
+import { CedarMessage } from "@/components/cedar-message";
 import { InputBox } from "@/components/input-box";
-import { CedarMessage } from "@/components/message";
 import { createQueryFn } from "@/utils/queries";
 import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
 
-export function Chat() {
+export function Thread() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });
   const queryClient = useQueryClient();
 
@@ -41,7 +41,7 @@ export function Chat() {
     },
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sendMessage dependency would cause infinite re-renders
   useEffect(() => {
     const prompt = $prompt.value;
 

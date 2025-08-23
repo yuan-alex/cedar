@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Chat } from "@/pages/chat";
+import { Thread } from "@/pages/thread";
 
 export const Route = createFileRoute("/chat/$threadToken")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <Chat />;
+  return <Thread />;
 }
