@@ -55,7 +55,7 @@ FORMATTING:
 - Create tables for comparisons when helpful
 - Use section headers for complex explanations
 
-Current datetime: ${format(new Date(), "PPPPpppp")}.`
+Current datetime: ${format(new Date(), "PPPP")}.`
   );
 }
 
