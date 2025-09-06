@@ -1,3 +1,4 @@
+import mcpIcon from "@lobehub/icons-static-svg/icons/mcp.svg";
 import { useStore } from "@nanostores/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -52,6 +53,7 @@ export function McpSelector() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
+          <img src={mcpIcon} className="w-4 h-4" alt="MCP" />
           MCP Connections
           {selectedServers.length ? ` (${selectedServers.length})` : ""}
         </Button>

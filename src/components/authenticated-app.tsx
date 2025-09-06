@@ -18,7 +18,7 @@ export function AuthenticatedApp() {
     <SidebarProvider className="h-screen w-screen overflow-hidden">
       <CommandMenu />
       <CedarSidebar />
-      <main className="w-full h-full overflow-hidden">
+      <main className="flex-1 min-h-0 w-full overflow-auto">
         <SidebarTrigger className="fixed m-2" />
         <Outlet />
       </main>
