@@ -5,7 +5,7 @@ import prisma from "@/server/utils/prisma";
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
-    disableSignUp: true,
+    disableSignUp: process.env.NODE_ENV === "production",
   },
   database: prismaAdapter(prisma, {
     provider: "postgresql",

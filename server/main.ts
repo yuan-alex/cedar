@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import {
+  convertToModelMessages,
   defaultSettingsMiddleware,
-  extractReasoningMiddleware,
   smoothStream,
   stepCountIs,
   streamText,
@@ -12,13 +12,13 @@ import { z } from "zod";
 
 import { auth } from "@/server/utils/auth";
 import { config } from "@/server/utils/config";
-import {
-  convertMessagesToOpenAiFormat,
-  createSdkModel,
-  generateTitle,
-} from "@/server/utils/inference";
+import { createSdkModel, generateTitle } from "@/server/utils/inference";
 import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
+import {
+  ChatMessageRole,
+  ChatMessageStatus,
+} from "@/server/utils/prisma-client";
 import { modelIds, models } from "@/server/utils/providers";
 
 const mcpClientManager = new MCPClientManager();
@@ -157,14 +157,10 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
     },
     include: {
       messages: {
-        include: {
-          runStep: true,
+        select: {
+          uiMessage: true,
+          uiMessageParts: true,
         },
-        orderBy: {
-          id: "asc",
-        },
-      },
-      runs: {
         orderBy: {
           id: "asc",
         },
@@ -172,7 +168,7 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
     },
   });
 
-  if (!thread || thread?.userId !== user.id) {
+  if (!thread || thread.userId !== user.id) {
     return c.notFound();
   }
 
@@ -186,7 +182,7 @@ app.post(
     "json",
     z.object({
       model: z.string(),
-      content: z.string(),
+      newMessage: z.any(),
       mcpServers: z.array(z.string()),
     }),
   ),
@@ -234,17 +230,12 @@ app.post(
         lastMessagedAt: new Date(),
         messages: {
           create: {
-            isAssistant: false,
-            content: userInput.content,
+            token: userInput.newMessage.id,
+            role: ChatMessageRole.user,
+            uiMessage: JSON.stringify(userInput.newMessage),
+            uiMessageParts: userInput.newMessage.parts as any,
           },
         },
-      },
-    });
-
-    const run = await prisma.run.create({
-      data: {
-        threadId: thread.id,
-        status: "inProgress",
       },
     });
 
@@ -257,63 +248,76 @@ app.post(
       },
     });
 
-    const extractReasoning = extractReasoningMiddleware({
-      tagName: "think",
-      separator: "\n",
-    });
-
     const settingsMiddleware = defaultSettingsMiddleware({
       settings: {
         temperature: 0.3,
         maxOutputTokens: 2048,
       },
     });
-
     const wrappedLanguageModel = wrapLanguageModel({
       model: createSdkModel(model),
-      middleware: [settingsMiddleware, extractReasoning],
+      middleware: [settingsMiddleware],
     });
+
+    const originalUiMessages = messages.flatMap((message) =>
+      JSON.parse(message.uiMessage as string),
+    );
 
     const result = streamText({
       model: wrappedLanguageModel,
-      messages: convertMessagesToOpenAiFormat(messages),
+      messages: convertToModelMessages(originalUiMessages),
       tools: await mcpClientManager.getAllTools(userInput.mcpServers),
       stopWhen: stepCountIs(10),
-      experimental_transform: smoothStream({ chunking: "word" }),
-      onStepFinish: async (event) => {
-        if (!event) {
-          return;
-        }
-        console.log(event);
+      experimental_transform: smoothStream({
+        chunking: "line",
+      }),
+    });
+
+    const newMessage = await prisma.chatMessage.create({
+      data: {
+        role: ChatMessageRole.assistant,
+        status: ChatMessageStatus.inProgress,
+        uiMessage: "",
+        uiMessageParts: [],
+        threadId: thread.id,
       },
-      onFinish: async (event) => {
-        await prisma.run.update({
-          where: {
-            id: run.id,
-          },
+    });
+
+    return result.toUIMessageStreamResponse({
+      originalMessages: originalUiMessages,
+      generateMessageId: () => newMessage.token,
+      onError: (error) => {
+        prisma.chatMessage.update({
+          where: { id: newMessage.id },
           data: {
-            status: "completed",
-            steps: {
-              create: {
-                message: {
-                  create: {
-                    threadId: thread.id,
-                    isAssistant: true,
-                    content: event.text,
-                    reasoning: event.reasoningText,
-                  },
-                },
-                type: "generation",
-                generationProviderToken: event.response.id,
-                generationModel: event.response.modelId,
+            status: ChatMessageStatus.failed,
+          },
+        });
+        return `Failed to process message: ${error}`;
+      },
+      onFinish: async ({ messages, responseMessage }) => {
+        await prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: {
+            uiMessage: JSON.stringify(responseMessage),
+            uiMessageParts: responseMessage.parts as any,
+            status: ChatMessageStatus.completed,
+          },
+        });
+
+        await prisma.thread.update({
+          where: { id: thread.id },
+          data: {
+            uiMessages: JSON.stringify(messages),
+            messages: {
+              connect: {
+                id: newMessage.id,
               },
             },
           },
         });
       },
     });
-
-    return result.toUIMessageStreamResponse();
   },
 );
 
@@ -332,7 +336,7 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
 
   const deleteMessages = prisma.chatMessage.updateMany({
     where: { threadId: thread.id },
-    data: { isDeleted: true, content: "" },
+    data: { isDeleted: true, uiMessage: "" },
   });
 
   const deleteThread = prisma.thread.update({

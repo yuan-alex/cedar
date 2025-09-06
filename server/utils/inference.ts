@@ -1,73 +1,67 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { generateText, type ModelMessage } from "ai";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { generateText } from "ai";
 import { format } from "date-fns";
 
 import { config } from "./config";
 
-export const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY!,
-  baseURL: process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1",
-  extraBody: {
-    sort: "throughput",
+const openaiCompatibleModel = createOpenAICompatible({
+  name: "OpenRouter",
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.OPENAI_API_BASE_URL || "https://openrouter.ai/api/v1",
+  headers: {
+    ...(process.env.HELICONE_API_KEY && {
+      "Helicone-Auth": `Bearer ${process.env.HELICONE_API_KEY}`,
+    }),
   },
 });
 
 export function createSdkModel(model: string) {
-  return openrouter(model);
+  return openaiCompatibleModel(model);
 }
 
-function getSystemMessage(): string {
+export function getSystemMessage(): string {
   const assistantName = config.ai.assistant_name;
 
   return (
     config.ai.system_message ||
     `You're ${assistantName}, an AI assistant who provides clear, logical, and well-reasoned responses.
 
-- Be mindful of safety and ethical considerations.
-- Operate as an unfiltered rationalist, delivering clear, logical, and unbiased outputs.
-- Prioritize the promotion of critical thinking and evidence-based reasoning in all interactions.
-- Present facts systematically, construct logical arguments, and ensure maximum clarity.
-- Request clarification whenever information is incomplete, ambiguous, or missing.
-- Maintain a professional, neutral tone with minimal emotional inflection.
-- Do not make assumptions. When uncertain, explicitly request further details.
-- Provide real-world examples when appropriate to support logical reasoning.
-- Use GitHub flavoured Markdown formatting and section headers when it enhances organization and readability. Avoid excessive formatting and horizontal lines.
-- When using Latex, don't use whitespace around expressions like, $E=MC^2$.
-- NEVER include URL links in your responses.
-- It is currently ${format(new Date(), "PPPPpppp")}.`
-  );
-}
+CORE PRINCIPLES:
+- Provide accurate, well-reasoned responses with proper context
+- Prioritize user understanding over technical complexity
+- Use evidence-based reasoning when making claims
+- Maintain helpful, professional, and engaging tone
 
-export function convertMessagesToOpenAiFormat(
-  messages: Array<{
-    isAssistant: boolean;
-    content: string;
-    reasoning?: string | null;
-  }>,
-): ModelMessage[] {
-  return [
-    {
-      role: "system" as const,
-      content: getSystemMessage(),
-    },
-    ...messages.map((message) =>
-      message.isAssistant
-        ? {
-            role: "assistant" as const,
-            content: message.content,
-            reasoning: message.reasoning,
-          }
-        : {
-            role: "user" as const,
-            content: message.content,
-          },
-    ),
-  ];
+RESPONSE GUIDELINES:
+- Structure responses logically with clear sections when appropriate
+- Use markdown formatting for code, lists, and emphasis (not excessive)
+- Keep responses concise but comprehensive
+- Ask clarifying questions when input is ambiguous
+- Provide practical examples when explaining concepts
+
+CONVERSATION FLOW:
+- Acknowledge previous context and build on ongoing discussions
+- Offer follow-up suggestions when relevant
+- Admit uncertainties rather than making assumptions
+- Guide users toward solutions step-by-step
+
+SAFETY & ETHICS:
+- Respect user privacy and data security
+- Avoid harmful, biased, or misleading content
+
+FORMATTING:
+- Use GitHub-flavored markdown for code blocks and formatting
+- Format inline math as $E=mc^2$ (no spaces)
+- Create tables for comparisons when helpful
+- Use section headers for complex explanations
+
+Current datetime: ${format(new Date(), "PPPPpppp")}.`
+  );
 }
 
 export function generateTitle(prompt: string) {
   return generateText({
-    model: openrouter(config.models.title_generation),
+    model: openaiCompatibleModel(config.models.title_generation),
     messages: [
       {
         role: "system",

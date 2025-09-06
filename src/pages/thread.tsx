@@ -12,6 +12,7 @@ import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
 
 export function Thread() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });
+  const [showDebug, setShowDebug] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: thread } = useQuery({
@@ -22,13 +23,14 @@ export function Thread() {
   const [input, setInput] = useState("");
   const { messages, setMessages, sendMessage } = useChat({
     id: threadToken,
+    generateId: () => crypto.randomUUID(),
     transport: new DefaultChatTransport({
       api: `/api/v1/threads/${threadToken}`,
       credentials: "include",
-      prepareSendMessagesRequest: ({ messages }) => ({
+      prepareSendMessagesRequest: (request) => ({
         body: {
           model: $model?.get().id,
-          content: messages[messages.length - 1].parts[0].text,
+          newMessage: request.messages[request.messages.length - 1],
           mcpServers: $mcpSelectedServers.value
             ? $mcpSelectedServers.value.split(",").filter(Boolean)
             : [],
@@ -50,19 +52,14 @@ export function Thread() {
         sendMessage({ text: prompt });
         $prompt.set("");
       } else {
-        setMessages(
-          thread.messages.map((msg: any) => ({
-            ...msg,
-            id: msg.token,
-            role: msg.isAssistant ? "assistant" : "user",
-            parts: [
-              ...(msg.reasoning
-                ? [{ type: "reasoning", text: msg.reasoning }]
-                : []),
-              { type: "text", text: msg.content },
-            ],
-          })),
-        );
+        const restoredMessages = thread.messages.map((msg: any) => {
+          const parsedMessage = JSON.parse(msg.uiMessage);
+          return {
+            ...parsedMessage,
+            content: parsedMessage.parts,
+          };
+        });
+        setMessages(restoredMessages);
       }
     }
   }, [thread, threadToken]);
@@ -86,6 +83,26 @@ export function Thread() {
           ))}
         </StickToBottom.Content>
       </StickToBottom>
+      {import.meta.env.DEV && (
+        <>
+          <div className="fixed bottom-16 right-4 z-50 w-[28rem] max-h-[60vh] overflow-auto rounded border border-zinc-700 bg-black/90 p-3 text-green-200">
+            {showDebug ? (
+              <pre className="whitespace-pre-wrap break-words text-xs font-mono">
+                {JSON.stringify(messages, null, 2)}
+              </pre>
+            ) : (
+              <div className="text-xs text-zinc-300">Debug panel hidden</div>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowDebug((v) => !v)}
+            className="fixed bottom-4 right-4 z-50 rounded bg-zinc-800 px-3 py-1.5 text-xs text-white shadow hover:bg-zinc-700"
+          >
+            {showDebug ? "Hide messages" : "Show messages"}
+          </button>
+        </>
+      )}
       <div className="basis-0 p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
         <form onSubmit={handleSubmit}>
           <InputBox

@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../server/utils/prisma-client"
@@ -10,77 +9,43 @@ datasource db {
 }
 
 model Thread {
-  id             Int      @id @default(autoincrement())
-  token          String   @unique @default(uuid())
-  name           String   @default("New chat")
+  id             Int           @id @default(autoincrement())
+  token          String        @unique @default(uuid())
+  name           String        @default("New chat")
   model          String
   userId         String
-  user           User     @relation(fields: [userId], references: [id])
-  isDeleted      Boolean  @default(false)
-  lastMessagedAt DateTime @default(now())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  messages ChatMessage[]
-  runs     Run[]
+  user           User          @relation(fields: [userId], references: [id])
+  isDeleted      Boolean       @default(false)
+  lastMessagedAt DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  uiMessages     Json?
+  messages       ChatMessage[]
 }
 
-model ChatMessage {
-  id          Int      @id @default(autoincrement())
-  token       String   @default(uuid())
-  threadId    Int
-  thread      Thread   @relation(fields: [threadId], references: [id])
-  isAssistant Boolean
-  isDeleted   Boolean  @default(false)
-  content     String
-  reasoning   String?
-  createdAt   DateTime @default(now())
-
-  runStep RunStep?
+enum ChatMessageRole {
+  developer
+  assistant
+  user
 }
 
-enum RunStatus {
-  queued
+enum ChatMessageStatus {
   inProgress
   completed
-  expired
-  cancelled
   failed
 }
 
-model Run {
-  id        Int       @id @default(autoincrement())
-  token     String    @unique @default(uuid())
-  thread    Thread    @relation(fields: [threadId], references: [id])
-  threadId  Int
-  status    RunStatus @default(queued)
-  steps     RunStep[]
-  createdAt DateTime  @default(now())
-}
-
-enum RunStepType {
-  generation
-}
-
-enum GenerationProvider {
-  openrouter
-}
-
-model RunStep {
-  id    Int         @id @default(autoincrement())
-  token String      @unique @default(uuid())
-  runId Int
-  run   Run         @relation(fields: [runId], references: [id])
-  type  RunStepType @default(generation)
-
-  // generation
-  generationProvider      GenerationProvider? @default(openrouter)
-  generationProviderToken String?             @unique
-  generationModel         String?
-  message                 ChatMessage?        @relation(fields: [messageId], references: [id])
-  messageId               Int?                @unique
-
-  createdAt DateTime @default(now())
+model ChatMessage {
+  id             Int               @id @default(autoincrement())
+  token          String            @default(uuid())
+  threadId       Int
+  thread         Thread            @relation(fields: [threadId], references: [id])
+  role           ChatMessageRole
+  status         ChatMessageStatus @default(completed)
+  isDeleted      Boolean           @default(false)
+  uiMessage      Json
+  uiMessageParts Json[]
+  createdAt      DateTime          @default(now())
 }
 
 model User {
@@ -93,11 +58,12 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
-  @@unique([email])
-  @@map("user")
 
   // Custom fields
-  threads       Thread[]
+  threads Thread[]
+
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
