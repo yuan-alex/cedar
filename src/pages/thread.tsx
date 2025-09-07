@@ -52,14 +52,7 @@ export function Thread() {
         sendMessage({ text: prompt });
         $prompt.set("");
       } else {
-        const restoredMessages = thread.messages.map((msg: any) => {
-          const parsedMessage = JSON.parse(msg.uiMessage);
-          return {
-            ...parsedMessage,
-            content: parsedMessage.parts,
-          };
-        });
-        setMessages(restoredMessages);
+        setMessages(thread.uiMessages);
       }
     }
   }, [thread, threadToken]);

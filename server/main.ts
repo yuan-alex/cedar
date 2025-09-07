@@ -5,6 +5,7 @@ import {
   smoothStream,
   stepCountIs,
   streamText,
+  validateUIMessages,
   wrapLanguageModel,
 } from "ai";
 import { Hono } from "hono";
@@ -162,7 +163,6 @@ app.get("/api/v1/threads/:threadToken", async (c) => {
     include: {
       messages: {
         select: {
-          uiMessage: true,
           uiMessageParts: true,
         },
         orderBy: {
@@ -220,19 +220,9 @@ app.post(
           create: {
             token: userInput.newMessage.id,
             role: ChatMessageRole.user,
-            uiMessage: JSON.stringify(userInput.newMessage),
-            uiMessageParts: userInput.newMessage.parts as any,
+            uiMessageParts: userInput.newMessage.parts,
           },
         },
-      },
-    });
-
-    const messages = await prisma.chatMessage.findMany({
-      where: {
-        threadId: thread.id,
-      },
-      orderBy: {
-        id: "asc",
       },
     });
 
@@ -247,32 +237,47 @@ app.post(
       middleware: [settingsMiddleware],
     });
 
-    const originalUiMessages = messages.flatMap((message) =>
-      JSON.parse(message.uiMessage as string),
-    );
+    const previousMessages = thread.uiMessages;
+    const tools = await mcpClientManager.getAllTools(userInput.mcpServers);
 
-    const result = streamText({
-      model: wrappedLanguageModel,
-      messages: convertToModelMessages(originalUiMessages),
-      tools: await mcpClientManager.getAllTools(userInput.mcpServers),
-      stopWhen: stepCountIs(10),
-      experimental_transform: smoothStream({
-        chunking: "line",
-      }),
+    const validatedMessages = await validateUIMessages({
+      metadataSchema: undefined,
+      dataSchemas: undefined,
+      messages: [...previousMessages, userInput.newMessage],
+      tools: Object.fromEntries(
+        Object.entries(tools).map(([key, tool]) => [key, tool as any]),
+      ),
     });
 
     const newMessage = await prisma.chatMessage.create({
       data: {
         role: ChatMessageRole.assistant,
         status: ChatMessageStatus.inProgress,
-        uiMessage: "",
         uiMessageParts: [],
         threadId: thread.id,
       },
     });
 
+    const result = streamText({
+      model: wrappedLanguageModel,
+      messages: convertToModelMessages(validatedMessages),
+      tools,
+      stopWhen: stepCountIs(10),
+      experimental_transform: smoothStream({
+        chunking: "word",
+      }),
+      onFinish: (event) => {
+        prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: {
+            rawEvent: event as any,
+          },
+        });
+      },
+    });
+
     return result.toUIMessageStreamResponse({
-      originalMessages: originalUiMessages,
+      originalMessages: validatedMessages as any,
       generateMessageId: () => newMessage.token,
       onError: (error) => {
         prisma.chatMessage.update({
@@ -287,7 +292,6 @@ app.post(
         await prisma.chatMessage.update({
           where: { id: newMessage.id },
           data: {
-            uiMessage: JSON.stringify(responseMessage),
             uiMessageParts: responseMessage.parts as any,
             status: ChatMessageStatus.completed,
           },
@@ -296,7 +300,7 @@ app.post(
         await prisma.thread.update({
           where: { id: thread.id },
           data: {
-            uiMessages: JSON.stringify(messages),
+            uiMessages: messages as any,
             messages: {
               connect: {
                 id: newMessage.id,
@@ -324,7 +328,7 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
 
   const deleteMessages = prisma.chatMessage.updateMany({
     where: { threadId: thread.id },
-    data: { isDeleted: true, uiMessage: "" },
+    data: { isDeleted: true, uiMessageParts: [] },
   });
 
   const deleteThread = prisma.thread.update({
