@@ -25,7 +25,8 @@ const EXACT_MODEL_ICONS: Record<string, ReactElement> = {
   "cedar/smart": <SparklesIcon className={ICON_SIZE} />,
   "cedar/creative": <PaletteIcon className={ICON_SIZE} />,
   "cedar/fast": <ZapIcon className={ICON_SIZE} />,
-  "cedar/reasoning": <BrainIcon className={ICON_SIZE} />,
+  "cedar/thinking-fast": <ZapIcon className={ICON_SIZE} />,
+  "cedar/thinking": <BrainIcon className={ICON_SIZE} />,
 };
 
 // Provider prefix configuration for image-based icons

@@ -12,7 +12,11 @@ import { z } from "zod";
 
 import { auth } from "@/server/utils/auth";
 import { config } from "@/server/utils/config";
-import { createSdkModel, generateTitle } from "@/server/utils/inference";
+import {
+  createSdkModel,
+  generateTitle,
+  mapModelName,
+} from "@/server/utils/inference";
 import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import {
@@ -194,23 +198,7 @@ app.post(
     const userInput = await c.req.json();
 
     let { model } = userInput;
-    switch (model) {
-      case "cedar/auto":
-        model = "openrouter/auto";
-        break;
-      case "cedar/smart":
-        model = "google/gemini-2.5-flash";
-        break;
-      case "cedar/creative":
-        model = "moonshotai/kimi-k2";
-        break;
-      case "cedar/fast":
-        model = "google/gemini-2.5-flash-lite";
-        break;
-      case "cedar/reasoning":
-        model = "openai/gpt-oss-120b";
-        break;
-    }
+    model = mapModelName(model);
 
     const thread = await prisma.thread.findUnique({
       where: {

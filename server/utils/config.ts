@@ -24,7 +24,7 @@ const ConfigSchema = z.object({
     default: z.string().default("google/gemini-2.5-flash"),
     temperature: z.number().min(0).max(2).default(0.3),
     max_tokens: z.number().positive().default(2048),
-    title_generation: z.string().default("openai/gpt-oss-20b"),
+    title_generation: z.string().default("qwen/qwen3-235b-a22b-2507"),
     mappings: z.record(z.string(), z.string()).optional(),
   }),
 

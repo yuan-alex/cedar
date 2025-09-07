@@ -59,6 +59,25 @@ Current datetime: ${format(new Date(), "PPPP")}.`
   );
 }
 
+export function mapModelName(model: string): string {
+  switch (model) {
+    case "cedar/auto":
+      return "openrouter/auto";
+    case "cedar/smart":
+      return "google/gemini-2.5-flash";
+    case "cedar/creative":
+      return "moonshotai/kimi-k2";
+    case "cedar/fast":
+      return "google/gemini-2.5-flash-lite";
+    case "cedar/thinking-fast":
+      return "qwen/qwen3-30b-a3b-thinking-2507";
+    case "cedar/thinking":
+      return "openai/gpt-oss-120b";
+    default:
+      return model;
+  }
+}
+
 export function generateTitle(prompt: string) {
   return generateText({
     model: openaiCompatibleModel(config.models.title_generation),
