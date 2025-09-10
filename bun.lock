@@ -5,6 +5,8 @@
       "name": "chatbot-ui",
       "dependencies": {
         "@ai-sdk/anthropic": "^2.0.14",
+        "@ai-sdk/deepinfra": "^1.0.15",
+        "@ai-sdk/fireworks": "^1.0.15",
         "@ai-sdk/openai": "^2.0.27",
         "@ai-sdk/openai-compatible": "^1.0.15",
         "@ai-sdk/react": "^2.0.35",
@@ -15,6 +17,7 @@
         "@modelcontextprotocol/sdk": "^1.17.5",
         "@nanostores/persistent": "^1.1.0",
         "@nanostores/react": "^1.0.0",
+        "@openrouter/ai-sdk-provider": "^1.2.0",
         "@prisma/client": "^6.15.0",
         "@radix-ui/react-context-menu": "^2.2.16",
         "@radix-ui/react-dialog": "^1.1.15",
@@ -85,6 +88,10 @@
   },
   "packages": {
     "@ai-sdk/anthropic": ["@ai-sdk/anthropic@2.0.14", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-TTVzYsTO6gwKk5qpqb3bx1G1F/gpvRZDhRumTZsN0obZo2pmTLZhGoLVQSj8pm6S9ofBFMwR0lIjbCq2xMKfdw=="],
+
+    "@ai-sdk/deepinfra": ["@ai-sdk/deepinfra@1.0.15", "", { "dependencies": { "@ai-sdk/openai-compatible": "1.0.15", "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-5W9LvJ6UuNrtXyMqEwU+d2M4UjolLHEh0sdKBaZ7NaiSTrY/PzcPqYMbEiv/bGsT1LAvYUdsf5nmlqH0yStDMw=="],
+
+    "@ai-sdk/fireworks": ["@ai-sdk/fireworks@1.0.15", "", { "dependencies": { "@ai-sdk/openai-compatible": "1.0.15", "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-fe9unSd0Ryi4rZRQXz1xiNJqNDVyBR5QtfnlNDbMf31UzOJS/B+r2PaRGrMOxo14oEo8S3b14cUGK1K2lfRdFQ=="],
 
     "@ai-sdk/gateway": ["@ai-sdk/gateway@1.0.19", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-TYLxx8Sclr/RdB0RIwGmA8OtJtyJxoPGtrTYgwrbzM2GdtwYtUuA/UIc4tZyCeyR1ujfqjbqiIF3kB54zGRD3A=="],
 
@@ -321,6 +328,8 @@
     "@noble/ciphers": ["@noble/ciphers@0.6.0", "", {}, "sha512-mIbq/R9QXk5/cTfESb1OKtyFnk7oc1Om/8onA1158K9/OZUQFDEVy55jVTato+xmp3XX6F6Qh0zz0Nc1AxAlRQ=="],
 
     "@noble/hashes": ["@noble/hashes@1.8.0", "", {}, "sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A=="],
+
+    "@openrouter/ai-sdk-provider": ["@openrouter/ai-sdk-provider@1.2.0", "", { "peerDependencies": { "ai": "^5.0.0", "zod": "^3.24.1 || ^v4" } }, "sha512-stuIwq7Yb7DNmk3GuCtz+oS3nZOY4TXEV3V5KsknDGQN7Fpu3KRMQVWRc1J073xKdf0FC9EHOctSyzsACmp5Ag=="],
 
     "@opentelemetry/api": ["@opentelemetry/api@1.9.0", "", {}, "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg=="],
 

@@ -1,37 +1,109 @@
+import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { createProviderRegistry } from "ai";
+import { deepinfra } from "@ai-sdk/deepinfra";
+import { fireworks } from "@ai-sdk/fireworks";
+
+import rawModelsData from "./models.json";
+
+export const registry = createProviderRegistry({
+  anthropic,
+  openai,
+  deepinfra,
+  fireworks,
+  openrouter: createOpenAICompatible({
+    name: "OpenRouter",
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL:
+      process.env.OPENROUTER_API_BASE_URL || "https://openrouter.ai/api/v1",
+  }),
+});
+
 export interface IProvider {
+  id: string;
+  env: string[];
+  npm: string;
+  api: string;
   name: string;
-  models: IModel[];
+  doc: string;
+  models: Record<string, IModel>;
 }
 
 export interface IModel {
   id: string;
   name: string;
+  attachment: boolean;
+  reasoning: boolean;
+  temperature: boolean;
+  tool_call: boolean;
+  knowledge: string;
+  release_date: string;
+  last_updated: string;
+  modalities: {
+    input: string[];
+    output: string[];
+  };
+  open_weights: boolean;
+  cost: {
+    input: number;
+    output: number;
+    cache_read: number;
+    cache_write: number;
+  };
+  limit: {
+    context: number;
+    output: number;
+  };
+}
+
+export interface ICedarModel {
+  id: string;
+  name: string;
+  providerId: string;
+  provider?: string;
   description?: string;
   reasoning?: boolean;
   fast?: boolean;
-  devOnly?: boolean;
 }
 
-export const simpleModels: IModel[] = [
+export interface ICedarProvider {
+  id: string;
+  env: string[];
+  name: string;
+  models: ICedarModel[];
+}
+
+export const simpleModels: ICedarModel[] = [
+  {
+    id: "cedar/auto",
+    name: "Auto",
+    providerId: "cedar",
+    description: "Auto-select the best model for the task",
+  },
   {
     id: "cedar/smart",
     name: "Smart",
+    providerId: "cedar",
     description: "Best choice for everyday tasks",
   },
   {
     id: "cedar/creative",
     name: "Creative",
+    providerId: "cedar",
     description: "Best choice for creative writing",
   },
   {
     id: "cedar/fast",
     name: "Fast",
+    providerId: "cedar",
     description: "Fast and best for basic tasks",
     fast: true,
   },
   {
     id: "cedar/thinking-fast",
     name: "Thinking Fast",
+    providerId: "cedar",
     description: "Fast at thinking",
     reasoning: true,
     fast: true,
@@ -39,12 +111,13 @@ export const simpleModels: IModel[] = [
   {
     id: "cedar/thinking",
     name: "Thinking",
+    providerId: "cedar",
     description: "Smartest and best for STEM",
     reasoning: true,
   },
 ];
 
-export const providers: IProvider[] = [
+export const recommendedProviders = [
   {
     name: "OpenAI",
     models: [
@@ -257,23 +330,27 @@ export const providers: IProvider[] = [
   },
 ];
 
-export const models = [
-  ...simpleModels,
-  ...providers.flatMap((provider) =>
-    provider.models.map((model) => ({
-      ...model,
-      provider: provider.name,
-    })),
-  ),
-].filter((m) => (process.env.NODE_ENV === "production" ? !m.devOnly : true));
+export function getModels() {
+  let models = [];
 
-export const modelIds = models.map((m) => m.id);
+  function hasRequiredEnvVars(requiredEnvVars: string[]): boolean {
+    return requiredEnvVars.every((envVar) => process.env[envVar]);
+  }
 
-export function findModelById(id: string) {
-  return (
-    simpleModels.find((model) => model.id === id) ||
-    providers
-      .flatMap((provider) => provider.models)
-      .find((model) => model.id === id) || { id: "unknown", name: "Unknown" }
-  );
+  for (const provider of Object.values(rawModelsData)) {
+    if (!hasRequiredEnvVars(provider.env)) {
+      console.warn(
+        `Provider ${provider.name} is missing required environment variables: ${provider.env.join(", ")}`,
+      );
+      continue;
+    }
+    for (const model of Object.values(provider.models)) {
+      models.push({
+        ...model,
+        id: `${provider.id}:${model.id}`,
+      });
+    }
+  }
+
+  return models;
 }

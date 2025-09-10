@@ -1,23 +1,8 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { generateText } from "ai";
 import { format } from "date-fns";
 
 import { config } from "./config";
-
-const openaiCompatibleModel = createOpenAICompatible({
-  name: "OpenRouter",
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: process.env.OPENAI_API_BASE_URL || "https://openrouter.ai/api/v1",
-  headers: {
-    ...(process.env.HELICONE_API_KEY && {
-      "Helicone-Auth": `Bearer ${process.env.HELICONE_API_KEY}`,
-    }),
-  },
-});
-
-export function createSdkModel(model: string) {
-  return openaiCompatibleModel(model);
-}
+import { registry } from "./providers";
 
 export function getSystemMessage(): string {
   const assistantName = config.ai.assistant_name;
@@ -60,27 +45,16 @@ Current datetime: ${format(new Date(), "PPPP")}.`
 }
 
 export function mapModelName(model: string): string {
-  switch (model) {
-    case "cedar/auto":
-      return "openrouter/auto";
-    case "cedar/smart":
-      return "google/gemini-2.5-flash";
-    case "cedar/creative":
-      return "moonshotai/kimi-k2";
-    case "cedar/fast":
-      return "google/gemini-2.5-flash-lite";
-    case "cedar/thinking-fast":
-      return "qwen/qwen3-30b-a3b-thinking-2507";
-    case "cedar/thinking":
-      return "openai/gpt-oss-120b";
-    default:
-      return model;
+  if (model in config.models.mappings) {
+    return config.models.mappings[model as keyof typeof config.models.mappings];
   }
+  return model;
 }
 
 export function generateTitle(prompt: string) {
   return generateText({
-    model: openaiCompatibleModel(config.models.title_generation),
+    // @ts-ignore
+    model: registry.languageModel(config.models.title_generation),
     messages: [
       {
         role: "system",

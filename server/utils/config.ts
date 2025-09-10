@@ -21,11 +21,29 @@ const ConfigSchema = z.object({
   }),
 
   models: z.object({
-    default: z.string().default("google/gemini-2.5-flash"),
     temperature: z.number().min(0).max(2).default(0.3),
     max_tokens: z.number().positive().default(2048),
-    title_generation: z.string().default("qwen/qwen3-235b-a22b-2507"),
-    mappings: z.record(z.string(), z.string()).optional(),
+    title_generation: z.string().default("deepinfra:openai/gpt-oss-120b"),
+    mappings: z
+      .record(
+        z.union([
+          z.literal("cedar/auto"),
+          z.literal("cedar/smart"),
+          z.literal("cedar/creative"),
+          z.literal("cedar/fast"),
+          z.literal("cedar/thinking-fast"),
+          z.literal("cedar/thinking"),
+        ]),
+        z.string(),
+      )
+      .default({
+        "cedar/auto": "openrouter:openrouter/auto",
+        "cedar/smart": "openrouter:google/gemini-2.5-flash",
+        "cedar/creative": "openrouter:moonshotai/kimi-k2",
+        "cedar/fast": "openrouter:google/gemini-2.5-flash-lite",
+        "cedar/thinking-fast": "openrouter:qwen/qwen3-30b-a3b-thinking-2507",
+        "cedar/thinking": "openrouter:openai/gpt-oss-120b",
+      }),
   }),
 
   ui: z.object({

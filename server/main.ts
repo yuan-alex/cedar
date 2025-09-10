@@ -13,18 +13,14 @@ import { z } from "zod";
 
 import { auth } from "@/server/utils/auth";
 import { config } from "@/server/utils/config";
-import {
-  createSdkModel,
-  generateTitle,
-  mapModelName,
-} from "@/server/utils/inference";
+import { generateTitle, mapModelName } from "@/server/utils/inference";
 import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import {
   ChatMessageRole,
   ChatMessageStatus,
 } from "@/server/utils/prisma-client";
-import { modelIds, models } from "@/server/utils/providers";
+import { getModels, registry, simpleModels } from "@/server/utils/providers";
 
 const mcpClientManager = new MCPClientManager();
 
@@ -65,8 +61,14 @@ app.get("/api/v1/health", async (c) => {
   return c.html("good");
 });
 
+const models = getModels();
+
+app.get("/api/v1/models/simple", async (c) => {
+  return c.json(simpleModels);
+});
+
 app.get("/api/v1/models", async (c) => {
-  return c.json(models);
+  return c.json([...simpleModels, ...models]);
 });
 
 app.get("/api/v1/mcp/servers", async (c) => {
@@ -206,7 +208,11 @@ app.post(
       },
     });
 
-    if (!thread || thread.userId !== user.id || !modelIds.includes(model)) {
+    if (
+      !thread ||
+      thread.userId !== user.id ||
+      !models.some((m) => m.id === model)
+    ) {
       return c.notFound();
     }
 
@@ -228,12 +234,12 @@ app.post(
 
     const settingsMiddleware = defaultSettingsMiddleware({
       settings: {
-        temperature: 0.3,
-        maxOutputTokens: 2048,
+        temperature: config.models.temperature,
+        maxOutputTokens: config.models.max_tokens,
       },
     });
     const wrappedLanguageModel = wrapLanguageModel({
-      model: createSdkModel(model),
+      model: registry.languageModel(model),
       middleware: [settingsMiddleware],
     });
 
@@ -313,6 +319,7 @@ app.post(
   },
 );
 
+// Delete thread
 app.delete("/api/v1/threads/:threadToken", async (c) => {
   const { threadToken } = c.req.param();
   const user = c.get("user");
@@ -333,7 +340,7 @@ app.delete("/api/v1/threads/:threadToken", async (c) => {
 
   const deleteThread = prisma.thread.update({
     where: { token: threadToken, userId: user.id },
-    data: { isDeleted: true },
+    data: { isDeleted: true, uiMessages: [] },
   });
 
   await prisma.$transaction([deleteMessages, deleteThread]);
