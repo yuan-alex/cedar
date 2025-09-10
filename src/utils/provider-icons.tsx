@@ -42,19 +42,19 @@ const EXACT_MODEL_ICONS: Record<string, ReactElement> = {
 type ProviderIconConfig = { pattern: RegExp; src: string; alt: string };
 
 const PROVIDER_ICON_CONFIGS: ProviderIconConfig[] = [
-  { pattern: /anthropic/, src: claudeIconUrl, alt: "Claude" },
-  { pattern: /openai/, src: openaiIcon, alt: "OpenAI" },
-  { pattern: /google/, src: geminiIcon, alt: "Gemini" },
-  { pattern: /llama/, src: metaIcon, alt: "Meta" },
-  { pattern: /qwen/, src: qwenIcon, alt: "Qwen" },
-  { pattern: /mistral/, src: mistralIcon, alt: "Mistral" },
-  { pattern: /x-ai/, src: grokIcon, alt: "Grok" },
-  { pattern: /perplexity/, src: perplexityIcon, alt: "Perplexity" },
-  { pattern: /deepseek/, src: deepseekIcon, alt: "DeepSeek" },
-  { pattern: /moonshotai/, src: moonshotIcon, alt: "Moonshot" },
   { pattern: /cedar\/local/, src: openaiIcon, alt: "Local" },
+  { pattern: /anthropic|claude/, src: claudeIconUrl, alt: "Claude" },
+  { pattern: /deepseek/, src: deepseekIcon, alt: "DeepSeek" },
+  { pattern: /google/, src: geminiIcon, alt: "Gemini" },
+  { pattern: /x-ai/, src: grokIcon, alt: "Grok" },
+  { pattern: /llama/, src: metaIcon, alt: "Meta" },
+  { pattern: /mistral/, src: mistralIcon, alt: "Mistral" },
+  { pattern: /moonshotai|kimi/, src: moonshotIcon, alt: "Moonshot" },
+  { pattern: /openai|gpt/, src: openaiIcon, alt: "OpenAI" },
   { pattern: /openrouter/, src: openrouterIcon, alt: "OpenRouter" },
-  { pattern: /z-ai|zai/, src: zaiIcon, alt: "Z-AI" },
+  { pattern: /perplexity/, src: perplexityIcon, alt: "Perplexity" },
+  { pattern: /qwen/, src: qwenIcon, alt: "Qwen" },
+  { pattern: /z-ai|zai|glm/, src: zaiIcon, alt: "Z-AI" },
 ];
 
 export function getModelIconById(modelId: string) {
