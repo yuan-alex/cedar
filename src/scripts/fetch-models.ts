@@ -9,7 +9,7 @@ const supportedProviders = [
   "openai",
   "openrouter",
   "anthropic",
-  "fireworks",
+  "fireworks-ai",
   "deepinfra",
 ] as const;
 
