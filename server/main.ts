@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import {
   convertToModelMessages,
   defaultSettingsMiddleware,
+  extractReasoningMiddleware,
   smoothStream,
   stepCountIs,
   streamText,
@@ -238,9 +239,15 @@ app.post(
         maxOutputTokens: config.models.max_tokens,
       },
     });
+
+    const reasoningMiddleware = extractReasoningMiddleware({
+      tagName: "think",
+      separator: "\n",
+    });
+
     const wrappedLanguageModel = wrapLanguageModel({
       model: registry.languageModel(model),
-      middleware: [settingsMiddleware],
+      middleware: [reasoningMiddleware, settingsMiddleware],
     });
 
     const previousMessages = thread.uiMessages;
