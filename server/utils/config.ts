@@ -1,5 +1,3 @@
-import { readFileSync } from "fs";
-import { join } from "path";
 import { parse } from "yaml";
 import { z } from "zod";
 
@@ -45,19 +43,6 @@ const ConfigSchema = z.object({
     )
     .default({}),
 
-  ui: z.object({
-    chat_placeholder: z.string().default("Type your message..."),
-    max_history_items: z.number().positive().default(50),
-    default_chat_name: z.string().default("New chat"),
-  }),
-
-  features: z.object({
-    enable_dev_models: z.boolean().default(false),
-    enable_reasoning_display: z.boolean().default(true),
-    enable_model_selection: z.boolean().default(true),
-    enable_debug_logging: z.boolean().default(false),
-  }),
-
   mcpServers: z
     .record(
       z.string(),
@@ -83,19 +68,26 @@ const ConfigSchema = z.object({
     .default({}),
 });
 
-function loadConfig() {
+async function loadConfig() {
   try {
-    // Determine which config file to use based on NODE_ENV
-    const isDevelopment = process.env.NODE_ENV === "development";
-    const configFileName = isDevelopment ? "config.dev.yml" : "config.yml";
-    const configPath = join(process.cwd(), "config", configFileName);
+    // Check for stringified config in env var (takes precedence)
+    const envConfigJson = Bun.env.CONFIG_JSON;
+    if (envConfigJson) {
+      console.log("Loading config from CONFIG_JSON env var");
+      const yamlData = JSON.parse(envConfigJson);
+      return ConfigSchema.parse(yamlData);
+    }
 
-    // Try to load the environment-specific config first
+    // Otherwise, fall back to file-based loading
+    const isDevelopment = Bun.env.NODE_ENV === "development";
+    const configFileName = isDevelopment ? "config.dev.yml" : "config.yml";
+    const configPath = `${process.cwd()}/config/${configFileName}`;
+
     let yamlContent: string;
     let yamlData: unknown;
 
     try {
-      yamlContent = readFileSync(configPath, "utf8");
+      yamlContent = await Bun.file(configPath).text();
       yamlData = parse(yamlContent);
       console.log(`Loaded config from: ${configFileName}`);
     } catch (envConfigError) {
@@ -104,8 +96,8 @@ function loadConfig() {
         console.warn(
           "Development config not found, falling back to config.yml",
         );
-        const fallbackPath = join(process.cwd(), "config", "config.yml");
-        yamlContent = readFileSync(fallbackPath, "utf8");
+        const fallbackPath = `${process.cwd()}/config/config.yml`;
+        yamlContent = await Bun.file(fallbackPath).text();
         yamlData = parse(yamlContent);
       } else {
         throw envConfigError;
@@ -124,5 +116,5 @@ function loadConfig() {
   }
 }
 
-export const config = loadConfig();
+export const config = await loadConfig();
 export type Config = typeof config;
