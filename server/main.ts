@@ -133,16 +133,18 @@ app.post(
       },
     });
 
-    generateTitle(prompt).then(async (response) => {
-      await prisma.thread.update({
-        where: {
-          id: thread.id,
-        },
-        data: {
-          name: response.text,
-        },
-      });
-    });
+    generateTitle(prompt, config.models.title_generation || model).then(
+      async (response) => {
+        await prisma.thread.update({
+          where: {
+            id: thread.id,
+          },
+          data: {
+            name: response.text,
+          },
+        });
+      },
+    );
 
     return Response.json(thread);
   },

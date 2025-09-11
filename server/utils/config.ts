@@ -21,7 +21,7 @@ const ConfigSchema = z.object({
   models: z.object({
     temperature: z.number().min(0).max(2).default(0.3),
     max_tokens: z.number().positive().default(2048),
-    title_generation: z.string().default("deepinfra:openai/gpt-oss-120b"),
+    title_generation: z.string().optional(),
   }),
 
   providers: z

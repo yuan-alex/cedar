@@ -44,10 +44,10 @@ Current datetime: ${format(new Date(), "PPPP")}.`
   );
 }
 
-export function generateTitle(prompt: string) {
+export function generateTitle(prompt: string, model: string) {
   return generateText({
     // @ts-ignore
-    model: registry.languageModel(config.models.title_generation),
+    model: registry.languageModel(model),
     messages: [
       {
         role: "system",

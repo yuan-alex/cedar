@@ -116,4 +116,3 @@ providers:
 models:
   temperature: 0.1 # Lower temperature for more consistent dev testing
   max_tokens: 4096 # Higher token limit for development
-  title_generation: "deepinfra:openai/gpt-oss-120b"
