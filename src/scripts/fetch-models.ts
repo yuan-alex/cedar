@@ -13,6 +13,11 @@ const supportedProviders = [
   "deepinfra",
 ] as const;
 
+// Map provider keys from API to desired output names
+const providerNameMap: Record<string, string> = {
+  "fireworks-ai": "fireworks",
+};
+
 async function fetchAndGroupModels() {
   try {
     const response = await fetch(MODEL_REGISTRY_API as string);
@@ -46,8 +51,9 @@ async function fetchAndGroupModels() {
         );
 
       if (Object.keys(filteredModels).length > 0) {
-        modelsByProvider[providerKey] = {
-          id: providerKey,
+        const outputProviderKey = providerNameMap[providerKey] ?? providerKey;
+        modelsByProvider[outputProviderKey] = {
+          id: outputProviderKey,
           env: provider.env,
           name: provider.name,
           models: Object.fromEntries(

@@ -1,6 +1,6 @@
 {
-  "fireworks-ai": {
-    "id": "fireworks-ai",
+  "fireworks": {
+    "id": "fireworks",
     "env": ["FIREWORKS_API_KEY"],
     "name": "Fireworks AI",
     "models": {

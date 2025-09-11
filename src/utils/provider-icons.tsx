@@ -60,7 +60,7 @@ const MODEL_ICON_CONFIGS: ProviderIconConfig[] = [
 
 const PROVIDER_ICON_CONFIGS: ProviderIconConfig[] = [
   { pattern: /deepinfra/, src: deepinfraIcon, alt: "DeepInfra" },
-  { pattern: /fireworks-ai/, src: fireworksIcon, alt: "Fireworks" },
+  { pattern: /fireworks/, src: fireworksIcon, alt: "Fireworks" },
   { pattern: /openrouter/, src: openrouterIcon, alt: "OpenRouter" },
 ];
 
