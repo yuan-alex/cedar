@@ -54,7 +54,7 @@ export function McpSelector() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <img src={mcpIcon} className="w-4 h-4" alt="MCP" />
-          MCP Connections
+          Connectors
           {selectedServers.length ? ` (${selectedServers.length})` : ""}
         </Button>
       </DropdownMenuTrigger>
