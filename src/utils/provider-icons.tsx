@@ -8,7 +8,9 @@ import {
 import type { ReactElement } from "react";
 
 import claudeIconUrl from "@lobehub/icons-static-svg/icons/claude-color.svg";
+import deepinfraIcon from "@lobehub/icons-static-svg/icons/deepinfra.svg";
 import deepseekIcon from "@lobehub/icons-static-svg/icons/deepseek-color.svg";
+import fireworksIcon from "@lobehub/icons-static-svg/icons/fireworks.svg";
 import geminiIcon from "@lobehub/icons-static-svg/icons/gemini-color.svg";
 import grokIcon from "@lobehub/icons-static-svg/icons/grok.svg";
 import metaIcon from "@lobehub/icons-static-svg/icons/meta-color.svg";
@@ -41,20 +43,25 @@ const EXACT_MODEL_ICONS: Record<string, ReactElement> = {
 // Provider pattern configuration for image-based icons
 type ProviderIconConfig = { pattern: RegExp; src: string; alt: string };
 
-const PROVIDER_ICON_CONFIGS: ProviderIconConfig[] = [
+const MODEL_ICON_CONFIGS: ProviderIconConfig[] = [
   { pattern: /cedar\/local/, src: openaiIcon, alt: "Local" },
   { pattern: /anthropic|claude/, src: claudeIconUrl, alt: "Claude" },
   { pattern: /deepseek/, src: deepseekIcon, alt: "DeepSeek" },
-  { pattern: /google/, src: geminiIcon, alt: "Gemini" },
-  { pattern: /x-ai/, src: grokIcon, alt: "Grok" },
+  { pattern: /google|gemini|gemma/, src: geminiIcon, alt: "Gemini" },
+  { pattern: /x-ai|grok/, src: grokIcon, alt: "Grok" },
   { pattern: /llama/, src: metaIcon, alt: "Meta" },
   { pattern: /mistral/, src: mistralIcon, alt: "Mistral" },
   { pattern: /moonshotai|kimi/, src: moonshotIcon, alt: "Moonshot" },
   { pattern: /openai|gpt/, src: openaiIcon, alt: "OpenAI" },
-  { pattern: /openrouter/, src: openrouterIcon, alt: "OpenRouter" },
-  { pattern: /perplexity/, src: perplexityIcon, alt: "Perplexity" },
+  { pattern: /perplexity|sonar/, src: perplexityIcon, alt: "Perplexity" },
   { pattern: /qwen/, src: qwenIcon, alt: "Qwen" },
   { pattern: /z-ai|zai|glm/, src: zaiIcon, alt: "Z-AI" },
+];
+
+const PROVIDER_ICON_CONFIGS: ProviderIconConfig[] = [
+  { pattern: /deepinfra/, src: deepinfraIcon, alt: "DeepInfra" },
+  { pattern: /fireworks-ai/, src: fireworksIcon, alt: "Fireworks" },
+  { pattern: /openrouter/, src: openrouterIcon, alt: "OpenRouter" },
 ];
 
 export function getModelIconById(modelId: string) {
@@ -62,7 +69,18 @@ export function getModelIconById(modelId: string) {
   const exact = EXACT_MODEL_ICONS[modelId];
   if (exact) return exact;
 
-  // Then match by provider pattern
+  // Then match by model-specific provider pattern
+  const matchedModelProvider = MODEL_ICON_CONFIGS.find((cfg) =>
+    cfg.pattern.test(modelId.toLowerCase()),
+  );
+  if (matchedModelProvider) {
+    return createProviderIcon(
+      matchedModelProvider.src,
+      matchedModelProvider.alt,
+    );
+  }
+
+  // Fallback: match against provider icon configs
   const matchedProvider = PROVIDER_ICON_CONFIGS.find((cfg) =>
     cfg.pattern.test(modelId.toLowerCase()),
   );
