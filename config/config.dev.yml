@@ -12,7 +12,7 @@ providers:
     models:
       Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo:
         name: Qwen3 Coder
-        thinking: true
+        reasoning: true
       Qwen/Qwen3-235B-A22B-Instruct-2507:
         name: Qwen3 235B A22B
       moonshotai/Kimi-K2-Instruct-0905:
@@ -21,10 +21,10 @@ providers:
         name: DeepSeek V3.1
       openai/gpt-oss-120b:
         name: GPT OSS 120B
-        thinking: true
+        reasoning: true
       zai-org/GLM-4.5-Air:
         name: GLM-4.5 Air
-        thinking: true
+        reasoning: true
       meta-llama/Llama-3.3-70B-Instruct-Turbo:
         name: Llama 3.3 70B Instruct Turbo
       mistralai/Mistral-Small-3.2-24B-Instruct-2506:
@@ -116,3 +116,9 @@ providers:
 models:
   temperature: 0.1 # Lower temperature for more consistent dev testing
   max_tokens: 4096 # Higher token limit for development
+
+mcpServers:
+  context7:
+    type: stdio
+    command: npx
+    args: ["-y", "@upstash/context7-mcp@latest"]
