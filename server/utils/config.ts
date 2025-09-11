@@ -68,6 +68,32 @@ const ConfigSchema = z.object({
     .default({}),
 });
 
+async function loadConfigFromFile(
+  filePath: string,
+  description: string,
+): Promise<ReturnType<typeof ConfigSchema.parse> | null> {
+  try {
+    const content = await Bun.file(filePath).text();
+    let parsedConfig;
+
+    // Detect file type based on extension and parse accordingly
+    if (filePath.endsWith(".json")) {
+      parsedConfig = JSON.parse(content);
+    } else {
+      // Assume YAML for .yml, .yaml, or other extensions
+      parsedConfig = parse(content);
+    }
+
+    // Validate that the parsed config matches our schema
+    const validatedConfig = ConfigSchema.parse(parsedConfig);
+    console.log(`Loaded config from: ${description}`);
+    return validatedConfig;
+  } catch (error) {
+    // File doesn't exist, is invalid JSON/YAML, or doesn't match schema
+    return null;
+  }
+}
+
 async function loadConfig() {
   try {
     // Check for stringified config in env var (takes precedence)
@@ -79,36 +105,38 @@ async function loadConfig() {
     }
 
     // Otherwise, fall back to file-based loading
-    const isDevelopment = Bun.env.NODE_ENV === "development";
-    const configFileName = isDevelopment ? "config.dev.yml" : "config.yml";
-    const configPath = `${process.cwd()}/config/${configFileName}`;
+    const configDir = `${process.cwd()}/config`;
 
-    let yamlContent: string;
-    let yamlData: unknown;
-
-    try {
-      yamlContent = await Bun.file(configPath).text();
-      yamlData = parse(yamlContent);
-      console.log(`Loaded config from: ${configFileName}`);
-    } catch (envConfigError) {
-      // If environment-specific config doesn't exist, fall back to default config.yml
-      if (isDevelopment) {
-        console.warn(
-          "Development config not found, falling back to config.yml",
-        );
-        const fallbackPath = `${process.cwd()}/config/config.yml`;
-        yamlContent = await Bun.file(fallbackPath).text();
-        yamlData = parse(yamlContent);
-      } else {
-        throw envConfigError;
-      }
+    // Try config.dev.json/.yml/.yaml first (takes precedence)
+    const devConfig =
+      (await loadConfigFromFile(
+        `${configDir}/config.dev.json`,
+        "config.dev.json",
+      )) ||
+      (await loadConfigFromFile(
+        `${configDir}/config.dev.yml`,
+        "config.dev.yml",
+      )) ||
+      (await loadConfigFromFile(
+        `${configDir}/config.dev.yaml`,
+        "config.dev.yaml",
+      ));
+    if (devConfig) {
+      return devConfig;
     }
 
-    // Parse and validate with Zod
-    const config = ConfigSchema.parse(yamlData);
+    // Try config.json/.yml/.yaml as fallback
+    const baseConfig =
+      (await loadConfigFromFile(`${configDir}/config.json`, "config.json")) ||
+      (await loadConfigFromFile(`${configDir}/config.yml`, "config.yml")) ||
+      (await loadConfigFromFile(`${configDir}/config.yaml`, "config.yaml"));
+    if (baseConfig) {
+      return baseConfig;
+    }
 
-    // Return parsed YAML config as the single source of truth
-    return config;
+    // Neither config file exists
+    console.log("No config files found, using default configuration");
+    return ConfigSchema.parse({});
   } catch (error) {
     console.error("Failed to load config:", error);
     // Return default config if file doesn't exist or is invalid
