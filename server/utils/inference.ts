@@ -44,13 +44,6 @@ Current datetime: ${format(new Date(), "PPPP")}.`
   );
 }
 
-export function mapModelName(model: string): string {
-  if (model in config.models.mappings) {
-    return config.models.mappings[model as keyof typeof config.models.mappings];
-  }
-  return model;
-}
-
 export function generateTitle(prompt: string) {
   return generateText({
     // @ts-ignore

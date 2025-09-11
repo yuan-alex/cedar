@@ -24,27 +24,26 @@ const ConfigSchema = z.object({
     temperature: z.number().min(0).max(2).default(0.3),
     max_tokens: z.number().positive().default(2048),
     title_generation: z.string().default("deepinfra:openai/gpt-oss-120b"),
-    mappings: z
-      .record(
-        z.union([
-          z.literal("cedar/auto"),
-          z.literal("cedar/smart"),
-          z.literal("cedar/creative"),
-          z.literal("cedar/fast"),
-          z.literal("cedar/thinking-fast"),
-          z.literal("cedar/thinking"),
-        ]),
-        z.string(),
-      )
-      .default({
-        "cedar/auto": "openrouter:openrouter/auto",
-        "cedar/smart": "openrouter:google/gemini-2.5-flash",
-        "cedar/creative": "openrouter:moonshotai/kimi-k2",
-        "cedar/fast": "openrouter:google/gemini-2.5-flash-lite",
-        "cedar/thinking-fast": "openrouter:qwen/qwen3-30b-a3b-thinking-2507",
-        "cedar/thinking": "openrouter:openai/gpt-oss-120b",
-      }),
   }),
+
+  providers: z
+    .record(
+      z.string(),
+      z.object({
+        enabled: z.boolean().default(true),
+        models: z
+          .record(
+            z.string(),
+            z.object({
+              name: z.string(),
+              description: z.string().optional(),
+              reasoning: z.boolean().default(false),
+            }),
+          )
+          .default({}),
+      }),
+    )
+    .default({}),
 
   ui: z.object({
     chat_placeholder: z.string().default("Type your message..."),

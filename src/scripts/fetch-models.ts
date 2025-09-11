@@ -50,12 +50,16 @@ async function fetchAndGroupModels() {
           id: providerKey,
           env: provider.env,
           name: provider.name,
-          models: Object.values(filteredModels).map((model) => ({
-            id: model.id,
-            name: model.name,
-            reasoning: model.reasoning,
-            providerId: providerKey,
-          })),
+          models: Object.fromEntries(
+            Object.entries(filteredModels).map(([modelKey, model]) => [
+              modelKey,
+              {
+                id: model.id,
+                name: model.name,
+                reasoning: model.reasoning,
+              },
+            ]),
+          ),
         };
       }
     }

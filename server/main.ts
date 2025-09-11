@@ -14,14 +14,14 @@ import { z } from "zod";
 
 import { auth } from "@/server/utils/auth";
 import { config } from "@/server/utils/config";
-import { generateTitle, mapModelName } from "@/server/utils/inference";
+import { generateTitle } from "@/server/utils/inference";
 import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import {
   ChatMessageRole,
   ChatMessageStatus,
 } from "@/server/utils/prisma-client";
-import { getModels, registry, simpleModels } from "@/server/utils/providers";
+import { getModels, registry } from "@/server/utils/providers";
 
 const mcpClientManager = new MCPClientManager();
 
@@ -62,14 +62,9 @@ app.get("/api/v1/health", async (c) => {
   return c.html("good");
 });
 
-const models = getModels();
-
-app.get("/api/v1/models/simple", async (c) => {
-  return c.json(simpleModels);
-});
-
 app.get("/api/v1/models", async (c) => {
-  return c.json([...simpleModels, ...models]);
+  const models = getModels();
+  return c.json(models);
 });
 
 app.get("/api/v1/mcp/servers", async (c) => {
@@ -200,8 +195,7 @@ app.post(
     const threadToken = c.req.param("threadToken");
     const userInput = await c.req.json();
 
-    let { model } = userInput;
-    model = mapModelName(model);
+    const { model } = userInput;
 
     const thread = await prisma.thread.findUnique({
       where: {
@@ -209,6 +203,7 @@ app.post(
       },
     });
 
+    const models = getModels();
     if (
       !thread ||
       thread.userId !== user.id ||
