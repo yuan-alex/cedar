@@ -8,6 +8,30 @@ ai:
   system_message: "You are a helpful AI assistant running in development mode. You provide clear, logical, and well-reasoned responses to user questions and requests. You are knowledgeable across many domains and can help with a wide variety of tasks. Debug information may be more verbose in this mode."
 
 providers:
+  fireworks:
+    models:
+      accounts/fireworks/models/glm-4p5:
+        name: GLM 4.5
+        reasoning: true
+      accounts/fireworks/models/glm-4p5-air:
+        name: GLM 4.5 Air
+        reasoning: true
+      accounts/fireworks/models/kimi-k2-instruct-0905:
+        name: Kimi K2 Instruct 0905
+        reasoning: false
+      accounts/fireworks/models/deepseek-v3p1:
+        name: DeepSeek V3.1
+      accounts/fireworks/models/qwen3-235b-a22b-thinking-2507:
+        name: Qwen3 235B A22B Thinking
+        reasoning: true
+      accounts/fireworks/models/qwen3-235b-a22b-instruct-2507:
+        name: Qwen3 235B A22B
+      accounts/fireworks/models/gpt-oss-120b:
+        name: GPT OSS 120B
+        reasoning: true
+      accounts/fireworks/models/gpt-oss-20b:
+        name: GPT OSS 20B
+        reasoning: true
   deepinfra:
     models:
       Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo:
