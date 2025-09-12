@@ -12,7 +12,6 @@ model Thread {
   id             Int           @id @default(autoincrement())
   token          String        @unique @default(uuid())
   name           String        @default("New chat")
-  model          String
   userId         String
   user           User          @relation(fields: [userId], references: [id])
   isDeleted      Boolean       @default(false)
@@ -40,6 +39,8 @@ model ChatMessage {
   token          String            @default(uuid())
   threadId       Int
   thread         Thread            @relation(fields: [threadId], references: [id])
+  provider       String?
+  model          String?
   role           ChatMessageRole
   status         ChatMessageStatus @default(completed)
   isDeleted      Boolean           @default(false)

@@ -154,6 +154,8 @@ export async function createMessage(c: Context<AppEnv>) {
       status: ChatMessageStatus.inProgress,
       uiMessageParts: [],
       threadId: thread.id,
+      provider: model.split(":")[0],
+      model: model.split(":")[1],
     },
   });
 
