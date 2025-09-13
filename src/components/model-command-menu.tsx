@@ -11,7 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import type { IModel } from "@/server/utils/providers";
+import type { ICedarModel } from "@/server/utils/providers";
 import { getModelIconById } from "@/utils/provider-icons";
 import { createQueryFn } from "@/utils/queries";
 import { $model } from "@/utils/stores";
@@ -19,12 +19,12 @@ import { $model } from "@/utils/stores";
 export function ModelCommandMenu(props: { handleClose: () => void }) {
   const model = useStore($model);
 
-  const { data: modelsData } = useQuery({
+  const { data: modelsData }: { data: ICedarModel[] | undefined } = useQuery({
     queryKey: ["models"],
     queryFn: createQueryFn("/api/v1/models"),
   });
 
-  function onModelSelect(model: IModel) {
+  function onModelSelect(model: ICedarModel) {
     props.handleClose();
     $model.set({
       id: model.id,
@@ -52,7 +52,7 @@ export function ModelCommandMenu(props: { handleClose: () => void }) {
 }
 
 function ModelItem(props: {
-  model: IModel;
+  model: ICedarModel;
   onModelSelect?: (modelId: string) => void;
 }) {
   const { model, onModelSelect } = props;
@@ -65,7 +65,7 @@ function ModelItem(props: {
     >
       <div>{getModelIconById(model.id)}</div>
       <div>
-        <p className={`${model.devOnly ? "text-blue-500" : ""}`}>
+        <p className={`${model.experimental ? "text-blue-500" : ""}`}>
           {model.name}
         </p>
         <p className="text-xs text-muted-foreground">{model.description}</p>

@@ -66,6 +66,7 @@ export interface ICedarModel {
   description?: string;
   reasoning?: boolean;
   fast?: boolean;
+  experimental?: boolean;
 }
 
 export interface ICedarProvider {
