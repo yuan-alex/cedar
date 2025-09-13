@@ -1,28 +1,34 @@
 import { parse } from "yaml";
 import { z } from "zod";
 
+const AppSchema = z.object({
+  name: z.string().default("Cedar"),
+  title: z.string().default("Cedar"),
+  description: z.string().default("Your AI Assistant"),
+});
+
+const AiSchema = z.object({
+  assistant_name: z.string().default("Cedar Assistant"),
+  system_message: z.string().optional(),
+  title_generation_system_message: z
+    .string()
+    .default(
+      "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use ~3 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.",
+    ),
+});
+
+const ModelsSchema = z.object({
+  temperature: z.number().min(0).max(2).default(0.3),
+  max_tokens: z.number().positive().default(2048),
+  title_generation: z.string().optional(),
+});
+
 const ConfigSchema = z.object({
-  app: z.object({
-    name: z.string().default("Cedar"),
-    title: z.string().default("Cedar"),
-    description: z.string().default("Your AI Assistant"),
-  }),
+  app: z.preprocess((v) => (v == null ? {} : v), AppSchema),
 
-  ai: z.object({
-    assistant_name: z.string().default("Cedar Assistant"),
-    system_message: z.string().optional(),
-    title_generation_system_message: z
-      .string()
-      .default(
-        "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use ~3 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.",
-      ),
-  }),
+  ai: z.preprocess((v) => (v == null ? {} : v), AiSchema),
 
-  models: z.object({
-    temperature: z.number().min(0).max(2).default(0.3),
-    max_tokens: z.number().positive().default(2048),
-    title_generation: z.string().optional(),
-  }),
+  models: z.preprocess((v) => (v == null ? {} : v), ModelsSchema),
 
   providers: z
     .record(
