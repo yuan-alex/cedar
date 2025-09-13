@@ -107,22 +107,24 @@ async function loadConfig() {
     // Otherwise, fall back to file-based loading
     const configDir = `${process.cwd()}/config`;
 
-    // Try config.dev.json/.yml/.yaml first (takes precedence)
-    const devConfig =
-      (await loadConfigFromFile(
-        `${configDir}/config.dev.json`,
-        "config.dev.json",
-      )) ||
-      (await loadConfigFromFile(
-        `${configDir}/config.dev.yml`,
-        "config.dev.yml",
-      )) ||
-      (await loadConfigFromFile(
-        `${configDir}/config.dev.yaml`,
-        "config.dev.yaml",
-      ));
-    if (devConfig) {
-      return devConfig;
+    // Try config.dev.json/.yml/.yaml first (takes precedence) - only in development
+    if (Bun.env.NODE_ENV === "development") {
+      const devConfig =
+        (await loadConfigFromFile(
+          `${configDir}/config.dev.json`,
+          "config.dev.json",
+        )) ||
+        (await loadConfigFromFile(
+          `${configDir}/config.dev.yml`,
+          "config.dev.yml",
+        )) ||
+        (await loadConfigFromFile(
+          `${configDir}/config.dev.yaml`,
+          "config.dev.yaml",
+        ));
+      if (devConfig) {
+        return devConfig;
+      }
     }
 
     // Try config.json/.yml/.yaml as fallback
