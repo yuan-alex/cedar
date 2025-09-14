@@ -1,7 +1,7 @@
 import { UserButton } from "@daveyplate/better-auth-ui";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { PlusCircleIcon } from "lucide-react";
+import { PlusCircleIcon, Shield } from "lucide-react";
 
 import { ThreadSidebarMenuItem } from "@/components/thread-item";
 import { Button } from "@/components/ui/button";
@@ -13,14 +13,25 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { authClient } from "@/utils/auth";
 import { createQueryFn } from "@/utils/queries";
 
 export function CedarSidebar() {
   const { data: threads } = useQuery({
     queryKey: ["sidebarThreads"],
     queryFn: createQueryFn("/api/v1/threads?take=15"),
+  });
+
+  const isAdmin = useQuery({
+    queryKey: ["isAdmin"],
+    queryFn: () =>
+      authClient
+        .getSession()
+        .then((session) => session?.data?.user?.role === "admin"),
   });
 
   return (
@@ -53,6 +64,22 @@ export function CedarSidebar() {
               See all threads
             </Button>
           </Link>
+        )}
+
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/admin">
+                    <Shield className="h-4 w-4" />
+                    <span>User Management</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
         )}
       </SidebarContent>
       <SidebarFooter>
