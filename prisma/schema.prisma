@@ -60,6 +60,11 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
   // Custom fields
   threads Thread[]
 
@@ -77,6 +82,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")

@@ -12,13 +12,15 @@ try {
     process.exit(0);
   }
 
-  const res = await auth.api.signUpEmail({
+  const res = await auth.api.createUser({
     body: {
-      name: "admin",
       email,
       password: process.env.BETTER_AUTH_SECRET,
+      name: "admin",
+      role: "admin",
     },
   });
+
   console.log("Sign up successful:", res);
 } catch (error) {
   console.log("Sign up failed:", error);
