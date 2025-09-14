@@ -52,7 +52,7 @@ export async function createThread(c: Context<AppEnv>) {
   }
 
   const thread = await prisma.thread.create({
-    data: { model, userId: user.id },
+    data: { userId: user.id },
   });
 
   generateTitle(prompt, config.models.title_generation || model).then(
