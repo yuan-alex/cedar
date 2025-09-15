@@ -86,7 +86,7 @@ export function Thread() {
                 description="Type a message below to begin chatting"
               />
             ) : (
-              <div className="flex flex-col space-y-10 max-w-4xl mx-auto p-6">
+              <div className="flex flex-col max-w-4xl mx-auto">
                 {messages.map((msg) => (
                   <CedarMessage
                     key={msg.id}
@@ -99,7 +99,7 @@ export function Thread() {
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
-        <div className="p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
+        <div className="w-full max-w-4xl mx-auto mb-2">
           <form onSubmit={handleSubmit}>
             <InputBox
               rows={1}

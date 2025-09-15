@@ -1,8 +1,10 @@
 import type { UIMessage } from "ai";
-import { BrainIcon, ChevronDownIcon, CopyIcon, WrenchIcon } from "lucide-react";
+import { ChevronDownIcon, CopyIcon, WrenchIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { MemoizedMarkdown } from "@/components/memorized-markdown";
+import { Message, MessageContent } from "@/components/ai-elements/message";
+import { Response } from "@/components/ai-elements/response";
+
 import { Button } from "@/components/ui/button";
 import {
   Reasoning,
@@ -35,23 +37,15 @@ export function CedarMessage(props: IMessageProps) {
 
   return (
     <div>
-      <div className="prose dark:prose-invert max-w-none w-full flex items-start space-x-4">
-        <div
-          className={`overflow-x-auto ${
-            message.role === "assistant"
-              ? "w-full"
-              : "not-prose px-5 py-3 rounded-3xl ml-auto bg-zinc-100 dark:bg-zinc-900"
-          }`}
-        >
+      <Message from={message.role}>
+        <MessageContent variant="flat">
           {message.parts?.map((part, i) => {
             switch (part.type) {
               case "text":
                 return (
-                  <MemoizedMarkdown
-                    key={`${message.id}-text-${i}`}
-                    id={message.id}
-                    content={"text" in part ? part.text : ""}
-                  />
+                  <Response key={`${message.id}-text-${i}`} className="text-lg">
+                    {"text" in part ? part.text : ""}
+                  </Response>
                 );
               case "reasoning":
                 return (
@@ -93,12 +87,7 @@ export function CedarMessage(props: IMessageProps) {
                         </div>
                       ) : null}
                       {text ? (
-                        <div className="prose dark:prose-invert">
-                          <MemoizedMarkdown
-                            id={`${message.id}:tool-error:${toolCallId ?? i}`}
-                            content={text}
-                          />
-                        </div>
+                        <div className="prose dark:prose-invert">{text}</div>
                       ) : null}
                       {errorVal !== undefined ? (
                         <pre className="mt-2 text-[11px] leading-relaxed whitespace-pre-wrap text-red-800 dark:text-red-200">
@@ -183,10 +172,7 @@ export function CedarMessage(props: IMessageProps) {
                           <div className="mt-2 mb-1 font-medium">Output</div>
                           {typeof output === "string" ? (
                             <div className="prose dark:prose-invert">
-                              <MemoizedMarkdown
-                                id={`${message.id}:dynamic-tool:${toolCallId ?? i}`}
-                                content={output}
-                              />
+                              {output}
                             </div>
                           ) : (
                             <pre className="text-[11px] leading-relaxed whitespace-pre-wrap">
@@ -212,8 +198,8 @@ export function CedarMessage(props: IMessageProps) {
               }
             }
           })}
-        </div>
-      </div>
+        </MessageContent>
+      </Message>
       {message.role === "assistant" ? (
         <div className="flex gap-4 mb-4">
           <Button
