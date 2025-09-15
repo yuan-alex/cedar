@@ -3,8 +3,14 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { DefaultChatTransport } from "ai";
 import { useEffect, useState } from "react";
-import { StickToBottom } from "use-stick-to-bottom";
+import { MessageSquare } from "lucide-react";
 
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
 import { CedarMessage } from "@/components/cedar-message";
 import { InputBox } from "@/components/input-box";
 import { createQueryFn } from "@/utils/queries";
@@ -21,7 +27,12 @@ export function Thread() {
   });
 
   const [input, setInput] = useState("");
-  const { messages, setMessages, sendMessage } = useChat({
+  const {
+    messages,
+    setMessages,
+    sendMessage,
+    status: chatStatus,
+  } = useChat({
     id: threadToken,
     generateId: () => crypto.randomUUID(),
     transport: new DefaultChatTransport({
@@ -64,18 +75,41 @@ export function Thread() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <StickToBottom
-        className="grow overflow-auto"
-        resize="smooth"
-        initial="instant"
-      >
-        <StickToBottom.Content className="flex flex-col max-w-4xl mx-auto space-y-5 p-5">
-          {messages.map((msg) => (
-            <CedarMessage key={msg.id} message={msg} />
-          ))}
-        </StickToBottom.Content>
-      </StickToBottom>
+    <div className="relative size-full h-screen">
+      <div className="flex flex-col h-full min-h-0">
+        <Conversation initial="instant" resize="instant">
+          <ConversationContent>
+            {messages.length === 0 ? (
+              <ConversationEmptyState
+                icon={<MessageSquare className="size-12" />}
+                title="Start a conversation"
+                description="Type a message below to begin chatting"
+              />
+            ) : (
+              <div className="flex flex-col space-y-10 max-w-4xl mx-auto p-6">
+                {messages.map((msg) => (
+                  <CedarMessage
+                    key={msg.id}
+                    message={msg}
+                    chatStatus={chatStatus}
+                  />
+                ))}
+              </div>
+            )}
+          </ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>
+        <div className="p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
+          <form onSubmit={handleSubmit}>
+            <InputBox
+              rows={1}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </form>
+        </div>
+      </div>
+
       {import.meta.env.DEV && (
         <>
           <div className="fixed bottom-16 right-4 z-50 w-[28rem] max-h-[60vh] overflow-auto rounded border border-zinc-700 bg-black/90 p-3 text-green-200">
@@ -96,15 +130,6 @@ export function Thread() {
           </button>
         </>
       )}
-      <div className="basis-0 p-2 lg:p-0 w-full max-w-4xl mx-auto mb-2">
-        <form onSubmit={handleSubmit}>
-          <InputBox
-            rows={1}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </form>
-      </div>
     </div>
   );
 }
