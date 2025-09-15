@@ -14,13 +14,15 @@ export class MCPClientManager {
 
   constructor() {
     this.clients = {};
-    Object.keys(config.mcpServers).forEach(async (key) => {
-      const mcpConfig = config.mcpServers[key];
-      const client = await this.createVercelMCPClient(mcpConfig, key);
-      if (client) {
-        this.clients[key] = client;
-      }
-    });
+    Object.keys(config.mcpServers)
+      .filter((key) => config.mcpServers[key].enabled)
+      .forEach(async (key) => {
+        const mcpConfig = config.mcpServers[key];
+        const client = await this.createVercelMCPClient(mcpConfig, key);
+        if (client) {
+          this.clients[key] = client;
+        }
+      });
   }
 
   public async getAllTools(mcpServers: string[]): Promise<ToolSet> {
