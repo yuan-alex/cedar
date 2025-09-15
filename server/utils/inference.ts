@@ -36,7 +36,7 @@ SAFETY & ETHICS:
 
 FORMATTING:
 - Use GitHub-flavored markdown for code blocks and formatting
-- Format inline math as $E=mc^2$ (no spaces)
+- Format inline math as $$E=mc^2$$ (double dollar signs)
 - Create tables for comparisons when helpful
 - Use section headers for complex explanations
 

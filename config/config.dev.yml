@@ -5,7 +5,6 @@ app:
 
 ai:
   assistant_name: "Cedar Dev Assistant"
-  system_message: "You are a helpful AI assistant running in development mode. You provide clear, logical, and well-reasoned responses to user questions and requests. You are knowledgeable across many domains and can help with a wide variety of tasks. Debug information may be more verbose in this mode."
 
 model:
   title_generation: "openrouter:google/gemini-2.5-flash-lite"
