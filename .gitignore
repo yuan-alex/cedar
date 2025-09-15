@@ -42,3 +42,5 @@ next-env.d.ts
 
 # Keep the generated Prisma Client + query engine out of version control
 /server/utils/prisma-client
+
+.scratchpad
