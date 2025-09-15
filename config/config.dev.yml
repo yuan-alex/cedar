@@ -7,6 +7,9 @@ ai:
   assistant_name: "Cedar Dev Assistant"
   system_message: "You are a helpful AI assistant running in development mode. You provide clear, logical, and well-reasoned responses to user questions and requests. You are knowledgeable across many domains and can help with a wide variety of tasks. Debug information may be more verbose in this mode."
 
+model:
+  title_generation: "openrouter:google/gemini-2.5-flash-lite"
+
 providers:
   fireworks:
     models:
@@ -86,9 +89,6 @@ providers:
         name: "Gemma 3 27B"
       deepseek/deepseek-r1-0528:
         name: "DeepSeek R1 0528"
-        reasoning: true
-      deepseek/deepseek-r1-0528-qwen3-8b:
-        name: "DeepSeek R1 Qwen 8B"
         reasoning: true
       deepseek/deepseek-chat-v3.1:
         name: "DeepSeek Chat V3.1"
