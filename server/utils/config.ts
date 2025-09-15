@@ -103,9 +103,9 @@ async function loadConfigFromFile(
 async function loadConfig() {
   try {
     // Check for stringified config in env var (takes precedence)
-    const envConfigJson = Bun.env.CONFIG_JSON;
+    const envConfigJson = Bun.env.CEDAR_CONFIG_JSON;
     if (envConfigJson) {
-      console.log("Loading config from CONFIG_JSON env var");
+      console.log("Loading config from CEDAR_CONFIG_JSON env var");
       const yamlData = JSON.parse(envConfigJson);
       return ConfigSchema.parse(yamlData);
     }
