@@ -43,7 +43,7 @@ export function CedarMessage(props: IMessageProps) {
             switch (part.type) {
               case "text":
                 return (
-                  <Response key={`${message.id}-text-${i}`} className="text-lg">
+                  <Response key={`${message.id}-text-${i}`}>
                     {"text" in part ? part.text : ""}
                   </Response>
                 );

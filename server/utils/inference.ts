@@ -35,8 +35,8 @@ SAFETY & ETHICS:
 - Avoid harmful, biased, or misleading content
 
 FORMATTING:
-- Use GitHub-flavored markdown for code blocks and formatting
-- Format inline math as $$E=mc^2$$ (double dollar signs)
+- Use GitHub-flavored Markdown for code blocks and formatting
+- Always enclose your LaTeX code $$ for any sort of math
 - Create tables for comparisons when helpful
 - Use section headers for complex explanations
 
