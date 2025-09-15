@@ -26,7 +26,7 @@ export function CedarSidebar() {
     queryFn: createQueryFn("/api/v1/threads?take=15"),
   });
 
-  const isAdmin = useQuery({
+  const { data: isAdmin } = useQuery({
     queryKey: ["isAdmin"],
     queryFn: () =>
       authClient
@@ -66,7 +66,7 @@ export function CedarSidebar() {
           </Link>
         )}
 
-        {isAdmin && (
+        {isAdmin === true && (
           <SidebarGroup>
             <SidebarGroupLabel>Administration</SidebarGroupLabel>
             <SidebarMenu>
