@@ -4,9 +4,15 @@ import { toast } from "sonner";
 
 import { MemoizedMarkdown } from "@/components/memorized-markdown";
 import { Button } from "@/components/ui/button";
+import {
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from "@/components/ai-elements/reasoning";
 
 interface IMessageProps {
   message: UIMessage;
+  chatStatus: any;
 }
 
 export function CedarMessage(props: IMessageProps) {
@@ -49,26 +55,17 @@ export function CedarMessage(props: IMessageProps) {
                 );
               case "reasoning":
                 return (
-                  <details
+                  <Reasoning
                     key={`${message.id}-reasoning-${i}`}
-                    className="group mb-3 border border-zinc-100 dark:border-zinc-800/40 rounded-lg bg-zinc-50/20 dark:bg-zinc-950/10 overflow-hidden"
+                    className="w-full"
+                    defaultOpen={false}
+                    isStreaming={props.chatStatus === "streaming"}
                   >
-                    <summary className="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-zinc-50/40 dark:hover:bg-zinc-900/20 transition-colors duration-200">
-                      <BrainIcon className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400 flex-shrink-0" />
-                      <span className="text-sm text-zinc-600 dark:text-zinc-400 flex-grow">
-                        Reasoning
-                      </span>
-                      <ChevronDownIcon className="h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
-                    </summary>
-                    <div className="p-3 bg-white/20 dark:bg-zinc-950/20 text-xs prose dark:prose-invert max-w-none overflow-auto">
-                      <div className="border-l-2 border-zinc-200 dark:border-zinc-700/60 pl-3">
-                        <MemoizedMarkdown
-                          id={`${message.id}:reasoning`}
-                          content={"text" in part ? part.text : ""}
-                        />
-                      </div>
-                    </div>
-                  </details>
+                    <ReasoningTrigger />
+                    <ReasoningContent className="text-xs">
+                      {part.text}
+                    </ReasoningContent>
+                  </Reasoning>
                 );
               case "tool-error": {
                 const toolName = (part as unknown as { toolName?: string })
