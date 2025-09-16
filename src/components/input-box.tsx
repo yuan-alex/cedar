@@ -1,6 +1,9 @@
 import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
+import { Send } from "lucide-react";
+
 import { McpSelector } from "@/components/mcp-selector";
 import { ModelPopover } from "@/components/model-popover";
+import { Button } from "@/components/ui/button";
 
 export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -41,6 +44,13 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
     setTimeout(adjustHeight, 0);
   };
 
+  const handleSendClick = () => {
+    const form = textareaRef.current?.form;
+    if (form) {
+      form.requestSubmit();
+    }
+  };
+
   useEffect(() => {
     adjustHeight();
     // biome-ignore lint/correctness/useExhaustiveDependencies: adjustHeight function is stable
@@ -61,6 +71,10 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
       <div className="flex gap-2 mt-1">
         <ModelPopover />
         <McpSelector />
+        <div className="flex-grow" />
+        <Button variant="outline" size="sm" onClick={handleSendClick}>
+          <Send />
+        </Button>
       </div>
     </>
   );
