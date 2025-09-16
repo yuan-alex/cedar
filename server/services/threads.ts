@@ -18,7 +18,7 @@ import { MCPClientManager } from "@/server/utils/mcp";
 import prisma from "@/server/utils/prisma";
 import { getModels, registry } from "@/server/utils/providers";
 import type { Context } from "hono";
-import { generateTitle } from "@/server/utils/inference";
+import { generateTitle, getSystemMessage } from "@/server/utils/inference";
 
 const mcpClientManager = new MCPClientManager();
 
@@ -161,6 +161,7 @@ export async function createMessage(c: Context<AppEnv>) {
 
   const result = streamText({
     model: wrappedLanguageModel,
+    system: getSystemMessage(),
     messages: convertToModelMessages(validatedMessages),
     tools,
     stopWhen: stepCountIs(10),
