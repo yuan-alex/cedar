@@ -1,11 +1,10 @@
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import {
   experimental_createMCPClient as createMCPClient,
   type experimental_MCPClient as MCPClient,
   type ToolSet,
 } from "ai";
+import { Experimental_StdioMCPTransport } from "ai/mcp-stdio";
 
 import { type Config, config } from "@/server/utils/config";
 
@@ -55,14 +54,21 @@ export class MCPClientManager {
     }
 
     if (mcpConfig.type === "sse") {
-      const sseTransport = new SSEClientTransport(new URL(mcpConfig.url));
-      return createMCPClient({ transport: sseTransport, name: serverName });
+      return createMCPClient({
+        transport: {
+          type: "sse",
+          url: mcpConfig.url,
+          headers: mcpConfig.headers,
+        },
+        name: serverName,
+      });
     }
 
     if (mcpConfig.type === "stdio") {
-      const stdioTransport = new StdioClientTransport({
+      const stdioTransport = new Experimental_StdioMCPTransport({
         command: mcpConfig.command,
         args: mcpConfig.args,
+        env: mcpConfig.env,
       });
       return createMCPClient({
         transport: stdioTransport,
