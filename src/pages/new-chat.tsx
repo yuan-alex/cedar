@@ -46,15 +46,15 @@ export function NewChat() {
       className="h-full flex flex-col overflow-hidden"
       onSubmit={handleCreateThread}
     >
-      <div className="grow flex items-center justify-center overflow-hidden">
+      <div className="grow flex flex-col justify-end md:justify-center md:items-center overflow-hidden">
         <div className="max-w-4xl w-full px-4 md:px-0">
-          <div className="flex flex-col items-center justify-center mb-10">
+          <div className="hidden md:flex flex-col items-center justify-center mb-10">
             <div className="flex items-center space-x-4 mb-4">
               <img className="w-12 h-12" src="/images/cedar.svg" alt="Cedar" />
               <p className="text-5xl font-medium">Cedar</p>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full mb-8 md:mb-0">
             <InputBox
               name="message"
               rows={3}
