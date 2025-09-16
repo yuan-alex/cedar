@@ -74,20 +74,28 @@ const ConfigSchema = z.object({
     .default({}),
 });
 
+function substituteEnvVars(content: string): string {
+  return content.replace(/\$\{([^}]+)\}/g, (match, envVar) => {
+    const [varName, defaultValue] = envVar.split(":");
+    return Bun.env[varName] || defaultValue || match;
+  });
+}
+
 async function loadConfigFromFile(
   filePath: string,
   description: string,
 ): Promise<ReturnType<typeof ConfigSchema.parse> | null> {
   try {
     const content = await Bun.file(filePath).text();
+    const substitutedContent = substituteEnvVars(content);
     let parsedConfig;
 
     // Detect file type based on extension and parse accordingly
     if (filePath.endsWith(".json")) {
-      parsedConfig = JSON.parse(content);
+      parsedConfig = JSON.parse(substitutedContent);
     } else {
       // Assume YAML for .yml, .yaml, or other extensions
-      parsedConfig = parse(content);
+      parsedConfig = parse(substitutedContent);
     }
 
     // Validate that the parsed config matches our schema
