@@ -57,6 +57,7 @@ const ConfigSchema = z.object({
           type: z.literal("stdio"),
           command: z.string(),
           args: z.array(z.string()).optional(),
+          env: z.record(z.string(), z.string()).optional(),
           enabled: z.boolean().default(true),
         }),
         z.object({
