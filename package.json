@@ -11,7 +11,7 @@
     "start": "NODE_ENV=production bun run ./server/bun.ts",
     "build": "bun build ./server/bun.ts --target bun",
     "preview": "vite preview",
-    "format": "biome format . --write",
+    "format": "biome check . --write",
     "db:studio": "prisma studio --browser none",
     "db:generate": "prisma generate --no-hints",
     "db:migrate": "prisma generate --no-engine && prisma migrate deploy",
