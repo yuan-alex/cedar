@@ -26,7 +26,10 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-export default {
+const server = Bun.serve({
   fetch: app.fetch,
   port: Number(process.env.PORT || 3001),
-};
+  idleTimeout: 60,
+});
+
+console.log(`Server is running on ${server.hostname}:${server.port}`);
