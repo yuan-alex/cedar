@@ -19,7 +19,7 @@ export function AuthenticatedApp() {
       <CommandMenu />
       <CedarSidebar />
       <main className="flex-1 min-h-0 w-full overflow-auto">
-        <SidebarTrigger className="fixed m-2" />
+        <SidebarTrigger className="fixed m-2 p-4" variant="outline" />
         <Outlet />
       </main>
     </SidebarProvider>
