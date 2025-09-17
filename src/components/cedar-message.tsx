@@ -45,7 +45,7 @@ export function CedarMessage(props: IMessageProps) {
   return (
     <div>
       <Message from={message.role}>
-        <MessageContent variant="flat">
+        <MessageContent variant="flat" className="w-full">
           {message.parts?.map((part, i) => {
             switch (part.type) {
               case "text":

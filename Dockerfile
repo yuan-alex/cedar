@@ -5,9 +5,9 @@ FROM oven/bun:1-alpine AS base
 
 # Install system dependencies required for Prisma and native modules
 RUN apk add --no-cache \
-    ca-certificates \
-    openssl \
-    && rm -rf /var/cache/apk/*
+  ca-certificates \
+  openssl \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
@@ -19,25 +19,19 @@ COPY package.json bun.lock ./
 # =============================================================================
 FROM base AS deps
 
-# Install all dependencies (including devDependencies for build)
+# Install all dependencies (including devDependencies for Prisma generation)
 RUN bun install --frozen-lockfile
 
 # =============================================================================
-# Builder stage - build the application
+# Builder stage - generate Prisma client
 # =============================================================================
-FROM base AS builder
-
-# Copy installed dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
+FROM deps AS builder
 
 # Copy source code
 COPY . .
 
 # Generate Prisma client
 RUN bunx prisma generate
-
-# Build the frontend application
-RUN bun run build
 
 # =============================================================================
 # Production dependencies stage - install only production dependencies
@@ -57,25 +51,26 @@ RUN addgroup -g 1001 -S nodejs || true
 
 # Install minimal runtime dependencies
 RUN apk add --no-cache \
-    ca-certificates \
-    openssl \
-    && rm -rf /var/cache/apk/*
+  ca-certificates \
+  openssl \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
 # Copy production dependencies
 COPY --from=prod-deps --chown=bun:nodejs /app/node_modules ./node_modules
 
-# Copy built application
-COPY --from=builder --chown=bun:nodejs /app/dist ./dist
+# Copy only the files needed at runtime
 COPY --from=builder --chown=bun:nodejs /app/server ./server
-COPY --from=builder --chown=bun:nodejs /app/tsconfig.json ./
-COPY --from=builder --chown=bun:nodejs /app/tsconfig.app.json ./
+COPY --from=builder --chown=bun:nodejs /app/src ./src
 COPY --from=builder --chown=bun:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=bun:nodejs /app/package.json ./
+COPY --from=builder --chown=bun:nodejs /app/bun.lock ./
+COPY --from=builder --chown=bun:nodejs /app/tsconfig.json ./
+COPY --from=builder --chown=bun:nodejs /app/tsconfig.app.json ./
+COPY --from=builder --chown=bun:nodejs /app/tsconfig.node.json ./
+COPY --from=builder --chown=bun:nodejs /app/bunfig.toml ./
 
-# Copy public assets
-COPY --chown=bun:nodejs public ./public
 
 # Switch to non-root user
 USER bun

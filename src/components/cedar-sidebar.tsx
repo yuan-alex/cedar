@@ -13,12 +13,13 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/utils/auth";
 import { createQueryFn } from "@/utils/queries";
+import cedarIcon from "../public/images/cedar.svg";
 
 export function CedarSidebar() {
   const { data: threads } = useQuery({
@@ -38,7 +39,7 @@ export function CedarSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center space-x-2 mb-2">
-          <img className="w-6 h-6" src="/images/cedar.svg" />
+          <img className="w-6 h-6" src={cedarIcon} alt="Cedar Logo" />
           <p className="text-xl font-medium">Cedar</p>
           <div className="grow" />
         </div>

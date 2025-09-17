@@ -1,6 +1,7 @@
+import type { MiddlewareHandler } from "hono";
+
 import type { AppEnv } from "@/server/types";
 import { auth } from "@/server/utils/auth";
-import type { MiddlewareHandler } from "hono";
 
 export const authSession: MiddlewareHandler<AppEnv> = async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });

@@ -1,7 +1,8 @@
 import { Hono } from "hono";
+
 import type { AppEnv } from "@/server/types";
-import { models } from "./models.ts";
 import { mcp } from "./mcp.ts";
+import { models } from "./models.ts";
 import { threads } from "./threads.ts";
 
 export const v1 = new Hono<AppEnv>();

@@ -1,4 +1,3 @@
-import { logger } from "@nanostores/logger";
 import { persistentAtom, persistentMap } from "@nanostores/persistent";
 
 type ModelValueMap = Record<string, string> & { id: string; name: string };
@@ -16,8 +15,14 @@ export const $mcpSelectedServers = persistentAtom<string>(
 );
 
 if (process.env.NODE_ENV === "development") {
-  logger({
-    Model: $model,
-    MCPServers: $mcpSelectedServers,
-  });
+  try {
+    // Dynamic import for dev dependency to avoid build errors in production
+    const { logger } = require("@nanostores/logger");
+    logger({
+      Model: $model,
+      MCPServers: $mcpSelectedServers,
+    });
+  } catch (error) {
+    // Logger not available in production, skip silently
+  }
 }

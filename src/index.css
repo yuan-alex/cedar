@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "@daveyplate/better-auth-ui/css";
 
-@plugin "@tailwindcss/typography";
-
 @source "../node_modules/streamdown/dist/index.js";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -25,6 +23,7 @@
     border-color: var(--color-gray-200, currentColor);
   }
 }
+
 /*
   ---break---
 */
@@ -62,6 +61,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
+
 /*
   ---break---
 */
@@ -98,6 +98,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
 /*
   ---break---
 */
@@ -138,6 +139,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+
 /*
   ---break---
 */
@@ -145,6 +147,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

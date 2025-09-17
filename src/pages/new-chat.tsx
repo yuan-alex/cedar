@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 import { InputBox } from "@/components/input-box";
 import { $model, $prompt } from "@/utils/stores";
+import cedarIcon from "../public/images/cedar.svg";
 
 export function NewChat() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export function NewChat() {
         <div className="max-w-4xl w-full px-4 md:px-0">
           <div className="hidden md:flex flex-col items-center justify-center mb-10">
             <div className="flex items-center space-x-4 mb-4">
-              <img className="w-12 h-12" src="/images/cedar.svg" alt="Cedar" />
+              <img className="w-12 h-12" src={cedarIcon} alt="Cedar" />
               <p className="text-5xl font-medium">Cedar</p>
             </div>
           </div>

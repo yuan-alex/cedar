@@ -2,8 +2,8 @@ import { useChat } from "@ai-sdk/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useState } from "react";
 import { MessageSquare } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import {
   Conversation,
@@ -110,7 +110,7 @@ export function Thread() {
         </div>
       </div>
 
-      {import.meta.env.DEV && (
+      {process.env.NODE_ENV === "development" && (
         <>
           <div className="fixed bottom-16 right-4 z-50 w-[28rem] max-h-[60vh] overflow-auto rounded border border-zinc-700 bg-black/90 p-3 text-green-200">
             {showDebug ? (
