@@ -1,8 +1,8 @@
-import { Hono } from "hono";
-import type { AppEnv } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
 import { createThreadSchema, newMessageSchema } from "@/server/schemas/threads";
 import * as threadsService from "@/server/services/threads";
+import type { AppEnv } from "@/server/types";
 
 export const threads = new Hono<AppEnv>();
 

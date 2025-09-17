@@ -3,21 +3,20 @@ import { CopyIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { Message, MessageContent } from "@/components/ai-elements/message";
-import { Response } from "@/components/ai-elements/response";
-
-import { Button } from "@/components/ui/button";
 import {
   Reasoning,
   ReasoningContent,
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
+import { Response } from "@/components/ai-elements/response";
 import {
   Tool,
-  ToolHeader,
   ToolContent,
+  ToolHeader,
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool";
+import { Button } from "@/components/ui/button";
 
 interface IMessageProps {
   message: UIMessage;

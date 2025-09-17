@@ -1,4 +1,8 @@
-import { ICedarProvider, IModel, IProvider } from "@/server/utils/providers";
+import type {
+  ICedarProvider,
+  IModel,
+  IProvider,
+} from "@/server/utils/providers";
 
 const MODEL_REGISTRY_API = process.env.MODEL_REGISTRY_API;
 if (!MODEL_REGISTRY_API) {

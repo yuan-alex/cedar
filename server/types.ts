@@ -1,4 +1,4 @@
-import { auth } from "@/server/utils/auth";
+import type { auth } from "@/server/utils/auth";
 
 export type AppEnv = {
   Variables: {

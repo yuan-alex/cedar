@@ -1,5 +1,5 @@
-import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
 import { Send } from "lucide-react";
+import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
 
 import { McpSelector } from "@/components/mcp-selector";
 import { ModelPopover } from "@/components/model-popover";

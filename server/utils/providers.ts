@@ -1,9 +1,9 @@
 import { anthropic } from "@ai-sdk/anthropic";
+import { deepinfra } from "@ai-sdk/deepinfra";
+import { fireworks } from "@ai-sdk/fireworks";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createProviderRegistry } from "ai";
-import { deepinfra } from "@ai-sdk/deepinfra";
-import { fireworks } from "@ai-sdk/fireworks";
 
 import { config } from "@/server/utils/config";
 
@@ -77,7 +77,7 @@ export interface ICedarProvider {
 }
 
 export function getModels() {
-  let models = [];
+  const models = [];
 
   function hasRequiredEnvVars(requiredEnvVars: string[]): boolean {
     return requiredEnvVars.every((envVar) => process.env[envVar]);
@@ -90,12 +90,12 @@ export function getModels() {
 
     const override = config.providers[provider.id];
     if (override?.enabled) {
-      // @ts-ignore - TypeScript is overly strict about structural typing here
+      // @ts-expect-error - TypeScript is overly strict about structural typing here
       provider = { ...provider, ...override };
     }
 
     for (const modelId of Object.keys(provider.models)) {
-      // @ts-ignore - TypeScript infers overly strict literal types from JSON
+      // @ts-expect-error - TypeScript infers overly strict literal types from JSON
       const model = provider.models[modelId];
       models.push({
         ...model,

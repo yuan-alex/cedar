@@ -1,12 +1,3 @@
-import {
-  BotIcon,
-  BrainIcon,
-  PaletteIcon,
-  SparklesIcon,
-  ZapIcon,
-} from "lucide-react";
-import type { ReactElement } from "react";
-
 import claudeIconUrl from "@lobehub/icons-static-svg/icons/claude-color.svg";
 import deepinfraIcon from "@lobehub/icons-static-svg/icons/deepinfra.svg";
 import deepseekIcon from "@lobehub/icons-static-svg/icons/deepseek-color.svg";
@@ -21,6 +12,14 @@ import openrouterIcon from "@lobehub/icons-static-svg/icons/openrouter.svg";
 import perplexityIcon from "@lobehub/icons-static-svg/icons/perplexity-color.svg";
 import qwenIcon from "@lobehub/icons-static-svg/icons/qwen-color.svg";
 import zaiIcon from "@lobehub/icons-static-svg/icons/zai.svg";
+import {
+  BotIcon,
+  BrainIcon,
+  PaletteIcon,
+  SparklesIcon,
+  ZapIcon,
+} from "lucide-react";
+import type { ReactElement } from "react";
 
 // Centralized icon size configuration
 const ICON_SIZE = "w-4 h-4";
