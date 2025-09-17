@@ -11,6 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { ICedarModel } from "@/server/utils/providers";
 import { getModelIconById } from "@/utils/provider-icons";
 import { createQueryFn } from "@/utils/queries";
@@ -18,6 +19,7 @@ import { $model } from "@/utils/stores";
 
 export function ModelCommandMenu(props: { handleClose: () => void }) {
   const model = useStore($model);
+  const isMobile = useIsMobile();
 
   const { data: modelsData }: { data: ICedarModel[] | undefined } = useQuery({
     queryKey: ["models"],
@@ -34,7 +36,11 @@ export function ModelCommandMenu(props: { handleClose: () => void }) {
 
   return (
     <Command defaultValue={model.id}>
-      <CommandInput placeholder="Search model..." autoFocus />
+      <CommandInput
+        placeholder="Search model..."
+        autoFocus={!isMobile}
+        disabled={isMobile}
+      />
       <CommandList>
         <CommandEmpty>No model found.</CommandEmpty>
         <CommandGroup>
