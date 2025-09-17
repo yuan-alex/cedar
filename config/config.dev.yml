@@ -154,5 +154,13 @@ models:
 mcpServers:
   context7:
     type: stdio
-    command: npx
+    command: bunx
     args: ["-y", "@upstash/context7-mcp@latest"]
+    enabled: false
+  notion:
+    type: stdio
+    command: bunx
+    args: ["-y", "@notionhq/notion-mcp-server@latest"]
+    env:
+      NOTION_TOKEN: ${NOTION_TOKEN}
+    enabled: false
