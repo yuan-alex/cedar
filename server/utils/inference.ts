@@ -57,7 +57,7 @@ Current date: ${format(new Date(), "PPPP")}.`
 
 export function generateTitle(prompt: string, model: string) {
   return generateText({
-    // @ts-ignore
+    // @ts-expect-error
     model: registry.languageModel(model),
     messages: [
       {
@@ -69,5 +69,12 @@ export function generateTitle(prompt: string, model: string) {
         content: prompt,
       },
     ],
+    providerOptions: {
+      openrouter: {
+        provider: {
+          sort: "price",
+        },
+      },
+    },
   });
 }

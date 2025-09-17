@@ -166,6 +166,13 @@ export async function createMessage(c: Context<AppEnv>) {
     tools,
     stopWhen: stepCountIs(10),
     experimental_transform: smoothStream({ chunking: "word" }),
+    providerOptions: {
+      openrouter: {
+        provider: {
+          sort: "throughput",
+        },
+      },
+    },
     onFinish: (event) => {
       prisma.chatMessage.update({
         where: { id: newMessage.id },

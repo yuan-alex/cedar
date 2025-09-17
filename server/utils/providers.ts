@@ -15,7 +15,7 @@ export const registry = createProviderRegistry({
   deepinfra,
   fireworks,
   openrouter: createOpenAICompatible({
-    name: "OpenRouter",
+    name: "openrouter",
     apiKey: process.env.OPENROUTER_API_KEY,
     baseURL:
       process.env.OPENROUTER_API_BASE_URL || "https://openrouter.ai/api/v1",
