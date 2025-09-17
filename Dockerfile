@@ -23,15 +23,17 @@ FROM base AS deps
 RUN bun install --frozen-lockfile
 
 # =============================================================================
-# Builder stage - generate Prisma client
+# Builder stage - generate Prisma client and build application
 # =============================================================================
 FROM deps AS builder
 
 # Copy source code
 COPY . .
 
-# Generate Prisma client
 RUN bunx prisma generate
+
+# Build the frontend application
+RUN bun run build
 
 # =============================================================================
 # Production dependencies stage - install only production dependencies
@@ -63,14 +65,12 @@ COPY --from=prod-deps --chown=bun:nodejs /app/node_modules ./node_modules
 # Copy only the files needed at runtime
 COPY --from=builder --chown=bun:nodejs /app/server ./server
 COPY --from=builder --chown=bun:nodejs /app/src ./src
+COPY --from=builder --chown=bun:nodejs /app/dist ./dist
 COPY --from=builder --chown=bun:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=bun:nodejs /app/package.json ./
 COPY --from=builder --chown=bun:nodejs /app/bun.lock ./
 COPY --from=builder --chown=bun:nodejs /app/tsconfig.json ./
-COPY --from=builder --chown=bun:nodejs /app/tsconfig.app.json ./
-COPY --from=builder --chown=bun:nodejs /app/tsconfig.node.json ./
 COPY --from=builder --chown=bun:nodejs /app/bunfig.toml ./
-
 
 # Switch to non-root user
 USER bun
@@ -80,7 +80,7 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD bun --version || exit 1
+  CMD bun --version || exit 1
 
 # Set production environment
 ENV NODE_ENV=production

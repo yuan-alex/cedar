@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "bun run --watch ./server/bun.ts",
     "start": "NODE_ENV=production bun run ./server/bun.ts",
-    "build": "bun build ./server/bun.ts --target bun",
+    "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
     "preview": "vite preview",
     "format": "biome check . --write",
     "db:studio": "prisma studio --browser none",
