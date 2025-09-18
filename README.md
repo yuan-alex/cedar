@@ -1,4 +1,4 @@
-# Cedar
+# <img src="src/public/images/cedar.png" alt="Cedar Logo" width="30"> Cedar
 
 A modern, cross-platform chatbot interface built with React, TypeScript, and Tauri. Cedar provides a unified interface for interacting with multiple AI providers through an intuitive chat experience.
 
