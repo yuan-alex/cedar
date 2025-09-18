@@ -15,6 +15,7 @@ import { CedarMessage } from "@/components/cedar-message";
 import { InputBox } from "@/components/input-box";
 import { createQueryFn } from "@/utils/queries";
 import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
+import { Loader } from "@/components/ai-elements/loader";
 
 export function Thread() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });
@@ -97,6 +98,7 @@ export function Thread() {
                 ))}
               </div>
             )}
+            {status === "submitted" && <Loader />}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
