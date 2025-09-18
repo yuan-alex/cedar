@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 interface IMessageProps {
   message: UIMessage;
   chatStatus: any;
+  isLatestMessage?: boolean;
 }
 
 export function CedarMessage(props: IMessageProps) {
@@ -58,8 +59,12 @@ export function CedarMessage(props: IMessageProps) {
                   <Reasoning
                     key={`${message.id}-reasoning-${i}`}
                     className="w-full"
-                    defaultOpen={false}
-                    isStreaming={props.chatStatus === "streaming"}
+                    isStreaming={
+                      props.chatStatus === "streaming" &&
+                      props.isLatestMessage &&
+                      i === message.parts.length - 1
+                    }
+                    defaultOpen
                   >
                     <ReasoningTrigger />
                     <ReasoningContent className="text-xs">

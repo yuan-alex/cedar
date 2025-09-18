@@ -92,6 +92,7 @@ export function Thread() {
                     key={msg.id}
                     message={msg}
                     chatStatus={chatStatus}
+                    isLatestMessage={msg.id === messages.at(-1)?.id}
                   />
                 ))}
               </div>
