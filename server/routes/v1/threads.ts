@@ -12,6 +12,7 @@ threads.post(
   zValidator("json", createThreadSchema),
   threadsService.createThread,
 );
+threads.delete("/", threadsService.bulkSoftDeleteThreads);
 threads.get("/:threadToken", threadsService.getThread);
 threads.post(
   "/:threadToken",

@@ -11,11 +11,11 @@ import {
   ConversationEmptyState,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
+import { Loader } from "@/components/ai-elements/loader";
 import { CedarMessage } from "@/components/cedar-message";
 import { InputBox } from "@/components/input-box";
 import { createQueryFn } from "@/utils/queries";
 import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
-import { Loader } from "@/components/ai-elements/loader";
 
 export function Thread() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });

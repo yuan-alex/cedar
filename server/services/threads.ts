@@ -229,10 +229,33 @@ export async function softDeleteThread(c: Context<AppEnv>) {
   });
   const deleteThread = prisma.thread.update({
     where: { token: threadToken, userId: user.id },
-    data: { isDeleted: true, uiMessages: [] },
+    data: { isDeleted: true, name: "", uiMessages: [] },
   });
 
   await prisma.$transaction([deleteMessages, deleteThread]);
+
+  return new Response("ok");
+}
+
+export async function bulkSoftDeleteThreads(c: Context<AppEnv>) {
+  const user = c.get("user");
+  if (!user) return c.body(null, 401);
+
+  const deleteMessages = prisma.chatMessage.updateMany({
+    where: {
+      thread: {
+        userId: user.id,
+        isDeleted: false,
+      },
+    },
+    data: { isDeleted: true, uiMessageParts: [] },
+  });
+  const deleteThreads = prisma.thread.updateMany({
+    where: { userId: user.id, isDeleted: false },
+    data: { isDeleted: true, name: "", uiMessages: [] },
+  });
+
+  await prisma.$transaction([deleteMessages, deleteThreads]);
 
   return new Response("ok");
 }
