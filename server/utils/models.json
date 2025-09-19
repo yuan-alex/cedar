@@ -4,16 +4,6 @@
     "env": ["FIREWORKS_API_KEY"],
     "name": "Fireworks AI",
     "models": {
-      "accounts/fireworks/gpt-oss-120b": {
-        "id": "accounts/fireworks/gpt-oss-120b",
-        "name": "GPT OSS 120B",
-        "reasoning": true
-      },
-      "accounts/fireworks/gpt-oss-20b": {
-        "id": "accounts/fireworks/gpt-oss-20b",
-        "name": "GPT OSS 20B",
-        "reasoning": true
-      },
       "accounts/fireworks/models/deepseek-r1-0528": {
         "id": "accounts/fireworks/models/deepseek-r1-0528",
         "name": "Deepseek R1 05/28",
@@ -37,6 +27,16 @@
       "accounts/fireworks/models/glm-4p5-air": {
         "id": "accounts/fireworks/models/glm-4p5-air",
         "name": "GLM 4.5 Air",
+        "reasoning": true
+      },
+      "accounts/fireworks/models/gpt-oss-120b": {
+        "id": "accounts/fireworks/models/gpt-oss-120b",
+        "name": "GPT OSS 120B",
+        "reasoning": true
+      },
+      "accounts/fireworks/models/gpt-oss-20b": {
+        "id": "accounts/fireworks/models/gpt-oss-20b",
+        "name": "GPT OSS 20B",
         "reasoning": true
       },
       "accounts/fireworks/models/kimi-k2-instruct": {
@@ -335,6 +335,11 @@
         "id": "qwen/qwen3-max",
         "name": "Qwen3 Max",
         "reasoning": true
+      },
+      "qwen/qwen3-next-80b-a3b-instruct": {
+        "id": "qwen/qwen3-next-80b-a3b-instruct",
+        "name": "Qwen3 Next 80B A3B Instruct",
+        "reasoning": false
       },
       "rekaai/reka-flash-3": {
         "id": "rekaai/reka-flash-3",
