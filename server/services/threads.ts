@@ -22,102 +22,30 @@ import { getModels, registry } from "@/server/utils/providers";
 
 const mcpClientManager = new MCPClientManager();
 
-export async function listThreads(c: Context<AppEnv>) {
+// Helper functions
+function requireAuth(c: Context<AppEnv>) {
   const user = c.get("user");
-  if (!user) return c.body(null, 401);
-
-  const take = c.req.query("take")
-    ? Number.parseInt(c.req.query("take") as string)
-    : undefined;
-  const skip = Number.parseInt(c.req.query("skip") || "0");
-
-  const threads = await prisma.thread.findMany({
-    where: { userId: user.id, isDeleted: false },
-    take,
-    skip,
-    orderBy: { lastMessagedAt: "desc" },
-    select: { token: true, name: true, lastMessagedAt: true, createdAt: true },
-  });
-
-  return Response.json(threads);
+  if (!user) throw new Response(null, { status: 401 });
+  return user;
 }
 
-export async function createThread(c: Context<AppEnv>) {
-  const user = c.get("user");
-  if (!user) return c.body(null, 401);
+async function validateThreadAccess(threadToken: string, userId: string) {
+  const thread = await prisma.thread.findUnique({
+    where: { token: threadToken, isDeleted: false },
+  });
 
-  const { model, prompt } = await c.req.json();
-  if (!user.id || !prompt || !model) {
-    return new Response("invalid parameters", { status: 400 });
+  if (!thread || thread.userId !== userId) {
+    throw new Response(null, { status: 404 });
   }
 
-  const thread = await prisma.thread.create({
-    data: { userId: user.id },
-  });
-
-  generateTitle(prompt, config.models.title_generation || model).then(
-    async (response) => {
-      await prisma.thread.update({
-        where: { id: thread.id },
-        data: { name: response.text },
-      });
-    },
-  );
-
-  return Response.json(thread);
+  return thread;
 }
 
-export async function getThread(c: Context<AppEnv>) {
-  const user = c.get("user");
-  if (!user) return c.body(null, 401);
-
-  const thread = await prisma.thread.findUnique({
-    where: { token: c.req.param("threadToken"), isDeleted: false },
-    include: {
-      messages: { select: { uiMessageParts: true }, orderBy: { id: "asc" } },
-    },
-  });
-
-  if (!thread || thread.userId !== user.id) {
-    return c.notFound();
-  }
-
-  return Response.json(thread);
-}
-
-export async function createMessage(c: Context<AppEnv>) {
-  const user = c.get("user");
-  if (!user) return c.body(null, 401);
-
-  const threadToken = c.req.param("threadToken");
-  const userInput = await c.req.json();
-  const { model } = userInput;
-
-  const thread = await prisma.thread.findUnique({
-    where: { token: threadToken },
-  });
+function setupAIModel(model: string) {
   const models = getModels();
-  if (
-    !thread ||
-    thread.userId !== user.id ||
-    !models.some((m) => m.id === model)
-  ) {
-    return c.notFound();
+  if (!models.some((m) => m.id === model)) {
+    throw new Response("Invalid model", { status: 400 });
   }
-
-  await prisma.thread.update({
-    where: { id: thread.id },
-    data: {
-      lastMessagedAt: new Date(),
-      messages: {
-        create: {
-          token: userInput.newMessage.id,
-          role: ChatMessageRole.user,
-          uiMessageParts: userInput.newMessage.parts,
-        },
-      },
-    },
-  });
 
   const settingsMiddleware = defaultSettingsMiddleware({
     settings: {
@@ -131,38 +59,37 @@ export async function createMessage(c: Context<AppEnv>) {
     separator: "\n",
   });
 
-  const wrappedLanguageModel = wrapLanguageModel({
+  return wrapLanguageModel({
     model: registry.languageModel(model),
     middleware: [reasoningMiddleware, settingsMiddleware],
   });
+}
 
-  const previousMessages = thread.uiMessages;
-  const tools = await mcpClientManager.getAllTools(userInput.mcpServers);
-
-  const validatedMessages = await validateUIMessages({
-    metadataSchema: undefined,
-    dataSchemas: undefined,
-    messages: [...previousMessages, userInput.newMessage],
-    tools: Object.fromEntries(
-      Object.entries(tools).map(([key, tool]) => [key, tool as any]),
-    ),
-  });
+async function createAIResponse(
+  model: string,
+  messages: any[],
+  tools: any,
+  threadId: number,
+  messageToken?: string,
+) {
+  const wrappedModel = setupAIModel(model);
 
   const newMessage = await prisma.chatMessage.create({
     data: {
+      token: messageToken,
       role: ChatMessageRole.assistant,
       status: ChatMessageStatus.inProgress,
       uiMessageParts: [],
-      threadId: thread.id,
+      threadId,
       provider: model.split(":")[0],
       model: model.split(":")[1],
     },
   });
 
   const result = streamText({
-    model: wrappedLanguageModel,
+    model: wrappedModel,
     system: getSystemMessage(),
-    messages: convertToModelMessages(validatedMessages),
+    messages: convertToModelMessages(messages),
     tools,
     stopWhen: stepCountIs(10),
     experimental_transform: smoothStream({ chunking: "word" }),
@@ -174,67 +101,291 @@ export async function createMessage(c: Context<AppEnv>) {
       },
     },
     onFinish: (event) => {
-      prisma.chatMessage.update({
-        where: { id: newMessage.id },
-        data: { rawEvent: event as any },
-      });
+      prisma.chatMessage
+        .update({
+          where: { id: newMessage.id },
+          data: { rawEvent: event as any },
+        })
+        .catch((err) => {
+          console.error("Failed to save rawEvent:", err);
+        });
     },
   });
 
-  return result.toUIMessageStreamResponse({
-    originalMessages: validatedMessages as any,
-    generateMessageId: () => newMessage.token,
-    onError: (error) => {
-      prisma.chatMessage.update({
-        where: { id: newMessage.id },
-        data: { status: ChatMessageStatus.failed },
-      });
-      return `Failed to process message: ${error}`;
-    },
-    onFinish: async ({ messages, responseMessage }) => {
-      await prisma.chatMessage.update({
-        where: { id: newMessage.id },
-        data: {
-          uiMessageParts: responseMessage.parts as any,
-          status: ChatMessageStatus.completed,
-        },
-      });
+  return { result, newMessage };
+}
 
-      await prisma.thread.update({
-        where: { id: thread.id },
-        data: {
-          uiMessages: messages as any,
-          messages: { connect: { id: newMessage.id } },
+export async function listThreads(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+
+    const take = c.req.query("take")
+      ? Number.parseInt(c.req.query("take") as string)
+      : undefined;
+    const skip = Number.parseInt(c.req.query("skip") || "0");
+
+    const threads = await prisma.thread.findMany({
+      where: { userId: user.id, isDeleted: false },
+      take,
+      skip,
+      orderBy: { lastMessagedAt: "desc" },
+      select: {
+        token: true,
+        name: true,
+        lastMessagedAt: true,
+        createdAt: true,
+      },
+    });
+
+    return Response.json(threads);
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
+}
+
+export async function createThread(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const { model, prompt } = await c.req.json();
+
+    if (!prompt || !model) {
+      return new Response("invalid parameters", { status: 400 });
+    }
+
+    const thread = await prisma.thread.create({
+      data: { userId: user.id },
+    });
+
+    generateTitle(prompt, config.models.title_generation || model).then(
+      async (response) => {
+        await prisma.thread.update({
+          where: { id: thread.id },
+          data: { name: response.text },
+        });
+      },
+    );
+
+    return Response.json(thread);
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
+}
+
+export async function getThread(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const threadToken = c.req.param("threadToken");
+
+    const thread = await prisma.thread.findUnique({
+      where: { token: threadToken, isDeleted: false },
+      include: {
+        messages: { select: { uiMessageParts: true }, orderBy: { id: "asc" } },
+      },
+    });
+
+    if (!thread || thread.userId !== user.id) {
+      return c.notFound();
+    }
+
+    return Response.json(thread);
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
+}
+
+export async function createMessage(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const threadToken = c.req.param("threadToken");
+    const userInput = await c.req.json();
+    const { model } = userInput;
+
+    const thread = await validateThreadAccess(threadToken, user.id);
+
+    await prisma.thread.update({
+      where: { id: thread.id },
+      data: {
+        lastMessagedAt: new Date(),
+        messages: {
+          create: {
+            token: userInput.newMessage.id,
+            role: ChatMessageRole.user,
+            uiMessageParts: userInput.newMessage.parts,
+          },
         },
-      });
-    },
-  });
+      },
+    });
+
+    const tools = await mcpClientManager.getAllTools(userInput.mcpServers);
+    const validatedMessages = await validateUIMessages({
+      metadataSchema: undefined,
+      dataSchemas: undefined,
+      messages: [...thread.uiMessages, userInput.newMessage],
+      tools: Object.fromEntries(
+        Object.entries(tools).map(([key, tool]) => [key, tool as any]),
+      ),
+    });
+
+    const { result, newMessage } = await createAIResponse(
+      model,
+      validatedMessages,
+      tools,
+      thread.id,
+    );
+
+    return result.toUIMessageStreamResponse({
+      originalMessages: validatedMessages as any,
+      generateMessageId: () => newMessage.token,
+      onError: (error) => {
+        prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: { status: ChatMessageStatus.failed },
+        });
+        return `Failed to process message: ${error}`;
+      },
+      onFinish: async ({ messages, responseMessage }) => {
+        await prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: {
+            uiMessageParts: responseMessage.parts as any,
+            status: ChatMessageStatus.completed,
+          },
+        });
+
+        await prisma.thread.update({
+          where: { id: thread.id },
+          data: {
+            uiMessages: messages as any,
+            messages: { connect: { id: newMessage.id } },
+          },
+        });
+      },
+    });
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
 }
 
 export async function softDeleteThread(c: Context<AppEnv>) {
-  const { threadToken } = c.req.param();
-  const user = c.get("user");
-  if (!user) return c.body(null, 401);
+  try {
+    const user = requireAuth(c);
+    const threadToken = c.req.param("threadToken");
 
-  const thread = await prisma.thread.findUnique({
-    where: { token: threadToken, userId: user.id },
-  });
-  if (!thread) {
-    return c.notFound();
+    const thread = await validateThreadAccess(threadToken, user.id);
+
+    const deleteMessages = prisma.chatMessage.updateMany({
+      where: { threadId: thread.id },
+      data: { isDeleted: true, uiMessageParts: [] },
+    });
+    const deleteThread = prisma.thread.update({
+      where: { token: threadToken, userId: user.id },
+      data: { isDeleted: true, name: "", uiMessages: [] },
+    });
+
+    await prisma.$transaction([deleteMessages, deleteThread]);
+
+    return new Response("ok");
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
   }
+}
 
-  const deleteMessages = prisma.chatMessage.updateMany({
-    where: { threadId: thread.id },
-    data: { isDeleted: true, uiMessageParts: [] },
-  });
-  const deleteThread = prisma.thread.update({
-    where: { token: threadToken, userId: user.id },
-    data: { isDeleted: true, name: "", uiMessages: [] },
-  });
+export async function regenerateMessage(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const threadToken = c.req.param("threadToken");
+    const userInput = await c.req.json();
+    const { model, mcpServers } = userInput;
 
-  await prisma.$transaction([deleteMessages, deleteThread]);
+    // Get the thread with all messages
+    const thread = await prisma.thread.findUnique({
+      where: { token: threadToken, isDeleted: false },
+      include: {
+        messages: {
+          where: { isDeleted: false },
+          orderBy: { id: "desc" },
+        },
+      },
+    });
 
-  return new Response("ok");
+    if (!thread || thread.userId !== user.id) {
+      return c.notFound();
+    }
+
+    // Find the latest assistant message
+    const latestAssistantMessage = thread.messages.find(
+      (msg) => msg.role === ChatMessageRole.assistant,
+    );
+
+    if (!latestAssistantMessage) {
+      return new Response("No assistant message to regenerate", {
+        status: 400,
+      });
+    }
+
+    // Mark the latest assistant message as deleted
+    await prisma.chatMessage.update({
+      where: { id: latestAssistantMessage.id },
+      data: { isDeleted: true },
+    });
+
+    // Remove the latest assistant message from uiMessages
+    const updatedUIMessages = thread.uiMessages.slice(0, -1);
+
+    const tools = await mcpClientManager.getAllTools(mcpServers);
+    const validatedMessages = await validateUIMessages({
+      metadataSchema: undefined,
+      dataSchemas: undefined,
+      messages: updatedUIMessages,
+      tools: Object.fromEntries(
+        Object.entries(tools).map(([key, tool]) => [key, tool as any]),
+      ),
+    });
+
+    const { result, newMessage } = await createAIResponse(
+      model,
+      validatedMessages,
+      tools,
+      thread.id,
+    );
+
+    return result.toUIMessageStreamResponse({
+      originalMessages: validatedMessages as any,
+      generateMessageId: () => newMessage.token,
+      onError: (error) => {
+        prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: { status: ChatMessageStatus.failed },
+        });
+        return `Failed to regenerate message: ${error}`;
+      },
+      onFinish: async ({ messages, responseMessage }) => {
+        await prisma.chatMessage.update({
+          where: { id: newMessage.id },
+          data: {
+            uiMessageParts: responseMessage.parts as any,
+            status: ChatMessageStatus.completed,
+          },
+        });
+
+        await prisma.thread.update({
+          where: { id: thread.id },
+          data: {
+            uiMessages: messages as any,
+            lastMessagedAt: new Date(),
+          },
+        });
+      },
+    });
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
 }
 
 export async function bulkSoftDeleteThreads(c: Context<AppEnv>) {
