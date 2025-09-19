@@ -4,6 +4,7 @@ import { useParams } from "@tanstack/react-router";
 import { DefaultChatTransport } from "ai";
 import { MessageSquare } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import {
   Conversation,
@@ -33,21 +34,36 @@ export function Thread() {
     setMessages,
     sendMessage,
     status: chatStatus,
+    regenerate,
   } = useChat({
     id: threadToken,
     generateId: () => crypto.randomUUID(),
     transport: new DefaultChatTransport({
       api: `/api/v1/threads/${threadToken}`,
       credentials: "include",
-      prepareSendMessagesRequest: (request) => ({
-        body: {
-          model: $model?.get().id,
-          newMessage: request.messages[request.messages.length - 1],
-          mcpServers: $mcpSelectedServers.value
-            ? $mcpSelectedServers.value.split(",").filter(Boolean)
-            : [],
-        },
-      }),
+      prepareSendMessagesRequest: (request) => {
+        if (request.trigger === "regenerate-message") {
+          return {
+            api: `/api/v1/threads/${threadToken}/regenerate`,
+            body: {
+              model: $model?.get().id,
+              mcpServers: $mcpSelectedServers.value
+                ? $mcpSelectedServers.value.split(",").filter(Boolean)
+                : [],
+            },
+          };
+        }
+
+        return {
+          body: {
+            model: $model?.get().id,
+            newMessage: request.messages[request.messages.length - 1],
+            mcpServers: $mcpSelectedServers.value
+              ? $mcpSelectedServers.value.split(",").filter(Boolean)
+              : [],
+          },
+        };
+      },
     }),
     experimental_throttle: 50,
     onFinish: () => {
@@ -75,6 +91,15 @@ export function Thread() {
     setInput("");
   }
 
+  function handleRegenerate() {
+    if (!threadToken) {
+      toast.error("Thread not found");
+      return;
+    }
+
+    regenerate();
+  }
+
   return (
     <div className="relative size-full h-screen">
       <div className="flex flex-col h-full min-h-0">
@@ -94,11 +119,15 @@ export function Thread() {
                     message={msg}
                     chatStatus={chatStatus}
                     isLatestMessage={msg.id === messages.at(-1)?.id}
+                    threadToken={threadToken}
+                    onRegenerate={
+                      msg.role === "assistant" ? handleRegenerate : undefined
+                    }
                   />
                 ))}
               </div>
             )}
-            {status === "submitted" && <Loader />}
+            {chatStatus === "submitted" && <Loader />}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>

@@ -1,6 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { createThreadSchema, newMessageSchema } from "@/server/schemas/threads";
+import {
+  createThreadSchema,
+  newMessageSchema,
+  regenerateMessageSchema,
+} from "@/server/schemas/threads";
 import * as threadsService from "@/server/services/threads";
 import type { AppEnv } from "@/server/types";
 
@@ -18,5 +22,10 @@ threads.post(
   "/:threadToken",
   zValidator("json", newMessageSchema),
   threadsService.createMessage,
+);
+threads.post(
+  "/:threadToken/regenerate",
+  zValidator("json", regenerateMessageSchema),
+  threadsService.regenerateMessage,
 );
 threads.delete("/:threadToken", threadsService.softDeleteThread);

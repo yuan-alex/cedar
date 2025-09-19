@@ -1,5 +1,6 @@
 import type { UIMessage } from "ai";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, RotateCcwIcon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Message, MessageContent } from "@/components/ai-elements/message";
@@ -22,10 +23,13 @@ interface IMessageProps {
   message: UIMessage;
   chatStatus: any;
   isLatestMessage?: boolean;
+  threadToken?: string;
+  onRegenerate?: () => void;
 }
 
 export function CedarMessage(props: IMessageProps) {
-  const { message } = props;
+  const { message, threadToken, onRegenerate } = props;
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   function handleCopyText() {
     const textPart = message.parts?.find((part) => part.type === "text");
@@ -40,6 +44,21 @@ export function CedarMessage(props: IMessageProps) {
         console.error("Failed to copy text: ", err);
         alert("Failed to copy text. Please try again.");
       });
+  }
+
+  function handleRegenerate() {
+    if (!threadToken || !onRegenerate) return;
+
+    setIsRegenerating(true);
+    try {
+      onRegenerate();
+      toast.success("Message regenerated");
+    } catch (error) {
+      console.error("Failed to regenerate message: ", error);
+      toast.error("Failed to regenerate message. Please try again.");
+    } finally {
+      setIsRegenerating(false);
+    }
   }
 
   return (
@@ -173,14 +192,26 @@ export function CedarMessage(props: IMessageProps) {
         </MessageContent>
       </Message>
       {message.role === "assistant" ? (
-        <div className="flex gap-4 mb-4">
+        <div className="flex gap-1 mb-4">
           <Button
             className="cursor-pointer"
             variant="ghost"
             onClick={handleCopyText}
+            disabled={isRegenerating}
           >
             <CopyIcon />
           </Button>
+          {threadToken && onRegenerate && props.isLatestMessage && (
+            <Button
+              className="cursor-pointer"
+              variant="ghost"
+              onClick={handleRegenerate}
+              disabled={isRegenerating}
+              title="Regenerate response"
+            >
+              <RotateCcwIcon className={isRegenerating ? "animate-spin" : ""} />
+            </Button>
+          )}
         </div>
       ) : null}
     </div>

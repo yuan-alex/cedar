@@ -10,3 +10,8 @@ export const newMessageSchema = z.object({
   newMessage: z.any(),
   mcpServers: z.array(z.string()),
 });
+
+export const regenerateMessageSchema = z.object({
+  model: z.string(),
+  mcpServers: z.array(z.string()),
+});
