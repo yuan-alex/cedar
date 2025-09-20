@@ -23,12 +23,28 @@ const ModelsSchema = z.object({
   title_generation: z.string().optional(),
 });
 
+const ModelMappingsSchema = z
+  .record(
+    z.string(),
+    z.object({
+      name: z.string(),
+      description: z.string().optional(),
+      reasoning: z.boolean().default(false),
+      fast: z.boolean().default(false),
+      experimental: z.boolean().default(false),
+      enabled: z.boolean().default(true),
+    }),
+  )
+  .default({});
+
 const ConfigSchema = z.object({
   app: z.preprocess((v) => (v == null ? {} : v), AppSchema),
 
   ai: z.preprocess((v) => (v == null ? {} : v), AiSchema),
 
   models: z.preprocess((v) => (v == null ? {} : v), ModelsSchema),
+
+  modelMappings: z.preprocess((v) => (v == null ? {} : v), ModelMappingsSchema),
 
   providers: z
     .record(
@@ -159,6 +175,29 @@ async function loadConfig() {
     // Return default config if file doesn't exist or is invalid
     return ConfigSchema.parse({});
   }
+}
+
+/**
+ * Gets all enabled model mappings.
+ *
+ * @returns A record of enabled model mappings
+ */
+export function getEnabledModelMappings(): Record<
+  string,
+  {
+    name: string;
+    description?: string;
+    reasoning: boolean;
+    fast: boolean;
+    experimental: boolean;
+    enabled: boolean;
+  }
+> {
+  return Object.fromEntries(
+    Object.entries(config.modelMappings).filter(
+      ([_, mapping]) => mapping.enabled,
+    ),
+  );
 }
 
 export const config = await loadConfig();

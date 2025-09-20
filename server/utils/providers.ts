@@ -5,7 +5,7 @@ import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createProviderRegistry } from "ai";
 
-import { config } from "@/server/utils/config";
+import { config, getEnabledModelMappings } from "@/server/utils/config";
 
 import rawModelsData from "./models.json";
 
@@ -78,6 +78,19 @@ export interface ICedarProvider {
 
 export function getModels() {
   const models = [];
+
+  // Add custom model mappings first
+  const modelMappings = getEnabledModelMappings();
+  for (const [modelId, mapping] of Object.entries(modelMappings)) {
+    models.push({
+      id: modelId,
+      name: mapping.name,
+      description: mapping.description,
+      reasoning: mapping.reasoning,
+      fast: mapping.fast,
+      experimental: mapping.experimental,
+    });
+  }
 
   function hasRequiredEnvVars(requiredEnvVars: string[]): boolean {
     return requiredEnvVars.every((envVar) => process.env[envVar]);
