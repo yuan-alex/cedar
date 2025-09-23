@@ -13,18 +13,18 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
 
 ## Supported Providers
 
-- OpenAI
 - Anthropic
-- OpenRouter
-- Fireworks AI
 - DeepInfra
+- Fireworks AI
+- OpenAI
+- OpenRouter
 
 ## Deployment
 
 ### Prerequisites
 
 - Bun runtime
-- Database (PostgreSQL recommended)
+- PostgreSQL server
 - API keys for your chosen AI providers
 
 ### Production Setup
@@ -45,14 +45,18 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
 3. **Set up environment variables**
 
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ANTHROPIC_API_KEY=your_anthropic_api_key_here
-   OPENROUTER_API_KEY=your_openrouter_api_key_here
-   FIREWORKS_API_KEY=your_fireworks_api_key_here
-   DEEPINFRA_API_KEY=your_deepinfra_api_key_here
-   DATABASE_URL=your_production_database_url_here
-   NODE_ENV=production
-   PORT=3000
+    # Database
+    DATABASE_URL=postgresql://username:password@localhost:5432/cedar
+
+    # Authentication
+    BETTER_AUTH_SECRET=...
+    BETTER_AUTH_URL=... # base url of your cedar deployment
+
+    # AI Provider Configuration
+    OPENAI_API_KEY=...
+    OPENROUTER_API_KEY=...
+    DEEPINFRA_API_KEY=...
+    FIREWORKS_API_KEY=...
    ```
 
 4. **Set up the database**
@@ -70,7 +74,7 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
 6. **Start the production server**
 
    ```bash
-   bun run preview
+   bun run start
    ```
 
 ### Desktop Application
@@ -100,49 +104,3 @@ Cedar runs as a web application accessible through your browser. Navigate to you
 
 - Bun (recommended) or Node.js
 - Tauri CLI (for desktop builds)
-
-### Development Setup
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd cedar
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   bun install
-   ```
-
-3. **Set up development environment**
-
-   Create a `.env` file for development:
-
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ANTHROPIC_API_KEY=your_anthropic_api_key_here
-   OPENROUTER_API_KEY=your_openrouter_api_key_here
-   FIREWORKS_API_KEY=your_fireworks_api_key_here
-   DEEPINFRA_API_KEY=your_deepinfra_api_key_here
-   DATABASE_URL=your_database_url_here
-   NODE_ENV=development
-   # Add other provider keys as needed
-   ```
-
-   See the `config/config.dev.yml` file for configuration examples and available models.
-
-4. **Set up the database**
-
-   ```bash
-   bun run db:migrate
-   ```
-
-5. **Start the development server**
-
-   ```bash
-   bun run dev
-   ```
-
-6. **Open your browser** to `http://localhost:3000`
