@@ -84,23 +84,3 @@ To build the desktop application:
 ```bash
 bun run tauri build
 ```
-
-## Usage
-
-### Web Application
-
-Cedar runs as a web application accessible through your browser. Navigate to your deployed instance or local development server.
-
-### Key Features
-
-- **Chat Interface**: Send messages to AI models through an intuitive chat interface
-- **Provider Selection**: Choose from multiple AI providers for each conversation
-- **Chat History**: Access previous conversations and continue threads
-- **Settings**: Customize your experience with theme preferences and provider configurations
-
-## Development
-
-### Prerequisites
-
-- Bun (recommended) or Node.js
-- Tauri CLI (for desktop builds)
