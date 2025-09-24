@@ -116,6 +116,11 @@
         "name": "DeepSeek R1 Distill Qwen 14B",
         "reasoning": true
       },
+      "deepseek/deepseek-v3.1-terminus": {
+        "id": "deepseek/deepseek-v3.1-terminus",
+        "name": "DeepSeek V3.1 Terminus",
+        "reasoning": true
+      },
       "featherless/qwerky-72b": {
         "id": "featherless/qwerky-72b",
         "name": "Qwerky 72B",
@@ -508,6 +513,11 @@
       "gpt-5-chat-latest": {
         "id": "gpt-5-chat-latest",
         "name": "GPT-5 Chat (latest)",
+        "reasoning": true
+      },
+      "gpt-5-codex": {
+        "id": "gpt-5-codex",
+        "name": "GPT-5-Codex",
         "reasoning": true
       },
       "gpt-5-mini": {
