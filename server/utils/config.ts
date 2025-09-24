@@ -13,7 +13,7 @@ const AiSchema = z.object({
   title_generation_system_message: z
     .string()
     .default(
-      "Generate a concise, informative title from the first user message that clearly communicates the core topic or request. Use ~3 words in title case format. For questions, preserve the question essence without punctuation. For instructions or commands, focus on the desired outcome. Avoid articles (a, an, the) when possible to maximize information density. Respond with only the title.",
+      "Create a clear, specific title (2-6 words) that captures the main topic or goal from the user's first message. Use title case. For questions, focus on the subject being asked about. For tasks, emphasize the action or outcome. Be direct and descriptive. Examples: 'React Component Styling', 'Database Migration Help', 'Python Error Debugging', 'API Integration Guide'. Return only the title.",
     ),
 });
 
