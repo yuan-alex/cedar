@@ -1,17 +1,3 @@
-import claudeIconUrl from "@lobehub/icons-static-svg/icons/claude-color.svg";
-import deepinfraIcon from "@lobehub/icons-static-svg/icons/deepinfra.svg";
-import deepseekIcon from "@lobehub/icons-static-svg/icons/deepseek-color.svg";
-import fireworksIcon from "@lobehub/icons-static-svg/icons/fireworks.svg";
-import geminiIcon from "@lobehub/icons-static-svg/icons/gemini-color.svg";
-import grokIcon from "@lobehub/icons-static-svg/icons/grok.svg";
-import metaIcon from "@lobehub/icons-static-svg/icons/meta-color.svg";
-import mistralIcon from "@lobehub/icons-static-svg/icons/mistral-color.svg";
-import moonshotIcon from "@lobehub/icons-static-svg/icons/moonshot.svg";
-import openaiIcon from "@lobehub/icons-static-svg/icons/openai.svg";
-import openrouterIcon from "@lobehub/icons-static-svg/icons/openrouter.svg";
-import perplexityIcon from "@lobehub/icons-static-svg/icons/perplexity-color.svg";
-import qwenIcon from "@lobehub/icons-static-svg/icons/qwen-color.svg";
-import zaiIcon from "@lobehub/icons-static-svg/icons/zai.svg";
 import {
   BotIcon,
   BrainIcon,
@@ -20,6 +6,20 @@ import {
   ZapIcon,
 } from "lucide-react";
 import type { ReactElement } from "react";
+import qwenIcon from "../public/images/provider-icons/alibaba.svg";
+import anthropicIcon from "../public/images/provider-icons/anthropic.svg";
+import deepinfraIcon from "../public/images/provider-icons/deepinfra.svg";
+import deepseekIcon from "../public/images/provider-icons/deepseek.svg";
+import fireworksIcon from "../public/images/provider-icons/fireworks.svg";
+import googleIcon from "../public/images/provider-icons/google.svg";
+import llamaIcon from "../public/images/provider-icons/llama.svg";
+import mistralIcon from "../public/images/provider-icons/mistral.svg";
+import moonshotIcon from "../public/images/provider-icons/moonshotai.svg";
+import openaiIcon from "../public/images/provider-icons/openai.svg";
+import openrouterIcon from "../public/images/provider-icons/openrouter.svg";
+import perplexityIcon from "../public/images/provider-icons/perplexity.svg";
+import xaiIcon from "../public/images/provider-icons/xai.svg";
+import zaiIcon from "../public/images/provider-icons/zai.svg";
 
 // Centralized icon size configuration
 const ICON_SIZE = "w-4 h-4";
@@ -44,11 +44,11 @@ type ProviderIconConfig = { pattern: RegExp; src: string; alt: string };
 
 const MODEL_ICON_CONFIGS: ProviderIconConfig[] = [
   { pattern: /cedar\/local/, src: openaiIcon, alt: "Local" },
-  { pattern: /anthropic|claude/, src: claudeIconUrl, alt: "Claude" },
+  { pattern: /anthropic|claude/, src: anthropicIcon, alt: "Claude" },
   { pattern: /deepseek/, src: deepseekIcon, alt: "DeepSeek" },
-  { pattern: /google|gemini|gemma/, src: geminiIcon, alt: "Gemini" },
-  { pattern: /x-ai|grok/, src: grokIcon, alt: "Grok" },
-  { pattern: /llama/, src: metaIcon, alt: "Meta" },
+  { pattern: /google|gemini|gemma/, src: googleIcon, alt: "Gemini" },
+  { pattern: /x-ai|grok/, src: xaiIcon, alt: "Grok" },
+  { pattern: /llama/, src: llamaIcon, alt: "Meta" },
   { pattern: /mistral/, src: mistralIcon, alt: "Mistral" },
   { pattern: /moonshotai|kimi/, src: moonshotIcon, alt: "Moonshot" },
   { pattern: /openai|gpt/, src: openaiIcon, alt: "OpenAI" },

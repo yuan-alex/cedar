@@ -12,7 +12,6 @@
         "@ai-sdk/react": "^2.0.45",
         "@daveyplate/better-auth-ui": "^3.1.10",
         "@hono/zod-validator": "^0.7.3",
-        "@lobehub/icons-static-svg": "^1.66.0",
         "@modelcontextprotocol/sdk": "^1.18.0",
         "@nanostores/persistent": "^1.1.0",
         "@nanostores/react": "^1.0.0",
@@ -283,8 +282,6 @@
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.30", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q=="],
 
     "@levischuck/tiny-cbor": ["@levischuck/tiny-cbor@0.2.11", "", {}, "sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow=="],
-
-    "@lobehub/icons-static-svg": ["@lobehub/icons-static-svg@1.66.0", "", {}, "sha512-rBV7dMHmK55DeV/MYQalwLk51oduV3kO6gtl6psAFf6twz6vFYoBpEkHqMqWge5V/0UBLi57BPLc8ILFI/L7Eg=="],
 
     "@marsidev/react-turnstile": ["@marsidev/react-turnstile@1.3.0", "", { "peerDependencies": { "react": "^17.0.2 || ^18.0.0 || ^19.0", "react-dom": "^17.0.2 || ^18.0.0 || ^19.0" } }, "sha512-VO99Nynt+j4ETfMImQCj5LgbUKZ9mWPpy3RjP/3e/3vZu+FIphjEdU6g+cq4FeDoNshSxLlRzBTKcH5JMeM1GQ=="],
 
