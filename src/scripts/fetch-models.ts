@@ -5,9 +5,9 @@ import type {
   IProvider,
 } from "@/server/utils/providers";
 
-const MODEL_REGISTRY_API = process.env.MODEL_REGISTRY_API;
-if (!MODEL_REGISTRY_API) {
-  throw new Error("MODEL_REGISTRY_API is not set");
+const MODEL_REGISTRY_BASE_URL = process.env.MODEL_REGISTRY_BASE_URL;
+if (!MODEL_REGISTRY_BASE_URL) {
+  throw new Error("MODEL_REGISTRY_BASE_URL is not set");
 }
 
 const supportedProviders = [
@@ -46,9 +46,7 @@ const USED_PROVIDER_ICONS = [
 
 async function fetchAndGroupModels() {
   try {
-    const response = await fetch(
-      `${process.env.MODEL_REGISTRY_BASE_URL}/api.json`,
-    );
+    const response = await fetch(`${MODEL_REGISTRY_BASE_URL}/api.json`);
     const data = (await response.json()) as Record<string, IProvider>;
 
     // Ensure the icons directory exists
@@ -110,7 +108,7 @@ async function fetchAndGroupModels() {
     // Fetch and save provider logos only for providers used in provider-icons.tsx
     for (const providerKey of USED_PROVIDER_ICONS) {
       try {
-        const url = `${process.env.MODEL_REGISTRY_BASE_URL}/logos/${providerKey}.svg`;
+        const url = `${MODEL_REGISTRY_BASE_URL}/logos/${providerKey}.svg`;
         const response = await fetch(url);
         if (response.ok) {
           const svg = await response.text();
