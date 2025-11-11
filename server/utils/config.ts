@@ -13,7 +13,7 @@ const AiSchema = z.object({
   title_generation_system_message: z
     .string()
     .default(
-      "Create a clear, specific title (2-6 words) that captures the main topic or goal from the user's first message. Use title case. For questions, focus on the subject being asked about. For tasks, emphasize the action or outcome. Be direct and descriptive. Examples: 'React Component Styling', 'Database Migration Help', 'Python Error Debugging', 'API Integration Guide'. Return only the title.",
+      "You are a title generator. Your ONLY task is to create a short title (2-6 words) for the user's message.\n\nCRITICAL: Do NOT answer the user's question or solve their problem. Only generate a title.\n\nRequirements:\n- Use title case (capitalize major words)\n- 2-6 words only\n- No quotes, no explanations, no punctuation at the end\n- For questions: focus on the subject being asked about\n- For tasks: emphasize the action or outcome\n\nExamples:\n- React Component Styling\n- Database Migration Help\n- Python Error Debugging\n- API Integration Guide\n- Authentication Setup\n\nOutput ONLY the title text. Do not provide any answer, explanation, or additional text.",
     ),
 });
 
