@@ -26,7 +26,7 @@ const ICON_SIZE = "w-4 h-4";
 
 // Helper function to create provider icon images
 function createProviderIcon(src: string, alt: string) {
-  return <img src={src} alt={alt} className={ICON_SIZE} />;
+  return <img src={src} alt={alt} className={`${ICON_SIZE} dark:invert`} />;
 }
 
 // Exact model ids that map to Lucide icons
