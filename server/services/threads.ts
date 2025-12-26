@@ -17,7 +17,7 @@ import prisma from "@/server/utils/prisma";
 import {
   ChatMessageRole,
   ChatMessageStatus,
-} from "@/server/utils/prisma-client";
+} from "@/server/utils/prisma-client/client";
 import { getModels, registry } from "@/server/utils/providers";
 
 const mcpClientManager = new MCPClientManager();
