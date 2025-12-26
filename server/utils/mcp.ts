@@ -1,10 +1,9 @@
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import type { ToolSet } from "ai";
 import {
   experimental_createMCPClient as createMCPClient,
   type experimental_MCPClient as MCPClient,
-  type ToolSet,
-} from "ai";
-import { Experimental_StdioMCPTransport } from "ai/mcp-stdio";
+} from "@ai-sdk/mcp";
+import { Experimental_StdioMCPTransport } from "@ai-sdk/mcp/mcp-stdio";
 
 import { type Config, config } from "@/server/utils/config";
 
@@ -14,9 +13,13 @@ export class MCPClientManager {
   constructor() {
     this.clients = {};
     Object.keys(config.mcpServers)
-      .filter((key) => config.mcpServers[key].enabled)
+      .filter((key) => {
+        const serverConfig = config.mcpServers[key];
+        return serverConfig?.enabled;
+      })
       .forEach(async (key) => {
         const mcpConfig = config.mcpServers[key];
+        if (!mcpConfig) return;
         const client = await this.createVercelMCPClient(mcpConfig, key);
         if (client) {
           this.clients[key] = client;
@@ -44,11 +47,11 @@ export class MCPClientManager {
     serverName: string,
   ): Promise<MCPClient | undefined> {
     if (mcpConfig.type === "http") {
-      const httpTransport = new StreamableHTTPClientTransport(
-        new URL(mcpConfig.url),
-      );
       return createMCPClient({
-        transport: httpTransport,
+        transport: {
+          type: "http",
+          url: mcpConfig.url,
+        },
         name: serverName,
       });
     }
@@ -58,7 +61,6 @@ export class MCPClientManager {
         transport: {
           type: "sse",
           url: mcpConfig.url,
-          headers: mcpConfig.headers,
         },
         name: serverName,
       });

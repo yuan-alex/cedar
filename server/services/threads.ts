@@ -86,10 +86,12 @@ async function createAIResponse(
     },
   });
 
+  const modelMessages = await convertToModelMessages(messages);
+
   const result = streamText({
     model: wrappedModel,
     system: getSystemMessage(),
-    messages: convertToModelMessages(messages),
+    messages: modelMessages,
     tools,
     stopWhen: stepCountIs(10),
     experimental_transform: smoothStream({ chunking: "word" }),
