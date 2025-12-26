@@ -1,9 +1,9 @@
-import type { ToolSet } from "ai";
 import {
   experimental_createMCPClient as createMCPClient,
   type experimental_MCPClient as MCPClient,
 } from "@ai-sdk/mcp";
 import { Experimental_StdioMCPTransport } from "@ai-sdk/mcp/mcp-stdio";
+import type { ToolSet } from "ai";
 
 import { type Config, config } from "@/server/utils/config";
 

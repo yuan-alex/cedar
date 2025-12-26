@@ -79,6 +79,16 @@
         "name": "Claude Opus 4",
         "reasoning": true
       },
+      "claude-opus-4-5": {
+        "id": "claude-opus-4-5",
+        "name": "Claude Opus 4.5 (latest)",
+        "reasoning": true
+      },
+      "claude-opus-4-5-20251101": {
+        "id": "claude-opus-4-5-20251101",
+        "name": "Claude Opus 4.5",
+        "reasoning": true
+      },
       "claude-sonnet-4-0": {
         "id": "claude-sonnet-4-0",
         "name": "Claude Sonnet 4 (latest)",
@@ -106,10 +116,20 @@
     "env": ["DEEPINFRA_API_KEY"],
     "name": "Deep Infra",
     "models": {
+      "MiniMaxAI/MiniMax-M2": {
+        "id": "MiniMaxAI/MiniMax-M2",
+        "name": "MiniMax M2",
+        "reasoning": true
+      },
       "moonshotai/Kimi-K2-Instruct": {
         "id": "moonshotai/Kimi-K2-Instruct",
         "name": "Kimi K2",
         "reasoning": false
+      },
+      "moonshotai/Kimi-K2-Thinking": {
+        "id": "moonshotai/Kimi-K2-Thinking",
+        "name": "Kimi K2 Thinking",
+        "reasoning": true
       },
       "openai/gpt-oss-120b": {
         "id": "openai/gpt-oss-120b",
@@ -135,6 +155,11 @@
         "id": "zai-org/GLM-4.5",
         "name": "GLM-4.5",
         "reasoning": false
+      },
+      "zai-org/GLM-4.7": {
+        "id": "zai-org/GLM-4.7",
+        "name": "GLM-4.7",
+        "reasoning": true
       }
     }
   },
@@ -158,6 +183,11 @@
         "name": "DeepSeek V3.1",
         "reasoning": true
       },
+      "accounts/fireworks/models/deepseek-v3p2": {
+        "id": "accounts/fireworks/models/deepseek-v3p2",
+        "name": "DeepSeek V3.2",
+        "reasoning": true
+      },
       "accounts/fireworks/models/glm-4p5": {
         "id": "accounts/fireworks/models/glm-4p5",
         "name": "GLM 4.5",
@@ -166,6 +196,16 @@
       "accounts/fireworks/models/glm-4p5-air": {
         "id": "accounts/fireworks/models/glm-4p5-air",
         "name": "GLM 4.5 Air",
+        "reasoning": true
+      },
+      "accounts/fireworks/models/glm-4p6": {
+        "id": "accounts/fireworks/models/glm-4p6",
+        "name": "GLM 4.6",
+        "reasoning": true
+      },
+      "accounts/fireworks/models/glm-4p7": {
+        "id": "accounts/fireworks/models/glm-4p7",
+        "name": "GLM 4.7",
         "reasoning": true
       },
       "accounts/fireworks/models/gpt-oss-120b": {
@@ -182,6 +222,11 @@
         "id": "accounts/fireworks/models/kimi-k2-instruct",
         "name": "Kimi K2 Instruct",
         "reasoning": false
+      },
+      "accounts/fireworks/models/kimi-k2-thinking": {
+        "id": "accounts/fireworks/models/kimi-k2-thinking",
+        "name": "Kimi K2 Thinking",
+        "reasoning": true
       },
       "accounts/fireworks/models/minimax-m2": {
         "id": "accounts/fireworks/models/minimax-m2",
@@ -310,9 +355,29 @@
         "name": "GPT-5.1 Codex",
         "reasoning": true
       },
+      "gpt-5.1-codex-max": {
+        "id": "gpt-5.1-codex-max",
+        "name": "GPT-5.1 Codex Max",
+        "reasoning": true
+      },
       "gpt-5.1-codex-mini": {
         "id": "gpt-5.1-codex-mini",
         "name": "GPT-5.1 Codex mini",
+        "reasoning": true
+      },
+      "gpt-5.2": {
+        "id": "gpt-5.2",
+        "name": "GPT-5.2",
+        "reasoning": true
+      },
+      "gpt-5.2-chat-latest": {
+        "id": "gpt-5.2-chat-latest",
+        "name": "GPT-5.2 Chat",
+        "reasoning": true
+      },
+      "gpt-5.2-pro": {
+        "id": "gpt-5.2-pro",
+        "name": "GPT-5.2 Pro",
         "reasoning": true
       },
       "o1": {
@@ -412,6 +477,11 @@
         "name": "Claude Opus 4.1",
         "reasoning": true
       },
+      "anthropic/claude-opus-4.5": {
+        "id": "anthropic/claude-opus-4.5",
+        "name": "Claude Opus 4.5",
+        "reasoning": true
+      },
       "anthropic/claude-sonnet-4": {
         "id": "anthropic/claude-sonnet-4",
         "name": "Claude Sonnet 4",
@@ -462,6 +532,16 @@
         "name": "DeepSeek V3.1 Terminus (exacto)",
         "reasoning": true
       },
+      "deepseek/deepseek-v3.2": {
+        "id": "deepseek/deepseek-v3.2",
+        "name": "DeepSeek V3.2",
+        "reasoning": true
+      },
+      "deepseek/deepseek-v3.2-speciale": {
+        "id": "deepseek/deepseek-v3.2-speciale",
+        "name": "DeepSeek V3.2 Speciale",
+        "reasoning": true
+      },
       "featherless/qwerky-72b": {
         "id": "featherless/qwerky-72b",
         "name": "Qwerky 72B",
@@ -507,6 +587,16 @@
         "name": "Gemini 2.5 Pro Preview 06-05",
         "reasoning": true
       },
+      "google/gemini-3-flash-preview": {
+        "id": "google/gemini-3-flash-preview",
+        "name": "Gemini 3 Flash Preview",
+        "reasoning": true
+      },
+      "google/gemini-3-pro-preview": {
+        "id": "google/gemini-3-pro-preview",
+        "name": "Gemini 3 Pro Preview",
+        "reasoning": true
+      },
       "google/gemma-3-12b-it": {
         "id": "google/gemma-3-12b-it",
         "name": "Gemma 3 12B IT",
@@ -542,9 +632,19 @@
         "name": "MiniMax M2",
         "reasoning": true
       },
+      "minimax/minimax-m2.1": {
+        "id": "minimax/minimax-m2.1",
+        "name": "MiniMax M2.1",
+        "reasoning": true
+      },
       "mistralai/codestral-2508": {
         "id": "mistralai/codestral-2508",
         "name": "Codestral 2508",
+        "reasoning": false
+      },
+      "mistralai/devstral-2512": {
+        "id": "mistralai/devstral-2512",
+        "name": "Devstral 2 2512",
         "reasoning": false
       },
       "mistralai/devstral-medium-2507": {
@@ -692,6 +792,21 @@
         "name": "GPT-5.1-Codex-Mini",
         "reasoning": true
       },
+      "openai/gpt-5.2": {
+        "id": "openai/gpt-5.2",
+        "name": "GPT-5.2",
+        "reasoning": true
+      },
+      "openai/gpt-5.2-chat-latest": {
+        "id": "openai/gpt-5.2-chat-latest",
+        "name": "GPT-5.2 Chat",
+        "reasoning": true
+      },
+      "openai/gpt-5.2-pro": {
+        "id": "openai/gpt-5.2-pro",
+        "name": "GPT-5.2 Pro",
+        "reasoning": true
+      },
       "openai/gpt-oss-120b": {
         "id": "openai/gpt-oss-120b",
         "name": "GPT OSS 120B",
@@ -707,25 +822,15 @@
         "name": "GPT OSS 20B",
         "reasoning": true
       },
+      "openai/gpt-oss-safeguard-20b": {
+        "id": "openai/gpt-oss-safeguard-20b",
+        "name": "GPT OSS Safeguard 20B",
+        "reasoning": true
+      },
       "openai/o4-mini": {
         "id": "openai/o4-mini",
         "name": "o4 Mini",
         "reasoning": true
-      },
-      "openrouter/horizon-alpha": {
-        "id": "openrouter/horizon-alpha",
-        "name": "Horizon Alpha",
-        "reasoning": false
-      },
-      "openrouter/horizon-beta": {
-        "id": "openrouter/horizon-beta",
-        "name": "Horizon Beta",
-        "reasoning": false
-      },
-      "openrouter/polaris-alpha": {
-        "id": "openrouter/polaris-alpha",
-        "name": "Polaris Alpha",
-        "reasoning": false
       },
       "openrouter/sherlock-dash-alpha": {
         "id": "openrouter/sherlock-dash-alpha",
@@ -736,16 +841,6 @@
         "id": "openrouter/sherlock-think-alpha",
         "name": "Sherlock Think Alpha",
         "reasoning": true
-      },
-      "openrouter/sonoma-dusk-alpha": {
-        "id": "openrouter/sonoma-dusk-alpha",
-        "name": "Sonoma Dusk Alpha",
-        "reasoning": false
-      },
-      "openrouter/sonoma-sky-alpha": {
-        "id": "openrouter/sonoma-sky-alpha",
-        "name": "Sonoma Sky Alpha",
-        "reasoning": false
       },
       "qwen/qwen-2.5-coder-32b-instruct": {
         "id": "qwen/qwen-2.5-coder-32b-instruct",
@@ -780,6 +875,11 @@
       "qwen/qwen3-coder": {
         "id": "qwen/qwen3-coder",
         "name": "Qwen3 Coder",
+        "reasoning": false
+      },
+      "qwen/qwen3-coder-flash": {
+        "id": "qwen/qwen3-coder-flash",
+        "name": "Qwen3 Coder Flash",
         "reasoning": false
       },
       "qwen/qwen3-coder:exacto": {
@@ -837,6 +937,11 @@
         "name": "Grok 4 Fast",
         "reasoning": true
       },
+      "x-ai/grok-4.1-fast": {
+        "id": "x-ai/grok-4.1-fast",
+        "name": "Grok 4.1 Fast",
+        "reasoning": true
+      },
       "x-ai/grok-code-fast-1": {
         "id": "x-ai/grok-code-fast-1",
         "name": "Grok Code Fast 1",
@@ -865,6 +970,11 @@
       "z-ai/glm-4.6:exacto": {
         "id": "z-ai/glm-4.6:exacto",
         "name": "GLM 4.6 (exacto)",
+        "reasoning": true
+      },
+      "z-ai/glm-4.7": {
+        "id": "z-ai/glm-4.7",
+        "name": "GLM-4.7",
         "reasoning": true
       }
     }
