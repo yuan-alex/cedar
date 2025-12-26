@@ -67,6 +67,7 @@ COPY --from=builder --chown=bun:nodejs /app/server ./server
 COPY --from=builder --chown=bun:nodejs /app/src ./src
 COPY --from=builder --chown=bun:nodejs /app/dist ./dist
 COPY --from=builder --chown=bun:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=bun:nodejs /app/prisma.config.ts ./
 COPY --from=builder --chown=bun:nodejs /app/package.json ./
 COPY --from=builder --chown=bun:nodejs /app/bun.lock ./
 COPY --from=builder --chown=bun:nodejs /app/tsconfig.json ./

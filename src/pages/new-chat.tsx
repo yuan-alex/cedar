@@ -3,7 +3,8 @@ import { useNavigate } from "@tanstack/react-router";
 
 import { InputBox } from "@/components/input-box";
 import { $model, $prompt } from "@/utils/stores";
-import cedarIcon from "../public/images/cedar.svg";
+
+const cedarIcon = "/images/cedar.svg";
 
 export function NewChat() {
   const navigate = useNavigate();

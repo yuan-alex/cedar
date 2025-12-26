@@ -19,7 +19,8 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/utils/auth";
 import { createQueryFn } from "@/utils/queries";
-import cedarIcon from "../public/images/cedar.svg";
+
+const cedarIcon = "/images/cedar.svg";
 
 export function CedarSidebar() {
   const { data: threads } = useQuery({

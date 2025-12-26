@@ -3,7 +3,13 @@ import { CopyIcon, RotateCcwIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Message, MessageContent } from "@/components/ai-elements/message";
+import {
+  Message,
+  MessageAction,
+  MessageActions,
+  MessageContent,
+  MessageToolbar,
+} from "@/components/ai-elements/message";
 import {
   Reasoning,
   ReasoningContent,
@@ -17,7 +23,6 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool";
-import { Button } from "@/components/ui/button";
 
 interface IMessageProps {
   message: UIMessage;
@@ -62,9 +67,9 @@ export function CedarMessage(props: IMessageProps) {
   }
 
   return (
-    <div>
-      <Message from={message.role}>
-        <MessageContent variant="flat" className="w-full">
+    <div className="flex flex-col max-w-4xl mx-auto">
+      <Message from={message.role} className="relative size-full">
+        <MessageContent>
           {message.parts?.map((part, i) => {
             switch (part.type) {
               case "text":
@@ -187,33 +192,38 @@ export function CedarMessage(props: IMessageProps) {
                   </Tool>
                 );
               }
+              default:
+                return null;
             }
           })}
         </MessageContent>
       </Message>
-      {message.role === "assistant" ? (
-        <div className="flex gap-1 mb-4">
-          <Button
-            className="cursor-pointer"
-            variant="ghost"
-            onClick={handleCopyText}
-            disabled={isRegenerating}
-          >
-            <CopyIcon />
-          </Button>
-          {threadToken && onRegenerate && props.isLatestMessage && (
-            <Button
-              className="cursor-pointer"
-              variant="ghost"
-              onClick={handleRegenerate}
+      {message.role === "assistant" && (
+        <MessageToolbar>
+          <MessageActions>
+            {threadToken && onRegenerate && props.isLatestMessage && (
+              <MessageAction
+                label="Regenerate"
+                onClick={handleRegenerate}
+                disabled={isRegenerating}
+                tooltip="Regenerate response"
+              >
+                <RotateCcwIcon
+                  className={isRegenerating ? "animate-spin" : ""}
+                />
+              </MessageAction>
+            )}
+            <MessageAction
+              label="Copy"
+              onClick={handleCopyText}
               disabled={isRegenerating}
-              title="Regenerate response"
+              tooltip="Copy to clipboard"
             >
-              <RotateCcwIcon className={isRegenerating ? "animate-spin" : ""} />
-            </Button>
-          )}
-        </div>
-      ) : null}
+              <CopyIcon />
+            </MessageAction>
+          </MessageActions>
+        </MessageToolbar>
+      )}
     </div>
   );
 }

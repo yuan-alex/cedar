@@ -6,20 +6,21 @@ import {
   ZapIcon,
 } from "lucide-react";
 import type { ReactElement } from "react";
-import qwenIcon from "../public/images/provider-icons/alibaba.svg";
-import anthropicIcon from "../public/images/provider-icons/anthropic.svg";
-import deepinfraIcon from "../public/images/provider-icons/deepinfra.svg";
-import deepseekIcon from "../public/images/provider-icons/deepseek.svg";
-import fireworksIcon from "../public/images/provider-icons/fireworks.svg";
-import googleIcon from "../public/images/provider-icons/google.svg";
-import llamaIcon from "../public/images/provider-icons/llama.svg";
-import mistralIcon from "../public/images/provider-icons/mistral.svg";
-import moonshotIcon from "../public/images/provider-icons/moonshotai.svg";
-import openaiIcon from "../public/images/provider-icons/openai.svg";
-import openrouterIcon from "../public/images/provider-icons/openrouter.svg";
-import perplexityIcon from "../public/images/provider-icons/perplexity.svg";
-import xaiIcon from "../public/images/provider-icons/xai.svg";
-import zaiIcon from "../public/images/provider-icons/zai.svg";
+
+const qwenIcon = "/images/provider-icons/alibaba.svg";
+const anthropicIcon = "/images/provider-icons/anthropic.svg";
+const deepinfraIcon = "/images/provider-icons/deepinfra.svg";
+const deepseekIcon = "/images/provider-icons/deepseek.svg";
+const fireworksIcon = "/images/provider-icons/fireworks.svg";
+const googleIcon = "/images/provider-icons/google.svg";
+const llamaIcon = "/images/provider-icons/llama.svg";
+const mistralIcon = "/images/provider-icons/mistral.svg";
+const moonshotIcon = "/images/provider-icons/moonshotai.svg";
+const openaiIcon = "/images/provider-icons/openai.svg";
+const openrouterIcon = "/images/provider-icons/openrouter.svg";
+const perplexityIcon = "/images/provider-icons/perplexity.svg";
+const xaiIcon = "/images/provider-icons/xai.svg";
+const zaiIcon = "/images/provider-icons/zai.svg";
 
 // Centralized icon size configuration
 const ICON_SIZE = "w-4 h-4";

@@ -112,20 +112,18 @@ export function Thread() {
                 description="Type a message below to begin chatting"
               />
             ) : (
-              <div className="flex flex-col max-w-4xl mx-auto">
-                {messages.map((msg) => (
-                  <CedarMessage
-                    key={msg.id}
-                    message={msg}
-                    chatStatus={chatStatus}
-                    isLatestMessage={msg.id === messages.at(-1)?.id}
-                    threadToken={threadToken}
-                    onRegenerate={
-                      msg.role === "assistant" ? handleRegenerate : undefined
-                    }
-                  />
-                ))}
-              </div>
+              messages.map((msg) => (
+                <CedarMessage
+                  key={msg.id}
+                  message={msg}
+                  chatStatus={chatStatus}
+                  isLatestMessage={msg.id === messages.at(-1)?.id}
+                  threadToken={threadToken}
+                  onRegenerate={
+                    msg.role === "assistant" ? handleRegenerate : undefined
+                  }
+                />
+              ))
             )}
             {chatStatus === "submitted" && <Loader />}
           </ConversationContent>

@@ -13,7 +13,8 @@ import {
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import cedarIcon from "@/public/images/cedar.svg";
+
+const cedarIcon = "/images/cedar.svg";
 
 export function LandingPage() {
   const [scrolled, setScrolled] = useState(false);

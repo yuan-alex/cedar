@@ -1,12 +1,8 @@
-import webApp from "../src/index.html";
 import { honoServer } from "./hono";
 
 const bunServer = Bun.serve({
-  routes: {
-    "/api/*": honoServer.fetch,
-    "/*": webApp,
-  },
-  port: Number(process.env.PORT || 3000),
+  fetch: honoServer.fetch,
+  port: Number(process.env.PORT || 3001),
   idleTimeout: 60,
   development: process.env.NODE_ENV === "development",
 });
