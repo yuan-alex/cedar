@@ -104,7 +104,9 @@ export function Thread() {
     <div className="relative size-full h-screen">
       <div className="flex flex-col h-full min-h-0">
         <Conversation initial="instant" resize="instant">
-          <ConversationContent>
+          <ConversationContent
+            className={messages.length > 0 ? "space-y-6" : undefined}
+          >
             {messages.length === 0 ? (
               <ConversationEmptyState
                 icon={<MessageSquare className="size-12" />}
@@ -112,20 +114,22 @@ export function Thread() {
                 description="Type a message below to begin chatting"
               />
             ) : (
-              messages.map((msg) => (
-                <CedarMessage
-                  key={msg.id}
-                  message={msg}
-                  chatStatus={chatStatus}
-                  isLatestMessage={msg.id === messages.at(-1)?.id}
-                  threadToken={threadToken}
-                  onRegenerate={
-                    msg.role === "assistant" ? handleRegenerate : undefined
-                  }
-                />
-              ))
+              <>
+                {messages.map((msg) => (
+                  <CedarMessage
+                    key={msg.id}
+                    message={msg}
+                    chatStatus={chatStatus}
+                    isLatestMessage={msg.id === messages.at(-1)?.id}
+                    threadToken={threadToken}
+                    onRegenerate={
+                      msg.role === "assistant" ? handleRegenerate : undefined
+                    }
+                  />
+                ))}
+                {chatStatus === "submitted" && <Loader />}
+              </>
             )}
-            {chatStatus === "submitted" && <Loader />}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
