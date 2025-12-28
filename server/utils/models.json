@@ -978,5 +978,62 @@
         "reasoning": true
       }
     }
+  },
+  "togetherai": {
+    "id": "togetherai",
+    "env": ["TOGETHER_API_KEY"],
+    "name": "Together AI",
+    "models": {
+      "deepseek-ai/DeepSeek-R1": {
+        "id": "deepseek-ai/DeepSeek-R1",
+        "name": "DeepSeek R1",
+        "reasoning": true
+      },
+      "deepseek-ai/DeepSeek-V3": {
+        "id": "deepseek-ai/DeepSeek-V3",
+        "name": "DeepSeek V3",
+        "reasoning": true
+      },
+      "deepseek-ai/DeepSeek-V3-1": {
+        "id": "deepseek-ai/DeepSeek-V3-1",
+        "name": "DeepSeek V3.1",
+        "reasoning": true
+      },
+      "essentialai/Rnj-1-Instruct": {
+        "id": "essentialai/Rnj-1-Instruct",
+        "name": "Rnj-1 Instruct",
+        "reasoning": false
+      },
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+        "id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+        "name": "Llama 3.3 70B",
+        "reasoning": false
+      },
+      "moonshotai/Kimi-K2-Instruct": {
+        "id": "moonshotai/Kimi-K2-Instruct",
+        "name": "Kimi K2 Instruct",
+        "reasoning": false
+      },
+      "moonshotai/Kimi-K2-Thinking": {
+        "id": "moonshotai/Kimi-K2-Thinking",
+        "name": "Kimi K2 Thinking",
+        "reasoning": true
+      },
+      "openai/gpt-oss-120b": {
+        "id": "openai/gpt-oss-120b",
+        "name": "GPT OSS 120B",
+        "reasoning": true
+      },
+      "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8": {
+        "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8",
+        "name": "Qwen3 Coder 480B A35B Instruct",
+        "reasoning": false
+      },
+      "zai-org/GLM-4.6": {
+        "id": "zai-org/GLM-4.6",
+        "name": "GLM 4.6",
+        "reasoning": false
+      }
+    }
   }
 }

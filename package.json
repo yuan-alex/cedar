@@ -25,6 +25,7 @@
     "@ai-sdk/openai": "^3.0.1",
     "@ai-sdk/openai-compatible": "^2.0.1",
     "@ai-sdk/react": "^3.0.3",
+    "@ai-sdk/togetherai": "^2.0.1",
     "@daveyplate/better-auth-ui": "^3.3.10",
     "@hono/zod-validator": "^0.7.6",
     "@nanostores/persistent": "^1.2.0",

@@ -16,6 +16,7 @@ const supportedProviders = [
   "anthropic",
   "fireworks-ai",
   "deepinfra",
+  "togetherai",
 ] as const;
 
 // Directory to save provider icons
@@ -39,6 +40,7 @@ const USED_PROVIDER_ICONS = [
   "openai",
   "openrouter",
   "perplexity",
+  "together",
   "alibaba", // qwen
   "xai",
   "zai",

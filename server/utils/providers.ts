@@ -3,6 +3,7 @@ import { deepinfra } from "@ai-sdk/deepinfra";
 import { fireworks } from "@ai-sdk/fireworks";
 import { openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { togetherai } from "@ai-sdk/togetherai";
 import { createProviderRegistry } from "ai";
 
 import { config, getEnabledModelMappings } from "@/server/utils/config";
@@ -14,6 +15,7 @@ export const registry = createProviderRegistry({
   openai,
   deepinfra,
   fireworks,
+  togetherai,
   openrouter: createOpenAICompatible({
     name: "openrouter",
     apiKey: process.env.OPENROUTER_API_KEY,
