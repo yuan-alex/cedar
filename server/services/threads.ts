@@ -51,6 +51,8 @@ function setupAIModel(model: string) {
     settings: {
       temperature: config.models.temperature,
       maxOutputTokens: config.models.max_tokens,
+      frequencyPenalty: config.models.frequency_penalty,
+      presencePenalty: config.models.presence_penalty,
     },
   });
 

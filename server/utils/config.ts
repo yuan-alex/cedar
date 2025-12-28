@@ -20,6 +20,8 @@ const AiSchema = z.object({
 const ModelsSchema = z.object({
   temperature: z.number().min(0).max(2).default(0.3),
   max_tokens: z.number().positive().default(2048),
+  frequency_penalty: z.number().min(-2).max(2).default(0.0),
+  presence_penalty: z.number().min(-2).max(2).default(0.0),
   title_generation: z.string().optional(),
 });
 
