@@ -40,7 +40,6 @@ const USED_PROVIDER_ICONS = [
   "openai",
   "openrouter",
   "perplexity",
-  "together",
   "alibaba", // qwen
   "xai",
   "zai",
