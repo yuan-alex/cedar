@@ -2,8 +2,8 @@ import { useStore } from "@nanostores/react";
 import { ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 
+import { PromptInputButton } from "@/components/ai-elements/prompt-input";
 import { ModelCommandMenu } from "@/components/model-command-menu";
-import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -19,19 +19,16 @@ export function ModelPopover() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
+        <PromptInputButton
           role="combobox"
           aria-expanded={open}
-          className="justify-between"
+          className="justify-between gap-2"
           size="sm"
         >
-          <div className="flex items-center gap-2">
-            {getModelIconById(model.id)}
-            {model.name}
-          </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+          {getModelIconById(model.id)}
+          <span className="truncate">{model.name}</span>
+          <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
+        </PromptInputButton>
       </PopoverTrigger>
       <PopoverContent className="w-[340px] p-0" align="start">
         <ModelCommandMenu handleClose={() => setOpen(false)} />

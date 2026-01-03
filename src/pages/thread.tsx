@@ -33,7 +33,6 @@ export function Thread() {
     queryFn: createQueryFn(`/api/v1/threads/${threadToken}`),
   });
 
-  const [input, setInput] = useState("");
   const {
     messages,
     setMessages,
@@ -90,10 +89,8 @@ export function Thread() {
     }
   }, [thread, threadToken]);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    sendMessage({ text: input });
-    setInput("");
+  function handleSubmit(message: { text: string; files: unknown[] }) {
+    sendMessage({ text: message.text });
   }
 
   function handleRegenerate() {
@@ -143,21 +140,15 @@ export function Thread() {
           <ConversationScrollButton />
         </Conversation>
         <div className="w-full max-w-4xl mx-auto mb-2">
-          <form onSubmit={handleSubmit}>
-            <InputBox
-              rows={1}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </form>
+          <InputBox onSubmit={handleSubmit} status={chatStatus} />
         </div>
       </div>
 
       {process.env.NODE_ENV === "development" && (
         <>
-          <div className="fixed bottom-16 right-4 z-50 w-[28rem] max-h-[60vh] overflow-auto rounded border border-zinc-700 bg-black/90 p-3 text-green-200">
+          <div className="fixed bottom-16 right-4 z-50 w-md max-h-[60vh] overflow-auto rounded border border-zinc-700 bg-black/90 p-3 text-green-200">
             {showDebug ? (
-              <pre className="whitespace-pre-wrap break-words text-xs font-mono">
+              <pre className="whitespace-pre-wrap wrap-break-word text-xs font-mono">
                 {JSON.stringify(messages, null, 2)}
               </pre>
             ) : (
@@ -166,7 +157,7 @@ export function Thread() {
           </div>
           <button
             type="button"
-            onClick={() => setShowDebug((v) => !v)}
+            onClick={() => setShowDebug((v: boolean) => !v)}
             className="fixed bottom-4 right-4 z-50 rounded bg-zinc-800 px-3 py-1.5 text-xs text-white shadow hover:bg-zinc-700"
           >
             {showDebug ? "Hide messages" : "Show messages"}

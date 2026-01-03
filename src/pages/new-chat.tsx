@@ -33,21 +33,17 @@ export function NewChat() {
     },
   });
 
-  function handleCreateThread(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!$prompt.value) {
+  function handleCreateThread(message: { text: string; files: unknown[] }) {
+    if (!message.text) {
       return;
     }
 
+    $prompt.set(message.text);
     createThreadMutation.mutate();
   }
 
   return (
-    <form
-      className="h-full flex flex-col overflow-hidden"
-      onSubmit={handleCreateThread}
-    >
+    <div className="h-full flex flex-col overflow-hidden">
       <div className="grow flex flex-col justify-end md:justify-center md:items-center overflow-hidden">
         <div className="max-w-4xl w-full px-4 md:px-0">
           <div className="hidden md:flex flex-col items-center justify-center mb-10">
@@ -57,14 +53,10 @@ export function NewChat() {
             </div>
           </div>
           <div className="w-full mb-8 md:mb-0">
-            <InputBox
-              name="message"
-              rows={3}
-              onChange={(event) => $prompt.set(event.target.value)}
-            />
+            <InputBox onSubmit={handleCreateThread} />
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 }

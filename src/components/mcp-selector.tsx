@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { Button } from "@/components/ui/button";
+import { PromptInputButton } from "@/components/ai-elements/prompt-input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,10 +51,10 @@ export function McpSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
+        <PromptInputButton size="sm">
           Connectors
           {selectedServers.length ? ` (${selectedServers.length})` : ""}
-        </Button>
+        </PromptInputButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64" align="start">
         <DropdownMenuLabel>Manage connections</DropdownMenuLabel>

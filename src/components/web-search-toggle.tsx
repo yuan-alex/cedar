@@ -1,12 +1,13 @@
 import { useStore } from "@nanostores/react";
 import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { PromptInputButton } from "@/components/ai-elements/prompt-input";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { $webSearchEnabled } from "@/utils/stores";
 
 export function WebSearchToggle() {
@@ -20,15 +21,14 @@ export function WebSearchToggle() {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className={enabled ? "border-primary" : ""}
+        <PromptInputButton
           onClick={toggleWebSearch}
+          variant={enabled ? "default" : "ghost"}
+          aria-label={enabled ? "Disable web search" : "Enable web search"}
         >
           <Search className="size-4" />
-        </Button>
+          Web Search
+        </PromptInputButton>
       </TooltipTrigger>
       <TooltipContent>
         <p>{enabled ? "Disable" : "Enable"} web search</p>
