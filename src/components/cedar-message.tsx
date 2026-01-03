@@ -67,7 +67,7 @@ export function CedarMessage(props: IMessageProps) {
   }
 
   return (
-    <div className="flex flex-col max-w-4xl mx-auto">
+    <div className="flex flex-col max-w-4xl">
       <Message from={message.role} className="relative size-full">
         <MessageContent>
           {message.parts?.map((part, i) => {

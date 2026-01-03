@@ -110,7 +110,11 @@ export function Thread() {
       <div className="flex flex-col h-full min-h-0">
         <Conversation initial="instant" resize="instant">
           <ConversationContent
-            className={messages.length > 0 ? "space-y-6" : undefined}
+            className={
+              messages.length > 0
+                ? "space-y-6 max-w-4xl mx-auto"
+                : "max-w-4xl mx-auto"
+            }
           >
             {messages.length === 0 ? (
               <ConversationEmptyState
