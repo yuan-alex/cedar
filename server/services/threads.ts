@@ -1,3 +1,4 @@
+import { webSearch } from "@exalabs/ai-sdk";
 import {
   convertToModelMessages,
   defaultSettingsMiddleware,
@@ -5,10 +6,12 @@ import {
   smoothStream,
   stepCountIs,
   streamText,
+  type ToolSet,
   validateUIMessages,
   wrapLanguageModel,
 } from "ai";
 import type { Context } from "hono";
+
 import type { AppEnv } from "@/server/types";
 import { config } from "@/server/utils/config";
 import { generateTitle, getSystemMessage } from "@/server/utils/inference";
@@ -223,7 +226,18 @@ export async function createMessage(c: Context<AppEnv>) {
       },
     });
 
-    const tools = await mcpClientManager.getAllTools(userInput.mcpServers);
+    const tools: ToolSet = {};
+    const mcpTools = await mcpClientManager.getAllTools(userInput.mcpServers);
+    Object.entries(mcpTools).forEach(([key, tool]) => {
+      tools[key] = tool;
+    });
+
+    if (userInput.webSearchEnabled) {
+      const webSearchTool = webSearch({ numResults: 3 });
+      // webSearchTool.needsApproval = true;
+      tools.webSearch = webSearchTool;
+    }
+
     const validatedMessages = await validateUIMessages({
       metadataSchema: undefined,
       dataSchemas: undefined,
@@ -304,7 +318,7 @@ export async function regenerateMessage(c: Context<AppEnv>) {
     const user = requireAuth(c);
     const threadToken = c.req.param("threadToken");
     const userInput = await c.req.json();
-    const { model, mcpServers } = userInput;
+    const { model, mcpServers, webSearchEnabled } = userInput;
 
     // Get the thread with all messages
     const thread = await prisma.thread.findUnique({
@@ -341,7 +355,17 @@ export async function regenerateMessage(c: Context<AppEnv>) {
     // Remove the latest assistant message from uiMessages
     const updatedUIMessages = thread.uiMessages.slice(0, -1);
 
-    const tools = await mcpClientManager.getAllTools(mcpServers);
+    const tools: ToolSet = {};
+    const mcpTools = await mcpClientManager.getAllTools(mcpServers);
+    Object.entries(mcpTools).forEach(([key, tool]) => {
+      tools[key] = tool;
+    });
+
+    if (webSearchEnabled) {
+      const webSearchTool = webSearch({ numResults: 3 });
+      // webSearchTool.needsApproval = true;
+      tools.webSearch = webSearchTool;
+    }
     const validatedMessages = await validateUIMessages({
       metadataSchema: undefined,
       dataSchemas: undefined,

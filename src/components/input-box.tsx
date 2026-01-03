@@ -4,6 +4,7 @@ import { type TextareaHTMLAttributes, useEffect, useRef } from "react";
 import { McpSelector } from "@/components/mcp-selector";
 import { ModelPopover } from "@/components/model-popover";
 import { Button } from "@/components/ui/button";
+import { WebSearchToggle } from "@/components/web-search-toggle";
 
 export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -71,6 +72,7 @@ export function InputBox(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
       <div className="flex gap-2 mt-1">
         <ModelPopover />
         <McpSelector />
+        <WebSearchToggle />
         <div className="flex-grow" />
         <Button variant="outline" size="sm" onClick={handleSendClick}>
           <Send />

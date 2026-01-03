@@ -14,6 +14,12 @@ export const $mcpSelectedServers = persistentAtom<string>(
   "",
 );
 
+// Web search toggle state
+export const $webSearchEnabled = persistentAtom<string>(
+  "webSearchEnabled",
+  "false",
+);
+
 if (process.env.NODE_ENV === "development") {
   try {
     // Dynamic import for dev dependency to avoid build errors in production
@@ -21,6 +27,7 @@ if (process.env.NODE_ENV === "development") {
     logger({
       Model: $model,
       MCPServers: $mcpSelectedServers,
+      WebSearchEnabled: $webSearchEnabled,
     });
   } catch (error) {
     // Logger not available in production, skip silently

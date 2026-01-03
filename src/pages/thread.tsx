@@ -16,7 +16,12 @@ import { Loader } from "@/components/ai-elements/loader";
 import { CedarMessage } from "@/components/cedar-message";
 import { InputBox } from "@/components/input-box";
 import { createQueryFn } from "@/utils/queries";
-import { $mcpSelectedServers, $model, $prompt } from "@/utils/stores";
+import {
+  $mcpSelectedServers,
+  $model,
+  $prompt,
+  $webSearchEnabled,
+} from "@/utils/stores";
 
 export function Thread() {
   const { threadToken } = useParams({ from: "/chat/$threadToken" });
@@ -42,25 +47,25 @@ export function Thread() {
       api: `/api/v1/threads/${threadToken}`,
       credentials: "include",
       prepareSendMessagesRequest: (request) => {
+        const common = {
+          model: $model?.get().id,
+          mcpServers: $mcpSelectedServers.value
+            ? $mcpSelectedServers.value.split(",").filter(Boolean)
+            : [],
+          webSearchEnabled: $webSearchEnabled.value === "true",
+        };
+
         if (request.trigger === "regenerate-message") {
           return {
             api: `/api/v1/threads/${threadToken}/regenerate`,
-            body: {
-              model: $model?.get().id,
-              mcpServers: $mcpSelectedServers.value
-                ? $mcpSelectedServers.value.split(",").filter(Boolean)
-                : [],
-            },
+            body: common,
           };
         }
 
         return {
           body: {
-            model: $model?.get().id,
-            newMessage: request.messages[request.messages.length - 1],
-            mcpServers: $mcpSelectedServers.value
-              ? $mcpSelectedServers.value.split(",").filter(Boolean)
-              : [],
+            ...common,
+            newMessage: request.messages.at(-1),
           },
         };
       },
