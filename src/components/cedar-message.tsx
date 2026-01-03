@@ -1,5 +1,6 @@
-import type { UIMessage } from "ai";
+import type { ChatStatus, DynamicToolUIPart, ToolUIPart, UIMessage } from "ai";
 import { CopyIcon, RotateCcwIcon } from "lucide-react";
+import type React from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,10 +27,56 @@ import {
 
 interface IMessageProps {
   message: UIMessage;
-  chatStatus: any;
+  chatStatus: ChatStatus;
   isLatestMessage?: boolean;
   threadToken?: string;
   onRegenerate?: () => void;
+}
+
+function renderToolPart(
+  messageId: string,
+  partIndex: number,
+  toolType: `tool-${string}`,
+  toolPart: ToolUIPart | DynamicToolUIPart,
+): React.ReactElement {
+  const toolState = toolPart.state;
+
+  const toolCallId = toolPart.toolCallId;
+  const providerExecuted = toolPart.providerExecuted;
+
+  const hasInput = "input" in toolPart && toolPart.input !== undefined;
+  const hasOutput = "output" in toolPart && toolPart.output !== undefined;
+  const hasErrorText =
+    "errorText" in toolPart && toolPart.errorText !== undefined;
+
+  return (
+    <Tool key={`${messageId}-${toolType}-${partIndex}`} defaultOpen={false}>
+      <ToolHeader type={toolType} state={toolState} />
+      <ToolContent>
+        {toolCallId && (
+          <div className="px-4 pt-4 text-xs text-muted-foreground">
+            Call ID: {toolCallId}
+          </div>
+        )}
+        {typeof providerExecuted === "boolean" && (
+          <div className="px-4 pt-2 text-xs text-muted-foreground">
+            Executed: {providerExecuted ? "yes" : "no"}
+          </div>
+        )}
+        {hasInput && (
+          <ToolInput input={toolPart.input as ToolUIPart["input"]} />
+        )}
+        {(hasOutput || hasErrorText) && (
+          <ToolOutput
+            output={
+              hasOutput ? (toolPart.output as ToolUIPart["output"]) : undefined
+            }
+            errorText={hasErrorText ? toolPart.errorText : undefined}
+          />
+        )}
+      </ToolContent>
+    </Tool>
+  );
 }
 
 export function CedarMessage(props: IMessageProps) {
@@ -71,6 +118,20 @@ export function CedarMessage(props: IMessageProps) {
       <Message from={message.role} className="relative size-full">
         <MessageContent>
           {message.parts?.map((part, i) => {
+            // Handle static tool parts (e.g., tool-webSearch)
+            if (
+              typeof part.type === "string" &&
+              part.type.startsWith("tool-") &&
+              part.type !== "tool-error"
+            ) {
+              return renderToolPart(
+                message.id,
+                i,
+                part.type as `tool-${string}`,
+                part as ToolUIPart,
+              );
+            }
+
             switch (part.type) {
               case "text":
                 return (
@@ -97,100 +158,54 @@ export function CedarMessage(props: IMessageProps) {
                   </Reasoning>
                 );
               case "tool-error": {
-                const toolName = (part as unknown as { toolName?: string })
-                  .toolName;
-                const toolCallId = (part as unknown as { toolCallId?: string })
-                  .toolCallId;
-                const errorVal = (part as unknown as { error?: unknown }).error;
-                const text = (part as unknown as { text?: string }).text;
+                const toolPart = part as unknown as {
+                  toolName?: string;
+                  toolCallId?: string;
+                  error?: unknown;
+                  text?: string;
+                  errorText?: string;
+                };
+                const toolType: `tool-${string}` = toolPart.toolName
+                  ? (`tool-${toolPart.toolName}` as `tool-${string}`)
+                  : "tool-error";
 
                 return (
                   <Tool
                     key={`${message.id}-tool-error-${i}`}
                     defaultOpen={false}
                   >
-                    <ToolHeader
-                      type={toolName ? `tool-${toolName}` : "tool-error"}
-                      state="output-error"
-                    />
+                    <ToolHeader type={toolType} state="output-error" />
                     <ToolContent>
-                      {toolCallId && (
+                      {toolPart.toolCallId && (
                         <div className="px-4 pt-4 text-xs text-muted-foreground">
-                          Call ID: {toolCallId}
+                          Call ID: {toolPart.toolCallId}
                         </div>
                       )}
-                      {text && (
+                      {toolPart.text && (
                         <div className="px-4 pt-2">
                           <div className="prose dark:prose-invert text-sm">
-                            {text}
+                            {toolPart.text}
                           </div>
                         </div>
                       )}
                       <ToolOutput
-                        output={errorVal}
-                        errorText={text || "Tool execution failed"}
+                        output={toolPart.error}
+                        errorText={
+                          toolPart.text ||
+                          toolPart.errorText ||
+                          "Tool execution failed"
+                        }
                       />
                     </ToolContent>
                   </Tool>
                 );
               }
               case "dynamic-tool": {
-                const toolName = (part as unknown as { toolName?: string })
-                  .toolName;
-                const toolCallId = (part as unknown as { toolCallId?: string })
-                  .toolCallId;
-                const providerExecuted = (
-                  part as unknown as {
-                    providerExecuted?: boolean;
-                  }
-                ).providerExecuted;
-                const input = (part as unknown as { input?: unknown }).input;
-                const output = (part as unknown as { output?: unknown }).output;
-                const errorText = (
-                  part as unknown as {
-                    errorText?: string;
-                  }
-                ).errorText;
-
-                // Map dynamic-tool state to ToolUIPart state
-                const getToolState = ():
-                  | "input-streaming"
-                  | "input-available"
-                  | "output-available"
-                  | "output-error" => {
-                  if (errorText) return "output-error";
-                  if (output !== undefined) return "output-available";
-                  if (input !== undefined) return "input-available";
-                  return "input-streaming";
-                };
-
-                return (
-                  <Tool
-                    key={`${message.id}-dynamic-tool-${i}`}
-                    defaultOpen={false}
-                  >
-                    <ToolHeader
-                      type={toolName ? `tool-${toolName}` : "tool-dynamic"}
-                      state={getToolState()}
-                    />
-                    <ToolContent>
-                      {toolCallId && (
-                        <div className="px-4 pt-4 text-xs text-muted-foreground">
-                          Call ID: {toolCallId}
-                        </div>
-                      )}
-                      {typeof providerExecuted === "boolean" && (
-                        <div className="px-4 pt-2 text-xs text-muted-foreground">
-                          Executed: {providerExecuted ? "yes" : "no"}
-                        </div>
-                      )}
-                      {input !== undefined && <ToolInput input={input} />}
-                      {(output !== undefined || errorText) && (
-                        <ToolOutput output={output} errorText={errorText} />
-                      )}
-                    </ToolContent>
-                  </Tool>
-                );
+                const toolPart = part as DynamicToolUIPart;
+                const toolType: `tool-${string}` = toolPart.toolName
+                  ? (`tool-${toolPart.toolName}` as `tool-${string}`)
+                  : "tool-dynamic";
+                return renderToolPart(message.id, i, toolType, toolPart);
               }
               default:
                 return null;
