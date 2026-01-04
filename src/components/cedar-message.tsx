@@ -1,5 +1,10 @@
 import type { ChatStatus, DynamicToolUIPart, ToolUIPart, UIMessage } from "ai";
-import { CopyIcon, RotateCcwIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  CopyIcon,
+  RotateCcwIcon,
+  SearchIcon,
+} from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -24,6 +29,12 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ai-elements/tool";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 interface IMessageProps {
   message: UIMessage;
@@ -33,12 +44,93 @@ interface IMessageProps {
   onRegenerate?: () => void;
 }
 
+function WebSearchDisplay({
+  toolPart,
+}: {
+  toolPart: ToolUIPart | DynamicToolUIPart;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const hasInput = "input" in toolPart && toolPart.input !== undefined;
+  const hasOutput = "output" in toolPart && toolPart.output !== undefined;
+  const hasErrorText =
+    "errorText" in toolPart && toolPart.errorText !== undefined;
+
+  const query =
+    hasInput &&
+    typeof toolPart.input === "object" &&
+    toolPart.input !== null &&
+    "query" in toolPart.input
+      ? String(toolPart.input.query)
+      : null;
+
+  if (!query) {
+    return null;
+  }
+
+  const hasResults = hasOutput || hasErrorText;
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <div className="rounded-md border bg-muted/30 overflow-hidden">
+        <CollapsibleTrigger
+          className={cn(
+            "flex w-full items-center justify-between gap-2 px-3 py-2 text-left transition-colors hover:bg-muted/50",
+            hasResults && "cursor-pointer",
+          )}
+          disabled={!hasResults}
+        >
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
+            <span className="text-sm text-foreground min-w-0">
+              <span className="text-muted-foreground">Searched:</span>{" "}
+              <span className="font-medium">{query}</span>
+            </span>
+          </div>
+          {hasResults && (
+            <ChevronDownIcon
+              className={cn(
+                "size-4 shrink-0 text-muted-foreground transition-transform",
+                isOpen && "rotate-180",
+              )}
+            />
+          )}
+        </CollapsibleTrigger>
+        {hasResults && (
+          <CollapsibleContent className="border-t bg-background">
+            <div className="p-4">
+              <ToolOutput
+                output={
+                  hasOutput
+                    ? (toolPart.output as ToolUIPart["output"])
+                    : undefined
+                }
+                errorText={hasErrorText ? toolPart.errorText : undefined}
+              />
+            </div>
+          </CollapsibleContent>
+        )}
+      </div>
+    </Collapsible>
+  );
+}
+
 function renderToolPart(
   messageId: string,
   partIndex: number,
   toolType: `tool-${string}`,
   toolPart: ToolUIPart | DynamicToolUIPart,
 ): React.ReactElement {
+  // Special handling for web search - show custom display
+  if (toolType === "tool-webSearch") {
+    return (
+      <WebSearchDisplay
+        key={`${messageId}-${toolType}-${partIndex}`}
+        toolPart={toolPart}
+      />
+    );
+  }
+
   const toolState = toolPart.state;
 
   const toolCallId = toolPart.toolCallId;
@@ -135,7 +227,10 @@ export function CedarMessage(props: IMessageProps) {
             switch (part.type) {
               case "text":
                 return (
-                  <Response key={`${message.id}-text-${i}`} className="text-lg">
+                  <Response
+                    key={`${message.id}-text-${i}`}
+                    className="text-[1.1rem]"
+                  >
                     {"text" in part ? part.text : ""}
                   </Response>
                 );

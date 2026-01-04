@@ -4,8 +4,26 @@ import { format } from "date-fns";
 import { config } from "./config";
 import { registry } from "./providers";
 
-export function getSystemMessage(): string {
+export function getSystemMessage(webSearchEnabled = false): string {
   const assistantName = config.ai.assistant_name;
+
+  const webSearchInstructions = webSearchEnabled
+    ? `
+
+WEB SEARCH & CITATIONS:
+- When using web search to gather information, ALWAYS cite your sources using numbered citations
+- Use inline citations in square brackets: [1], [2], [3] when referencing information from search results
+- Place citations immediately after the claim or information being cited
+- At the end of your response, include a "References" section listing all cited sources
+- Format references as: [N] Title - URL (use the exact title and URL from the search results)
+- Example: "According to recent studies [1], this approach shows promise. Further research [2] confirms these findings."
+- Example References section:
+  References:
+  [1] Article Title - https://example.com/article
+  [2] Research Paper Title - https://example.com/research
+- If you use information from multiple sources in one sentence, cite all relevant sources: [1, 2, 3]
+- Always verify that citation numbers match the order sources appear in the search results`
+    : "";
 
   return (
     config.ai.system_message ||
@@ -49,7 +67,7 @@ $$E = mc^2$$
 $$v = v_0 + at$$
 $$F = G\frac{m_1 m_2}{r^2}$$
 $$V = IR$$
-</formatting_examples>
+</formatting_examples>${webSearchInstructions}
 
 Current date: ${format(new Date(), "PPPP")}.`
   );

@@ -23,7 +23,11 @@ export function WebSearchToggle() {
       <TooltipTrigger asChild>
         <PromptInputButton
           onClick={toggleWebSearch}
-          variant={enabled ? "default" : "ghost"}
+          variant={enabled ? "secondary" : "ghost"}
+          className={cn(
+            enabled &&
+              "border-green-700 text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-950 dark:hover:text-green-300",
+          )}
           aria-label={enabled ? "Disable web search" : "Enable web search"}
         >
           <Search className="size-4" />

@@ -93,9 +93,11 @@ async function createAIResponse(
 
   const modelMessages = await convertToModelMessages(messages);
 
+  const webSearchEnabled = "webSearch" in tools;
+
   const result = streamText({
     model: wrappedModel,
-    system: getSystemMessage(),
+    system: getSystemMessage(webSearchEnabled),
     messages: modelMessages,
     tools,
     stopWhen: stepCountIs(10),
@@ -232,18 +234,28 @@ export async function createMessage(c: Context<AppEnv>) {
       tools[key] = tool;
     });
 
+    // Only add webSearch to tools if enabled (prevents model from using it when disabled)
     if (userInput.webSearchEnabled) {
-      const webSearchTool = webSearch({ numResults: 3 });
+      const webSearchTool = webSearch({ type: "fast" });
       // webSearchTool.needsApproval = true;
       tools.webSearch = webSearchTool;
     }
+
+    // Always include webSearch in validation tools to allow validation of old messages
+    const validationTools: ToolSet = {
+      ...tools,
+      webSearch: webSearch({ type: "fast" }),
+    };
 
     const validatedMessages = await validateUIMessages({
       metadataSchema: undefined,
       dataSchemas: undefined,
       messages: [...thread.uiMessages, userInput.newMessage],
       tools: Object.fromEntries(
-        Object.entries(tools).map(([key, tool]) => [key, tool as any]),
+        Object.entries(validationTools).map(([key, tool]) => [
+          key,
+          tool as any,
+        ]),
       ),
     });
 
@@ -361,17 +373,28 @@ export async function regenerateMessage(c: Context<AppEnv>) {
       tools[key] = tool;
     });
 
+    // Only add webSearch to tools if enabled (prevents model from using it when disabled)
     if (webSearchEnabled) {
       const webSearchTool = webSearch({ numResults: 3 });
       // webSearchTool.needsApproval = true;
       tools.webSearch = webSearchTool;
     }
+
+    // Always include webSearch in validation tools to allow validation of old messages
+    const validationTools: ToolSet = {
+      ...tools,
+      webSearch: webSearch({ type: "fast" }),
+    };
+
     const validatedMessages = await validateUIMessages({
       metadataSchema: undefined,
       dataSchemas: undefined,
       messages: updatedUIMessages,
       tools: Object.fromEntries(
-        Object.entries(tools).map(([key, tool]) => [key, tool as any]),
+        Object.entries(validationTools).map(([key, tool]) => [
+          key,
+          tool as any,
+        ]),
       ),
     });
 
