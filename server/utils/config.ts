@@ -107,7 +107,7 @@ async function loadConfigFromFile(
   try {
     const content = await Bun.file(filePath).text();
     const substitutedContent = substituteEnvVars(content);
-    let parsedConfig;
+    let parsedConfig: unknown;
 
     // Detect file type based on extension and parse accordingly
     if (filePath.endsWith(".json")) {
@@ -121,7 +121,7 @@ async function loadConfigFromFile(
     const validatedConfig = ConfigSchema.parse(parsedConfig);
     console.log(`Loaded config from: ${description}`);
     return validatedConfig;
-  } catch (error) {
+  } catch {
     // File doesn't exist, is invalid JSON/YAML, or doesn't match schema
     return null;
   }

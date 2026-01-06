@@ -1,4 +1,3 @@
-import { webSearch } from "@exalabs/ai-sdk";
 import {
   convertToModelMessages,
   defaultSettingsMiddleware,
@@ -22,10 +21,15 @@ import {
   ChatMessageStatus,
 } from "@/server/utils/prisma-client/client";
 import { getModels, registry } from "@/server/utils/providers";
+import { createCleanedWebSearch } from "@/server/utils/web-search";
 
 const mcpClientManager = new MCPClientManager();
 
 // Helper functions
+function isWebSearchAvailable(): boolean {
+  return !!Bun.env.EXA_API_KEY;
+}
+
 function requireAuth(c: Context<AppEnv>) {
   const user = c.get("user");
   if (!user) throw new Response(null, { status: 401 });
@@ -65,6 +69,7 @@ function setupAIModel(model: string) {
   });
 
   return wrapLanguageModel({
+    // @ts-expect-error - TypeScript can't infer the exact model ID type, but we validate it exists above
     model: registry.languageModel(model),
     middleware: [reasoningMiddleware, settingsMiddleware],
   });
@@ -97,7 +102,7 @@ async function createAIResponse(
 
   const result = streamText({
     model: wrappedModel,
-    system: getSystemMessage(webSearchEnabled),
+    system: getSystemMessage(webSearchEnabled, model),
     messages: modelMessages,
     tools,
     stopWhen: stepCountIs(10),
@@ -234,17 +239,19 @@ export async function createMessage(c: Context<AppEnv>) {
       tools[key] = tool;
     });
 
-    // Only add webSearch to tools if enabled (prevents model from using it when disabled)
-    if (userInput.webSearchEnabled) {
-      const webSearchTool = webSearch({ type: "fast" });
-      // webSearchTool.needsApproval = true;
+    // Always create webSearch tool for validation (needed to validate old messages that used web search)
+    const webSearchTool = createCleanedWebSearch({
+      type: "fast",
+      numResults: 3,
+    });
+    if (userInput.webSearchEnabled && isWebSearchAvailable()) {
       tools.webSearch = webSearchTool;
     }
 
-    // Always include webSearch in validation tools to allow validation of old messages
+    // Always include webSearch in validation tools to allow validation of old messages that used web search
     const validationTools: ToolSet = {
       ...tools,
-      webSearch: webSearch({ type: "fast" }),
+      webSearch: webSearchTool,
     };
 
     const validatedMessages = await validateUIMessages({
@@ -373,17 +380,21 @@ export async function regenerateMessage(c: Context<AppEnv>) {
       tools[key] = tool;
     });
 
-    // Only add webSearch to tools if enabled (prevents model from using it when disabled)
-    if (webSearchEnabled) {
-      const webSearchTool = webSearch({ numResults: 3 });
-      // webSearchTool.needsApproval = true;
+    // Always create webSearch tool for validation (needed to validate old messages that used web search)
+    // Only add to actual tools if enabled AND API key is available (prevents model from using it when disabled)
+    const webSearchTool = createCleanedWebSearch({
+      type: "fast",
+      numResults: 3,
+    });
+    if (webSearchEnabled && isWebSearchAvailable()) {
       tools.webSearch = webSearchTool;
     }
 
-    // Always include webSearch in validation tools to allow validation of old messages
+    // Always include webSearch in validation tools to allow validation of old messages that used web search
+    // This is necessary even if webSearch is currently disabled or API key is missing, as previous threads might have had it enabled
     const validationTools: ToolSet = {
       ...tools,
-      webSearch: webSearch({ type: "fast" }),
+      webSearch: webSearchTool,
     };
 
     const validatedMessages = await validateUIMessages({

@@ -4,13 +4,16 @@ import { format } from "date-fns";
 import { config } from "./config";
 import { registry } from "./providers";
 
-export function getSystemMessage(webSearchEnabled = false): string {
+export function getSystemMessage(
+  webSearchEnabled = false,
+  model?: string,
+): string {
   const assistantName = config.ai.assistant_name;
 
   const webSearchInstructions = webSearchEnabled
     ? `
-
 WEB SEARCH & CITATIONS:
+- Use web search judiciously - usually use at most 1 web search unless that 1 search isn't enough to answer the question, don't perform excessive or repetitive searches
 - When using web search to gather information, ALWAYS cite your sources using numbered citations
 - Use inline citations in square brackets: [1], [2], [3] when referencing information from search results
 - Place citations immediately after the claim or information being cited
@@ -22,13 +25,23 @@ WEB SEARCH & CITATIONS:
   [1] Article Title - https://example.com/article
   [2] Research Paper Title - https://example.com/research
 - If you use information from multiple sources in one sentence, cite all relevant sources: [1, 2, 3]
-- Always verify that citation numbers match the order sources appear in the search results`
+- Always verify that citation numbers match the order sources appear in the search results
+`
+    : "";
+
+  const isGptOss = model?.toLowerCase().includes("gpt-oss") ?? false;
+  const gptOssInstructions = isGptOss
+    ? `
+Knowledge cutoff: 2024-06
+Reasoning: low
+# Valid channels: analysis, commentary, final. Channel must be included for every message.
+`
     : "";
 
   return (
     config.ai.system_message ||
     `You're ${assistantName}, an AI assistant who provides clear, logical, and well-reasoned responses.
-
+${gptOssInstructions}
 CORE PRINCIPLES:
 - Provide accurate, well-reasoned responses with proper context
 - Prioritize user understanding over technical complexity
@@ -57,18 +70,14 @@ FORMATTING:
 - Use section headers for complex explanations
 
 MATH:
-- Use LaTeX for mathematical expressions and equations
-- Always enclose your LaTeX with block format ($$)
-- DO NOT use the $ symbol for inline math
-
-<formatting_examples>
-$$F = ma$$
-$$E = mc^2$$
-$$v = v_0 + at$$
-$$F = G\frac{m_1 m_2}{r^2}$$
-$$V = IR$$
-</formatting_examples>${webSearchInstructions}
-
+- Use double dollar signs ($$) to delimit mathematical expressions
+- Unlike traditional LaTeX, single dollar signs ($) are not used to avoid conflicts with currency symbols in regular text
+- For example: The quadratic formula is $$x = \frac{-b pm sqrt{b^2 - 4ac}}{2a}$$ for solving equations
+- For display-style equations, place $$ delimiters on separate lines (this renders the equation centered and larger):
+$$
+E = mc^2
+$$
+${webSearchInstructions}
 Current date: ${format(new Date(), "PPPP")}.`
   );
 }

@@ -18,6 +18,11 @@ v1.get("/session", (c) => {
   return c.json({ session, user });
 });
 
+v1.get("/web-search-available", async (c) => {
+  const isAvailable = !!Bun.env.EXA_API_KEY;
+  return c.json({ available: isAvailable });
+});
+
 v1.route("/models", models);
 v1.route("/mcp", mcp);
 v1.route("/threads", threads);
