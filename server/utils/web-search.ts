@@ -14,6 +14,15 @@ interface WebSearchResponse {
 }
 
 /**
+ * Checks if web search is available by verifying the EXA_API_KEY environment variable.
+ *
+ * @returns true if web search is available, false otherwise
+ */
+export function isWebSearchAvailable(): boolean {
+  return !!Bun.env.EXA_API_KEY;
+}
+
+/**
  * Creates a cleaned web search tool that removes unnecessary metadata
  * from the search results, keeping only essential fields for the LLM.
  *

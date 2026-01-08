@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 
 import type { AppEnv } from "@/server/types";
+import { isWebSearchAvailable } from "@/server/utils/web-search";
 import { mcp } from "./mcp.ts";
 import { models } from "./models.ts";
 import { threads } from "./threads.ts";
@@ -19,7 +20,7 @@ v1.get("/session", (c) => {
 });
 
 v1.get("/web-search-available", async (c) => {
-  const isAvailable = !!Bun.env.EXA_API_KEY;
+  const isAvailable = isWebSearchAvailable();
   return c.json({ available: isAvailable });
 });
 

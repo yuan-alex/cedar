@@ -21,14 +21,12 @@ import {
   ChatMessageStatus,
 } from "@/server/utils/prisma-client/client";
 import { getModels, registry } from "@/server/utils/providers";
-import { createCleanedWebSearch } from "@/server/utils/web-search";
+import {
+  createCleanedWebSearch,
+  isWebSearchAvailable,
+} from "@/server/utils/web-search";
 
 const mcpClientManager = new MCPClientManager();
-
-// Helper functions
-function isWebSearchAvailable(): boolean {
-  return !!Bun.env.EXA_API_KEY;
-}
 
 function requireAuth(c: Context<AppEnv>) {
   const user = c.get("user");
