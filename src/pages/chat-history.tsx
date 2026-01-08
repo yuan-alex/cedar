@@ -1,15 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import { formatDistanceToNow } from "date-fns";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
+
+import { ThreadItemCard } from "@/components/thread-item-card";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 
 export function ChatHistory() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -87,22 +82,16 @@ export function ChatHistory() {
           </Dialog>
         )}
       </div>
-      <div className="flex flex-col space-y-2">
-        {threads?.map((thread) => (
-          <Link
-            key={thread.token}
-            to="/chat/$threadToken"
-            params={{ threadToken: thread.token }}
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle>{thread.name}</CardTitle>
-                <CardDescription>
-                  Last messaged {formatDistanceToNow(thread.createdAt)} ago
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
+      <div className="border rounded-lg">
+        {threads?.map((thread, index) => (
+          <div key={thread.token}>
+            <ThreadItemCard
+              thread={thread}
+              showProject={true}
+              dateField="createdAt"
+            />
+            {index < threads.length - 1 && <Separator />}
+          </div>
         ))}
       </div>
     </div>

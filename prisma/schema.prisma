@@ -7,12 +7,27 @@ datasource db {
   provider = "postgresql"
 }
 
+model Project {
+  id                 Int      @id @default(autoincrement())
+  token              String   @unique @default(uuid())
+  name               String
+  customInstructions String?
+  userId             String
+  user               User     @relation(fields: [userId], references: [id])
+  isDeleted          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  threads            Thread[]
+}
+
 model Thread {
   id             Int           @id @default(autoincrement())
   token          String        @unique @default(uuid())
   name           String        @default("New chat")
   userId         String
   user           User          @relation(fields: [userId], references: [id])
+  projectId      Int?
+  project        Project?      @relation(fields: [projectId], references: [id])
   isDeleted      Boolean       @default(false)
   lastMessagedAt DateTime      @default(now())
   createdAt      DateTime      @default(now())
@@ -65,7 +80,8 @@ model User {
   banExpires DateTime?
 
   // Custom fields
-  threads Thread[]
+  threads  Thread[]
+  projects Project[]
 
   @@unique([email])
   @@map("user")

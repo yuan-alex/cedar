@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestingRouteImport } from './routes/testing'
+import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ChatsRouteImport } from './routes/chats'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsProjectTokenRouteImport } from './routes/projects.$projectToken'
 import { Route as ChatThreadTokenRouteImport } from './routes/chat.$threadToken'
 import { Route as AuthAuthViewRouteImport } from './routes/auth.$authView'
 import { Route as AccountAccountViewRouteImport } from './routes/account.$accountView'
@@ -20,6 +22,11 @@ import { Route as AccountAccountViewRouteImport } from './routes/account.$accoun
 const TestingRoute = TestingRouteImport.update({
   id: '/testing',
   path: '/testing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatsRoute = ChatsRouteImport.update({
@@ -36,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsProjectTokenRoute = ProjectsProjectTokenRouteImport.update({
+  id: '/$projectToken',
+  path: '/$projectToken',
+  getParentRoute: () => ProjectsRoute,
 } as any)
 const ChatThreadTokenRoute = ChatThreadTokenRouteImport.update({
   id: '/chat/$threadToken',
@@ -57,29 +69,35 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/chats': typeof ChatsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/testing': typeof TestingRoute
   '/account/$accountView': typeof AccountAccountViewRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
+  '/projects/$projectToken': typeof ProjectsProjectTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/chats': typeof ChatsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/testing': typeof TestingRoute
   '/account/$accountView': typeof AccountAccountViewRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
+  '/projects/$projectToken': typeof ProjectsProjectTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/chats': typeof ChatsRoute
+  '/projects': typeof ProjectsRouteWithChildren
   '/testing': typeof TestingRoute
   '/account/$accountView': typeof AccountAccountViewRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/chat/$threadToken': typeof ChatThreadTokenRoute
+  '/projects/$projectToken': typeof ProjectsProjectTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,34 +105,41 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/chats'
+    | '/projects'
     | '/testing'
     | '/account/$accountView'
     | '/auth/$authView'
     | '/chat/$threadToken'
+    | '/projects/$projectToken'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/chats'
+    | '/projects'
     | '/testing'
     | '/account/$accountView'
     | '/auth/$authView'
     | '/chat/$threadToken'
+    | '/projects/$projectToken'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/chats'
+    | '/projects'
     | '/testing'
     | '/account/$accountView'
     | '/auth/$authView'
     | '/chat/$threadToken'
+    | '/projects/$projectToken'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ChatsRoute: typeof ChatsRoute
+  ProjectsRoute: typeof ProjectsRouteWithChildren
   TestingRoute: typeof TestingRoute
   AccountAccountViewRoute: typeof AccountAccountViewRoute
   AuthAuthViewRoute: typeof AuthAuthViewRoute
@@ -128,6 +153,13 @@ declare module '@tanstack/react-router' {
       path: '/testing'
       fullPath: '/testing'
       preLoaderRoute: typeof TestingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chats': {
@@ -150,6 +182,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/projects/$projectToken': {
+      id: '/projects/$projectToken'
+      path: '/$projectToken'
+      fullPath: '/projects/$projectToken'
+      preLoaderRoute: typeof ProjectsProjectTokenRouteImport
+      parentRoute: typeof ProjectsRoute
     }
     '/chat/$threadToken': {
       id: '/chat/$threadToken'
@@ -175,10 +214,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ProjectsRouteChildren {
+  ProjectsProjectTokenRoute: typeof ProjectsProjectTokenRoute
+}
+
+const ProjectsRouteChildren: ProjectsRouteChildren = {
+  ProjectsProjectTokenRoute: ProjectsProjectTokenRoute,
+}
+
+const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
+  ProjectsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ChatsRoute: ChatsRoute,
+  ProjectsRoute: ProjectsRouteWithChildren,
   TestingRoute: TestingRoute,
   AccountAccountViewRoute: AccountAccountViewRoute,
   AuthAuthViewRoute: AuthAuthViewRoute,

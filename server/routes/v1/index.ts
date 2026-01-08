@@ -4,6 +4,7 @@ import type { AppEnv } from "@/server/types";
 import { isWebSearchAvailable } from "@/server/utils/web-search";
 import { mcp } from "./mcp.ts";
 import { models } from "./models.ts";
+import { projects } from "./projects.ts";
 import { threads } from "./threads.ts";
 
 export const v1 = new Hono<AppEnv>();
@@ -26,4 +27,5 @@ v1.get("/web-search-available", async (c) => {
 
 v1.route("/models", models);
 v1.route("/mcp", mcp);
+v1.route("/projects", projects);
 v1.route("/threads", threads);

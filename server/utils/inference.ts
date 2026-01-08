@@ -7,6 +7,7 @@ import { registry } from "./providers";
 export function getSystemMessage(
   webSearchEnabled = false,
   model?: string,
+  projectInstructions?: string | null,
 ): string {
   const assistantName = config.ai.assistant_name;
 
@@ -78,7 +79,7 @@ $$
 E = mc^2
 $$
 ${webSearchInstructions}
-Current date: ${format(new Date(), "PPPP")}.`
+${projectInstructions ? `\nPROJECT-SPECIFIC INSTRUCTIONS:\n${projectInstructions}\n` : ""}Current date: ${format(new Date(), "PPPP")}.`
   );
 }
 

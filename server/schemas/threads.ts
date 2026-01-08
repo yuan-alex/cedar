@@ -3,6 +3,7 @@ import { z } from "zod";
 export const createThreadSchema = z.object({
   model: z.string(),
   prompt: z.string(),
+  projectId: z.number().int().optional(),
 });
 
 const webSearchEnabledField = z
@@ -27,4 +28,8 @@ export const regenerateMessageSchema = z.object({
   model: z.string(),
   mcpServers: z.array(z.string()),
   webSearchEnabled: webSearchEnabledField,
+});
+
+export const updateThreadSchema = z.object({
+  projectId: z.number().int().nullable().optional(),
 });

@@ -4,6 +4,7 @@ import {
   createThreadSchema,
   newMessageSchema,
   regenerateMessageSchema,
+  updateThreadSchema,
 } from "@/server/schemas/threads";
 import * as threadsService from "@/server/services/threads";
 import type { AppEnv } from "@/server/types";
@@ -27,5 +28,10 @@ threads.post(
   "/:threadToken/regenerate",
   zValidator("json", regenerateMessageSchema),
   threadsService.regenerateMessage,
+);
+threads.patch(
+  "/:threadToken",
+  zValidator("json", updateThreadSchema),
+  threadsService.updateThread,
 );
 threads.delete("/:threadToken", threadsService.softDeleteThread);

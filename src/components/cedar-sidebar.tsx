@@ -1,8 +1,8 @@
 import { UserButton } from "@daveyplate/better-auth-ui";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { PlusCircleIcon, Shield } from "lucide-react";
-
+import { PlusCircleIcon, Shield, FolderIcon } from "lucide-react";
+import { CreateProjectDialog } from "@/components/create-project-dialog";
 import { ThreadSidebarMenuItem } from "@/components/thread-item";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/utils/auth";
-import { createQueryFn } from "@/utils/queries";
+import { createQueryFn, fetchProjects } from "@/utils/queries";
 
 const cedarIcon = "/images/cedar.svg";
 
@@ -28,12 +28,31 @@ export function CedarSidebar() {
     queryFn: createQueryFn("/api/v1/threads?take=15"),
   });
 
+  const { data: projects } = useQuery({
+    queryKey: ["projects"],
+    queryFn: fetchProjects,
+  });
+
   const { data: isAdmin } = useQuery({
     queryKey: ["isAdmin"],
     queryFn: () =>
       authClient
         .getSession()
         .then((session) => session?.data?.user?.role === "admin"),
+  });
+
+  // Filter unassigned threads
+  const unassignedThreads: Array<{
+    token: string;
+    name: string;
+    lastMessagedAt: string;
+    createdAt: string;
+  }> = [];
+
+  threads?.forEach((thread) => {
+    if (!thread.projectId) {
+      unassignedThreads.push(thread);
+    }
   });
 
   return (
@@ -53,14 +72,51 @@ export function CedarSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Threads</SidebarGroupLabel>
-          <SidebarMenu>
-            {threads?.map((thread) => (
-              <ThreadSidebarMenuItem key={thread.token} thread={thread} />
-            ))}
-          </SidebarMenu>
+          <div className="flex items-center justify-between mb-2">
+            <SidebarGroupLabel>Projects</SidebarGroupLabel>
+            <CreateProjectDialog>
+              <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                <PlusCircleIcon className="h-4 w-4" />
+              </Button>
+            </CreateProjectDialog>
+          </div>
+          {projects && projects.length > 0 && (
+            <SidebarMenu>
+              {projects.map((project) => (
+                <SidebarMenuItem key={project.token}>
+                  <SidebarMenuButton asChild>
+                    <Link
+                      to="/projects/$projectToken"
+                      params={{ projectToken: project.token }}
+                    >
+                      <FolderIcon className="h-4 w-4" />
+                      <span>{project.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          )}
+          <Link to="/projects" className="block mt-2">
+            <Button variant="outline" style={{ width: "100%" }}>
+              <FolderIcon className="h-4 w-4 mr-2" />
+              View all projects
+            </Button>
+          </Link>
         </SidebarGroup>
-        {threads?.length > 0 && (
+
+        {unassignedThreads.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Uncategorized</SidebarGroupLabel>
+            <SidebarMenu>
+              {unassignedThreads.map((thread) => (
+                <ThreadSidebarMenuItem key={thread.token} thread={thread} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        )}
+
+        {threads && threads.length > 0 && (
           <Link to="/chats" className="mx-3">
             <Button variant="outline" style={{ width: "100%" }}>
               See all threads

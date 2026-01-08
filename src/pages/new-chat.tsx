@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 import { InputBox } from "@/components/input-box";
 import { $model, $prompt } from "@/utils/stores";
@@ -9,23 +10,37 @@ const cedarIcon = "/images/cedar.svg";
 export function NewChat() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
+    null,
+  );
+
   const createThreadMutation = useMutation({
     mutationFn: async () => {
+      const body: {
+        model: string;
+        prompt: string;
+        projectId?: number;
+      } = {
+        model: $model.get().id,
+        prompt: $prompt.value,
+      };
+      if (selectedProjectId !== null) {
+        body.projectId = selectedProjectId;
+      }
+
       const response = await fetch("/api/v1/threads", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: $model.get().id,
-          prompt: $prompt.value,
-        }),
+        body: JSON.stringify(body),
       });
       return response.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["sidebarThreads"] });
       queryClient.invalidateQueries({ queryKey: ["allThreads"] });
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
       navigate({
         to: "/chat/$threadToken",
         params: { threadToken: data.token },
@@ -53,7 +68,11 @@ export function NewChat() {
             </div>
           </div>
           <div className="w-full mb-8 md:mb-0">
-            <InputBox onSubmit={handleCreateThread} />
+            <InputBox
+              onSubmit={handleCreateThread}
+              selectedProjectId={selectedProjectId}
+              onProjectSelect={setSelectedProjectId}
+            />
           </div>
         </div>
       </div>

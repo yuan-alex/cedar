@@ -82,6 +82,18 @@ async function createAIResponse(
 ) {
   const wrappedModel = setupAIModel(model);
 
+  // Fetch thread with project to get custom instructions
+  const thread = await prisma.thread.findUnique({
+    where: { id: threadId },
+    include: {
+      project: {
+        select: {
+          customInstructions: true,
+        },
+      },
+    },
+  });
+
   const newMessage = await prisma.chatMessage.create({
     data: {
       token: messageToken,
@@ -100,7 +112,11 @@ async function createAIResponse(
 
   const result = streamText({
     model: wrappedModel,
-    system: getSystemMessage(webSearchEnabled, model),
+    system: getSystemMessage(
+      webSearchEnabled,
+      model,
+      thread?.project?.customInstructions,
+    ),
     messages: modelMessages,
     tools,
     stopWhen: stepCountIs(10),
@@ -135,9 +151,33 @@ export async function listThreads(c: Context<AppEnv>) {
       ? Number.parseInt(c.req.query("take") as string)
       : undefined;
     const skip = Number.parseInt(c.req.query("skip") || "0");
+    const projectId = c.req.query("projectId")
+      ? Number.parseInt(c.req.query("projectId") as string)
+      : undefined;
+    const projectToken = c.req.query("projectToken");
+
+    let resolvedProjectId = projectId;
+
+    // If projectToken is provided, resolve it to projectId
+    if (projectToken) {
+      const project = await prisma.project.findUnique({
+        where: { token: projectToken, isDeleted: false, userId: user.id },
+      });
+      if (project) {
+        resolvedProjectId = project.id;
+      } else {
+        // Project not found or doesn't belong to user, return empty array
+        return Response.json([]);
+      }
+    }
+
+    const where: any = { userId: user.id, isDeleted: false };
+    if (resolvedProjectId !== undefined) {
+      where.projectId = resolvedProjectId;
+    }
 
     const threads = await prisma.thread.findMany({
-      where: { userId: user.id, isDeleted: false },
+      where,
       take,
       skip,
       orderBy: { lastMessagedAt: "desc" },
@@ -146,6 +186,13 @@ export async function listThreads(c: Context<AppEnv>) {
         name: true,
         lastMessagedAt: true,
         createdAt: true,
+        projectId: true,
+        project: {
+          select: {
+            token: true,
+            name: true,
+          },
+        },
       },
     });
 
@@ -159,14 +206,30 @@ export async function listThreads(c: Context<AppEnv>) {
 export async function createThread(c: Context<AppEnv>) {
   try {
     const user = requireAuth(c);
-    const { model, prompt } = await c.req.json();
+    const { model, prompt, projectId } = await c.req.json();
 
     if (!prompt || !model) {
       return new Response("invalid parameters", { status: 400 });
     }
 
+    // Validate project ownership if projectId is provided
+    if (projectId !== undefined) {
+      const project = await prisma.project.findUnique({
+        where: { id: projectId, isDeleted: false },
+      });
+
+      if (!project || project.userId !== user.id) {
+        return new Response("project not found or access denied", {
+          status: 404,
+        });
+      }
+    }
+
     const thread = await prisma.thread.create({
-      data: { userId: user.id },
+      data: {
+        userId: user.id,
+        projectId: projectId || null,
+      },
     });
 
     generateTitle(prompt, config.models.title_generation || model).then(
@@ -442,6 +505,50 @@ export async function regenerateMessage(c: Context<AppEnv>) {
         });
       },
     });
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
+}
+
+export async function updateThread(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const threadToken = c.req.param("threadToken");
+    const { projectId } = await c.req.json();
+
+    const thread = await validateThreadAccess(threadToken, user.id);
+
+    // Validate project ownership if projectId is provided
+    if (projectId !== null && projectId !== undefined) {
+      const project = await prisma.project.findUnique({
+        where: { id: projectId, isDeleted: false },
+      });
+
+      if (!project || project.userId !== user.id) {
+        return new Response("project not found or access denied", {
+          status: 404,
+        });
+      }
+    }
+
+    const updatedThread = await prisma.thread.update({
+      where: { id: thread.id },
+      data: { projectId: projectId ?? null },
+      select: {
+        token: true,
+        name: true,
+        projectId: true,
+        project: {
+          select: {
+            token: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return Response.json(updatedThread);
   } catch (error) {
     if (error instanceof Response) return error;
     throw error;
