@@ -515,26 +515,39 @@ export async function updateThread(c: Context<AppEnv>) {
   try {
     const user = requireAuth(c);
     const threadToken = c.req.param("threadToken");
-    const { projectId } = await c.req.json();
+    const { projectId, name } = await c.req.json();
 
     const thread = await validateThreadAccess(threadToken, user.id);
 
-    // Validate project ownership if projectId is provided
-    if (projectId !== null && projectId !== undefined) {
-      const project = await prisma.project.findUnique({
-        where: { id: projectId, isDeleted: false },
-      });
+    const updateData: {
+      projectId?: number | null;
+      name?: string;
+    } = {};
 
-      if (!project || project.userId !== user.id) {
-        return new Response("project not found or access denied", {
-          status: 404,
+    // Handle projectId update (can be null to remove project, or a number to set project)
+    if (projectId !== undefined) {
+      if (projectId !== null) {
+        // Validate project ownership if projectId is provided
+        const project = await prisma.project.findUnique({
+          where: { id: projectId, isDeleted: false },
         });
+
+        if (!project || project.userId !== user.id) {
+          return new Response("project not found or access denied", {
+            status: 404,
+          });
+        }
       }
+      updateData.projectId = projectId;
+    }
+
+    if (name !== undefined) {
+      updateData.name = name;
     }
 
     const updatedThread = await prisma.thread.update({
       where: { id: thread.id },
-      data: { projectId: projectId ?? null },
+      data: updateData,
       select: {
         token: true,
         name: true,

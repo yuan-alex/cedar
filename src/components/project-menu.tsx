@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MoreHorizontalIcon, SettingsIcon, Trash2Icon } from "lucide-react";
-
+import { ProjectSettingsDialog } from "@/components/project-settings-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ProjectSettingsDialog } from "@/components/project-settings-dialog";
 import { deleteProject } from "@/utils/queries";
 
 export function ProjectMenu({

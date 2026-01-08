@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { MoreHorizontalIcon, FolderIcon } from "lucide-react";
+import { FolderIcon, MoreHorizontalIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -12,12 +12,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { fetchProjects } from "@/utils/queries";
 import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
-import { fetchProjects } from "@/utils/queries";
 
 export function ThreadSidebarMenuItem(props) {
   const { thread } = props;

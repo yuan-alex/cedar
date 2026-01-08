@@ -4,11 +4,6 @@ import { useState } from "react";
 
 import { PromptInputButton } from "@/components/ai-elements/prompt-input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -16,6 +11,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { fetchProjects } from "@/utils/queries";
 
 export function ProjectSelector({

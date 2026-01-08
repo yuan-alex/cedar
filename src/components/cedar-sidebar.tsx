@@ -1,7 +1,7 @@
 import { UserButton } from "@daveyplate/better-auth-ui";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { PlusCircleIcon, Shield, FolderIcon } from "lucide-react";
+import { FolderIcon, PlusCircleIcon, Shield } from "lucide-react";
 import { CreateProjectDialog } from "@/components/create-project-dialog";
 import { ThreadSidebarMenuItem } from "@/components/thread-item";
 import { Button } from "@/components/ui/button";

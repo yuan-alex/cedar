@@ -30,6 +30,11 @@ export const regenerateMessageSchema = z.object({
   webSearchEnabled: webSearchEnabledField,
 });
 
-export const updateThreadSchema = z.object({
-  projectId: z.number().int().nullable().optional(),
-});
+export const updateThreadSchema = z
+  .object({
+    projectId: z.number().int().nullable().optional(),
+    name: z.string().min(1).max(500).optional(),
+  })
+  .refine((data) => data.projectId !== undefined || data.name !== undefined, {
+    message: "At least one field (projectId or name) must be provided",
+  });

@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
-
+import { ProjectMenu } from "@/components/project-menu";
+import { ThreadSidebarMenuItem } from "@/components/thread-item";
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,8 +14,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import { ThreadSidebarMenuItem } from "@/components/thread-item";
-import { ProjectMenu } from "@/components/project-menu";
 
 export function ProjectGroup({
   project,

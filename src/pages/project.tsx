@@ -69,7 +69,7 @@ export function ProjectPage() {
             Back to Projects
           </Button>
         </Link>
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold mb-2">{project.name}</h1>
             <p className="text-muted-foreground">
@@ -78,14 +78,6 @@ export function ProjectPage() {
                 ? "s"
                 : ""}
             </p>
-            {project.customInstructions && (
-              <div className="mt-4 p-4 bg-muted rounded-md">
-                <p className="text-sm font-medium mb-2">Custom Instructions:</p>
-                <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                  {project.customInstructions}
-                </p>
-              </div>
-            )}
           </div>
           <ProjectSettingsDialog project={project}>
             <Button variant="outline">
@@ -94,6 +86,14 @@ export function ProjectPage() {
             </Button>
           </ProjectSettingsDialog>
         </div>
+        {project.customInstructions && (
+          <div className="w-full p-4 bg-muted rounded-md">
+            <p className="text-sm font-medium mb-2">Custom Instructions:</p>
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+              {project.customInstructions}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center justify-between mb-5">

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createProject } from "@/utils/queries";
@@ -76,6 +75,7 @@ export function CreateProjectDialog({
                 onChange={(e) => setCustomInstructions(e.target.value)}
                 placeholder="Add custom instructions that will be provided to the LLM for all threads in this project..."
                 rows={6}
+                className="w-full"
               />
             </div>
           </div>
