@@ -4,15 +4,8 @@ import { format } from "date-fns";
 import { config } from "./config";
 import { registry } from "./providers";
 
-export function getSystemMessage(
-  webSearchEnabled = false,
-  model?: string,
-  projectInstructions?: string | null,
-): string {
-  const assistantName = config.ai.assistant_name;
-
-  const webSearchInstructions = webSearchEnabled
-    ? `
+function buildWebSearchInstructions(): string {
+  return `
 WEB SEARCH:
 - Use web search judiciously (typically 1 search, only more if needed)
 - Process: webSearch → review snippets → fetchWebContent only for 1-3 most relevant URLs
@@ -30,22 +23,20 @@ CITATIONS:
   [1] [Article Title](https://example.com/article)
   [2] [Research Paper Title](https://example.com/research)
 </citation_example>
-`
-    : "";
+`;
+}
 
-  const isGptOss = model?.toLowerCase().includes("gpt-oss") ?? false;
-  const gptOssInstructions = isGptOss
-    ? `
+function buildGptOssInstructions(): string {
+  return `
 Knowledge cutoff: 2024-06
 Reasoning: low
 # Valid channels: analysis, commentary, final. Channel must be included for every message.
-`
-    : "";
+`;
+}
 
-  return (
-    config.ai.system_message ||
-    `You're ${assistantName}, an AI assistant who provides clear, logical, and well-reasoned responses.
-${gptOssInstructions}
+function buildBaseSystemMessage(assistantName: string): string {
+  return `You're ${assistantName}, an AI assistant who provides clear, logical, and well-reasoned responses.
+
 CORE PRINCIPLES:
 - Provide accurate, well-reasoned responses with proper context
 - Prioritize user understanding over technical complexity
@@ -80,10 +71,39 @@ MATH:
 - For display-style equations, place $$ delimiters on separate lines (this renders the equation centered and larger):
 $$
 E = mc^2
-$$
-${webSearchInstructions}
-${projectInstructions ? `\nPROJECT-SPECIFIC INSTRUCTIONS:\n${projectInstructions}\n` : ""}Current date: ${format(new Date(), "PPPP")}.`
-  );
+$$`;
+}
+
+function buildProjectInstructions(projectInstructions?: string | null): string {
+  return projectInstructions
+    ? `\nPROJECT-SPECIFIC INSTRUCTIONS:
+Take these instructions into account alongside the general guidelines above. Follow them consistently throughout this conversation.
+
+${projectInstructions}\n`
+    : "";
+}
+
+export function getSystemMessage(
+  webSearchEnabled = false,
+  model?: string,
+  projectInstructions?: string | null,
+): string {
+  if (config.ai.system_message) {
+    return config.ai.system_message;
+  }
+
+  const assistantName = config.ai.assistant_name;
+  const isGptOss = model?.toLowerCase().includes("gpt-oss") ?? false;
+
+  const sections = [
+    buildBaseSystemMessage(assistantName),
+    isGptOss ? buildGptOssInstructions() : "",
+    webSearchEnabled ? buildWebSearchInstructions() : "",
+    buildProjectInstructions(projectInstructions),
+    `Current date: ${format(new Date(), "PPPP")}.`,
+  ];
+
+  return sections.filter(Boolean).join("\n");
 }
 
 export function generateTitle(prompt: string, model: string) {
