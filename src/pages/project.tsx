@@ -1,13 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { ArrowLeftIcon, PlusIcon, SettingsIcon } from "lucide-react";
+import { ArrowLeftIcon, SettingsIcon } from "lucide-react";
 
+import { InputBox } from "@/components/input-box";
 import { ProjectSettingsDialog } from "@/components/project-settings-dialog";
 import { ThreadItemCard } from "@/components/thread-item-card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { fetchProject, fetchThreadsByProject } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
+import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
 
 export function ProjectPage() {
   const { projectToken } = useParams({ from: "/projects/$projectToken" });
@@ -25,7 +27,7 @@ export function ProjectPage() {
   });
 
   const createThreadMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (prompt: string) => {
       const response = await fetch("/api/v1/threads", {
         method: "POST",
         headers: {
@@ -33,7 +35,7 @@ export function ProjectPage() {
         },
         body: JSON.stringify({
           model: $model.get().id,
-          prompt: $prompt.value || "New thread",
+          prompt: prompt,
           projectId: project?.id,
         }),
       });
@@ -51,6 +53,15 @@ export function ProjectPage() {
       });
     },
   });
+
+  function handleCreateThread(message: PromptInputMessage) {
+    if (!message.text) {
+      return;
+    }
+
+    $prompt.set(message.text);
+    createThreadMutation.mutate(message.text);
+  }
 
   if (!project) {
     return (
@@ -96,45 +107,42 @@ export function ProjectPage() {
         )}
       </div>
 
-      <div className="flex items-center justify-between mb-5">
-        <p className="text-xl">Threads</p>
-        <Button
-          onClick={() => {
-            $prompt.set("");
-            createThreadMutation.mutate();
-          }}
-          disabled={createThreadMutation.isPending}
-        >
-          <PlusIcon className="w-4 h-4 mr-2" />
-          New Thread
-        </Button>
+      <div className="mb-5">
+        <p className="text-xl mb-4">Threads</p>
+        <div className="mb-6">
+          <InputBox
+            onSubmit={handleCreateThread}
+            status={createThreadMutation.isPending ? "submitted" : undefined}
+          />
+        </div>
       </div>
 
       {threads && threads.length > 0 ? (
         <div className="border rounded-lg">
-          {threads.map((thread, index) => (
-            <div key={thread.token}>
-              <ThreadItemCard thread={thread} dateField="lastMessagedAt" />
-              {index < threads.length - 1 && <Separator />}
-            </div>
-          ))}
+          {threads.map(
+            (
+              thread: {
+                token: string;
+                name: string;
+                lastMessagedAt?: string;
+                createdAt?: string;
+                project?: { token: string; name: string } | null;
+              },
+              index: number,
+            ) => (
+              <div key={thread.token}>
+                <ThreadItemCard thread={thread} dateField="lastMessagedAt" />
+                {index < threads.length - 1 && <Separator />}
+              </div>
+            ),
+          )}
         </div>
       ) : (
         <div className="text-center py-12">
           <p className="text-lg font-medium mb-2">No threads yet</p>
-          <p className="text-muted-foreground mb-4">
-            Create a thread to get started
+          <p className="text-muted-foreground">
+            Type a message above to create your first thread
           </p>
-          <Button
-            onClick={() => {
-              $prompt.set("");
-              createThreadMutation.mutate();
-            }}
-            disabled={createThreadMutation.isPending}
-          >
-            <PlusIcon className="w-4 h-4 mr-2" />
-            Create Thread
-          </Button>
         </div>
       )}
     </div>
