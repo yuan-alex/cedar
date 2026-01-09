@@ -5,5 +5,9 @@ import { config } from "@/server/utils/config";
 export const mcp = new Hono<AppEnv>();
 
 mcp.get("/servers", async (c) => {
-  return c.json(config.mcpServers);
+  const enabledServerNames = Object.entries(config.mcpServers)
+    .filter(([, serverConfig]) => serverConfig?.enabled !== false)
+    .map(([name]) => name)
+    .sort();
+  return c.json(enabledServerNames);
 });

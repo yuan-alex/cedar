@@ -24,11 +24,8 @@ export function McpSelector() {
     queryKey: ["availableMcpServers"],
     queryFn: async () => {
       const res = await fetch("/api/v1/mcp/servers");
-      const data: Record<string, { enabled?: boolean }> = await res.json();
-      return Object.entries(data)
-        .filter(([, cfg]) => cfg?.enabled !== false)
-        .map(([name]) => name)
-        .sort();
+      const data: string[] = await res.json();
+      return data;
     },
     staleTime: 5 * 60 * 1000,
   });
