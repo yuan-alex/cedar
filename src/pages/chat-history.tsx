@@ -44,7 +44,7 @@ export function ChatHistory() {
   };
 
   return (
-    <div className="w-2xl mx-auto my-10">
+    <div className="max-w-3xl mx-auto my-10">
       <div className="flex items-center justify-between mb-5">
         <p className="text-2xl">Recent chats</p>
         {threads?.length > 0 && (

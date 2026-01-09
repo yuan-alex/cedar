@@ -60,7 +60,7 @@ export function NewChat() {
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div className="grow flex flex-col justify-end md:justify-center md:items-center overflow-hidden">
-        <div className="max-w-4xl w-full px-4 md:px-0">
+        <div className="max-w-3xl w-full px-4 md:px-0">
           <div className="hidden md:flex flex-col items-center justify-center mb-10">
             <div className="flex items-center space-x-4 mb-4">
               <img className="w-12 h-12" src={cedarIcon} alt="Cedar" />

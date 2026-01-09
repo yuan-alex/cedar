@@ -109,8 +109,8 @@ export function Thread() {
           <ConversationContent
             className={
               messages.length > 0
-                ? "space-y-6 max-w-4xl mx-auto"
-                : "max-w-4xl mx-auto"
+                ? "space-y-6 max-w-3xl mx-auto"
+                : "max-w-3xl mx-auto"
             }
           >
             {messages.length === 0 ? (
@@ -139,7 +139,7 @@ export function Thread() {
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
-        <div className="w-full max-w-4xl mx-auto mb-2">
+        <div className="w-full max-w-3xl mx-auto mb-2">
           <InputBox onSubmit={handleSubmit} status={chatStatus} />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { ArrowLeftIcon, SettingsIcon } from "lucide-react";
-
+import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
 import { InputBox } from "@/components/input-box";
 import { ProjectSettingsDialog } from "@/components/project-settings-dialog";
 import { ThreadItemCard } from "@/components/thread-item-card";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { fetchProject, fetchThreadsByProject } from "@/utils/queries";
 import { $model, $prompt } from "@/utils/stores";
-import type { PromptInputMessage } from "@/components/ai-elements/prompt-input";
 
 export function ProjectPage() {
   const { projectToken } = useParams({ from: "/projects/$projectToken" });
@@ -65,14 +64,14 @@ export function ProjectPage() {
 
   if (!project) {
     return (
-      <div className="w-2xl mx-auto my-10">
+      <div className="max-w-3xl mx-auto my-10">
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-2xl mx-auto my-10">
+    <div className="max-w-3xl mx-auto my-10">
       <div className="mb-6">
         <Link to="/projects">
           <Button variant="ghost" size="sm" className="mb-4">

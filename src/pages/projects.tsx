@@ -23,7 +23,7 @@ export function ProjectsPage() {
   });
 
   return (
-    <div className="w-2xl mx-auto my-10">
+    <div className="max-w-3xl mx-auto my-10">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-semibold">Projects</h1>
         <CreateProjectDialog>
