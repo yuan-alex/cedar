@@ -10,6 +10,7 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
 - **Real-time Chat**: Smooth, responsive conversation interface
 - **Chat History**: Persistent chat threads and history management
 - **MCP Integration**: Model Context Protocol support for enhanced AI interactions
+- **Web Search Integration**: Powered by Exa AI, enables AI models to search the web for current information and cite sources with automatic reference formatting
 
 ## Supported Providers
 
@@ -18,6 +19,20 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
 - Fireworks AI
 - OpenAI
 - OpenRouter
+
+## Web Search Integration
+
+Cedar includes optional web search capabilities powered by Exa. When enabled, AI models can search the web for current information, recent articles, and up-to-date facts during conversations.
+
+### Setup
+
+To enable web search, add your Exa AI API key to your environment variables:
+
+```env
+EXA_API_KEY=your_exa_api_key_here
+```
+
+Once configured, the web search toggle will appear in the chat interface. The feature is automatically available to all AI models when enabled for a conversation.
 
 ## Deployment
 
@@ -57,6 +72,9 @@ A modern, cross-platform chatbot interface built with React, TypeScript, and Tau
     OPENROUTER_API_KEY=...
     DEEPINFRA_API_KEY=...
     FIREWORKS_API_KEY=...
+
+    # Web Search (Optional)
+    EXA_API_KEY=... # Exa AI API key for web search functionality
    ```
 
 4. **Set up the database**

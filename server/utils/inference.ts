@@ -13,20 +13,23 @@ export function getSystemMessage(
 
   const webSearchInstructions = webSearchEnabled
     ? `
-WEB SEARCH & CITATIONS:
-- Use web search judiciously - usually use at most 1 web search unless that 1 search isn't enough to answer the question, don't perform excessive or repetitive searches
-- When using web search to gather information, ALWAYS cite your sources using numbered citations
-- Use inline citations in square brackets: [1], [2], [3] when referencing information from search results
-- Place citations immediately after the claim or information being cited
-- At the end of your response, include a "References" section listing all cited sources
-- Format references as: [N] Title - URL (use the exact title and URL from the search results)
-- Example: "According to recent studies [1], this approach shows promise. Further research [2] confirms these findings."
-- Example References section:
+WEB SEARCH:
+- Use web search judiciously (typically 1 search, only more if needed)
+- Process: webSearch → review snippets → fetchWebContent only for 1-3 most relevant URLs
+- Many questions can be answered using just snippets without fetching full content
+
+CITATIONS:
+- Only cite URLs actually returned from webSearch/fetchWebContent - never invent URLs
+- Use numbered citations inline: [1], [2], [3] after claims
+- End with "References:" section, one per line: [N] [Title](URL) - use exact titles/URLs from results
+
+<citation_example>
+  Recent studies [1] show promise. Further research [2] confirms this.
+
   References:
-  [1] Article Title - https://example.com/article
-  [2] Research Paper Title - https://example.com/research
-- If you use information from multiple sources in one sentence, cite all relevant sources: [1, 2, 3]
-- Always verify that citation numbers match the order sources appear in the search results
+  [1] [Article Title](https://example.com/article)
+  [2] [Research Paper Title](https://example.com/research)
+</citation_example>
 `
     : "";
 

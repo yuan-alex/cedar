@@ -23,6 +23,7 @@ import {
 import { getModels, registry } from "@/server/utils/providers";
 import {
   createCleanedWebSearch,
+  createFetchWebContentTool,
   isWebSearchAvailable,
 } from "@/server/utils/web-search";
 
@@ -303,16 +304,19 @@ export async function createMessage(c: Context<AppEnv>) {
     // Always create webSearch tool for validation (needed to validate old messages that used web search)
     const webSearchTool = createCleanedWebSearch({
       type: "fast",
-      numResults: 3,
     });
+    const fetchWebContentTool = createFetchWebContentTool();
+
     if (userInput.webSearchEnabled && isWebSearchAvailable()) {
       tools.webSearch = webSearchTool;
+      tools.fetchWebContent = fetchWebContentTool;
     }
 
     // Always include webSearch in validation tools to allow validation of old messages that used web search
     const validationTools: ToolSet = {
       ...tools,
       webSearch: webSearchTool,
+      fetchWebContent: fetchWebContentTool,
     };
 
     const validatedMessages = await validateUIMessages({
@@ -445,10 +449,12 @@ export async function regenerateMessage(c: Context<AppEnv>) {
     // Only add to actual tools if enabled AND API key is available (prevents model from using it when disabled)
     const webSearchTool = createCleanedWebSearch({
       type: "fast",
-      numResults: 3,
     });
+    const fetchWebContentTool = createFetchWebContentTool();
+
     if (webSearchEnabled && isWebSearchAvailable()) {
       tools.webSearch = webSearchTool;
+      tools.fetchWebContent = fetchWebContentTool;
     }
 
     // Always include webSearch in validation tools to allow validation of old messages that used web search
@@ -456,6 +462,7 @@ export async function regenerateMessage(c: Context<AppEnv>) {
     const validationTools: ToolSet = {
       ...tools,
       webSearch: webSearchTool,
+      fetchWebContent: fetchWebContentTool,
     };
 
     const validatedMessages = await validateUIMessages({
