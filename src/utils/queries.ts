@@ -49,5 +49,7 @@ export async function deleteProject(token: string) {
 export async function fetchThreadsByProject(projectToken: string) {
   const response = await fetch(`/api/v1/threads?projectToken=${projectToken}`);
   if (!response.ok) throw new Error("Failed to fetch threads");
-  return response.json();
+  const data = await response.json();
+  // Extract threads from paginated response
+  return data.data ?? [];
 }

@@ -96,18 +96,9 @@ export function ProjectPage() {
             </Button>
           </ProjectSettingsDialog>
         </div>
-        {project.customInstructions && (
-          <div className="w-full p-4 bg-muted rounded-md">
-            <p className="text-sm font-medium mb-2">Custom Instructions:</p>
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-              {project.customInstructions}
-            </p>
-          </div>
-        )}
       </div>
 
       <div className="mb-5">
-        <p className="text-xl mb-4">Threads</p>
         <div className="mb-6">
           <InputBox
             onSubmit={handleCreateThread}

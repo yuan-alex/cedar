@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import {
   createThreadSchema,
+  deleteSelectedThreadsSchema,
   newMessageSchema,
   regenerateMessageSchema,
   updateThreadSchema,
@@ -18,6 +19,11 @@ threads.post(
   threadsService.createThread,
 );
 threads.delete("/", threadsService.bulkSoftDeleteThreads);
+threads.post(
+  "/delete-selected",
+  zValidator("json", deleteSelectedThreadsSchema),
+  threadsService.deleteSelectedThreads,
+);
 threads.get("/:threadToken", threadsService.getThread);
 threads.post(
   "/:threadToken",

@@ -23,10 +23,13 @@ import { createQueryFn, fetchProjects } from "@/utils/queries";
 const cedarIcon = "/images/cedar.svg";
 
 export function CedarSidebar() {
-  const { data: threads } = useQuery({
+  const { data: threadsResponse } = useQuery({
     queryKey: ["sidebarThreads"],
     queryFn: createQueryFn("/api/v1/threads?take=15"),
   });
+
+  // Extract threads from paginated response
+  const threads = threadsResponse?.data ?? [];
 
   const { data: projects } = useQuery({
     queryKey: ["projects"],
@@ -47,13 +50,22 @@ export function CedarSidebar() {
     name: string;
     lastMessagedAt: string;
     createdAt: string;
+    projectId?: number | null;
   }> = [];
 
-  threads?.forEach((thread) => {
-    if (!thread.projectId) {
-      unassignedThreads.push(thread);
-    }
-  });
+  threads?.forEach(
+    (thread: {
+      token: string;
+      name: string;
+      lastMessagedAt?: string;
+      createdAt?: string;
+      projectId?: number | null;
+    }) => {
+      if (!thread.projectId) {
+        unassignedThreads.push(thread);
+      }
+    },
+  );
 
   return (
     <Sidebar>

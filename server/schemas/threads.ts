@@ -38,3 +38,7 @@ export const updateThreadSchema = z
   .refine((data) => data.projectId !== undefined || data.name !== undefined, {
     message: "At least one field (projectId or name) must be provided",
   });
+
+export const deleteSelectedThreadsSchema = z.object({
+  threadTokens: z.array(z.string()).min(1),
+});

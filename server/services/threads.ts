@@ -148,12 +148,16 @@ export async function listThreads(c: Context<AppEnv>) {
   try {
     const user = requireAuth(c);
 
-    const take = c.req.query("take")
-      ? Number.parseInt(c.req.query("take") as string)
-      : undefined;
-    const skip = Number.parseInt(c.req.query("skip") || "0");
-    const projectId = c.req.query("projectId")
-      ? Number.parseInt(c.req.query("projectId") as string)
+    const takeParam = c.req.query("take");
+    const skipParam = c.req.query("skip");
+    // Validate and limit pagination parameters to prevent DoS
+    const take = takeParam
+      ? Math.max(1, Math.min(100, Number.parseInt(takeParam as string) || 20))
+      : 20;
+    const skip = Math.max(0, Number.parseInt(skipParam as string) || 0);
+    const projectIdParam = c.req.query("projectId");
+    const projectId = projectIdParam
+      ? Math.max(1, Number.parseInt(projectIdParam as string))
       : undefined;
     const projectToken = c.req.query("projectToken");
 
@@ -167,8 +171,15 @@ export async function listThreads(c: Context<AppEnv>) {
       if (project) {
         resolvedProjectId = project.id;
       } else {
-        // Project not found or doesn't belong to user, return empty array
-        return Response.json([]);
+        // Project not found or doesn't belong to user, return empty paginated response
+        return Response.json({
+          data: [],
+          pagination: {
+            total: 0,
+            skip: 0,
+            take: 0,
+          },
+        });
       }
     }
 
@@ -176,6 +187,9 @@ export async function listThreads(c: Context<AppEnv>) {
     if (resolvedProjectId !== undefined) {
       where.projectId = resolvedProjectId;
     }
+
+    // Always get total count for pagination metadata
+    const total = await prisma.thread.count({ where });
 
     const threads = await prisma.thread.findMany({
       where,
@@ -197,7 +211,15 @@ export async function listThreads(c: Context<AppEnv>) {
       },
     });
 
-    return Response.json(threads);
+    // Always return paginated response format
+    return Response.json({
+      data: threads,
+      pagination: {
+        total,
+        skip: skip || 0,
+        take: take ?? threads.length,
+      },
+    });
   } catch (error) {
     if (error instanceof Response) return error;
     throw error;
@@ -379,8 +401,12 @@ export async function softDeleteThread(c: Context<AppEnv>) {
 
     const thread = await validateThreadAccess(threadToken, user.id);
 
+    // Defense in depth: explicitly check userId in message deletion
     const deleteMessages = prisma.chatMessage.updateMany({
-      where: { threadId: thread.id },
+      where: {
+        threadId: thread.id,
+        thread: { userId: user.id },
+      },
       data: { isDeleted: true, uiMessageParts: [] },
     });
     const deleteThread = prisma.thread.update({
@@ -576,8 +602,7 @@ export async function updateThread(c: Context<AppEnv>) {
 }
 
 export async function bulkSoftDeleteThreads(c: Context<AppEnv>) {
-  const user = c.get("user");
-  if (!user) return c.body(null, 401);
+  const user = requireAuth(c);
 
   const deleteMessages = prisma.chatMessage.updateMany({
     where: {
@@ -596,4 +621,59 @@ export async function bulkSoftDeleteThreads(c: Context<AppEnv>) {
   await prisma.$transaction([deleteMessages, deleteThreads]);
 
   return new Response("ok");
+}
+
+export async function deleteSelectedThreads(c: Context<AppEnv>) {
+  try {
+    const user = requireAuth(c);
+    const body = await c.req.json();
+    const { threadTokens } = body;
+
+    if (
+      !Array.isArray(threadTokens) ||
+      threadTokens.length === 0 ||
+      threadTokens.length > 1000
+    ) {
+      return c.json(
+        {
+          error:
+            "threadTokens must be a non-empty array with a maximum of 1000 items",
+        },
+        400,
+      );
+    }
+
+    // First, validate that all threads belong to the user
+    const threads = await prisma.thread.findMany({
+      where: {
+        token: { in: threadTokens },
+        userId: user.id,
+        isDeleted: false,
+      },
+    });
+
+    if (threads.length !== threadTokens.length) {
+      return c.json({ error: "Some threads not found or access denied" }, 403);
+    }
+
+    const threadIds = threads.map((t) => t.id);
+
+    // Delete messages and threads in a transaction
+    const deleteMessages = prisma.chatMessage.updateMany({
+      where: { threadId: { in: threadIds } },
+      data: { isDeleted: true, uiMessageParts: [] },
+    });
+
+    const deleteThreads = prisma.thread.updateMany({
+      where: { id: { in: threadIds }, userId: user.id },
+      data: { isDeleted: true, name: "", uiMessages: [] },
+    });
+
+    await prisma.$transaction([deleteMessages, deleteThreads]);
+
+    return new Response("ok");
+  } catch (error) {
+    if (error instanceof Response) return error;
+    throw error;
+  }
 }
