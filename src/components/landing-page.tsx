@@ -45,7 +45,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gradient-to-b dark:from-black dark:to-zinc-800 text-zinc-900 dark:text-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-linear-to-b dark:from-black dark:to-zinc-800 text-zinc-900 dark:text-white">
       <header
         className={`fixed w-full transition-all duration-300 ${
           scrolled
@@ -104,7 +104,7 @@ export function LandingPage() {
       <main className="flex-1 pt-28 pb-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="relative">
-            <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[700px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/10 via-purple-600/10 to-transparent dark:from-indigo-500/20 dark:via-purple-600/20 dark:to-transparent blur-[120px] rounded-full opacity-40" />
+            <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[700px] bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-indigo-500/10 via-purple-600/10 to-transparent dark:from-indigo-500/20 dark:via-purple-600/20 dark:to-transparent blur-[120px] rounded-full opacity-40" />
             <section className="relative text-center mb-10">
               <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/70 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 px-3 py-1 text-xs text-zinc-600 dark:text-zinc-300 backdrop-blur">
                 <span>AI chat for every team</span>
@@ -154,10 +154,10 @@ export function LandingPage() {
             </section>
 
             <div className="mt-12 relative">
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-100 to-transparent dark:from-black dark:to-transparent h-40 bottom-0 z-10" />
+              <div className="absolute inset-0 bg-linear-to-t from-gray-100 to-transparent dark:from-black dark:to-transparent h-40 bottom-0 z-10" />
               <div className="rounded-2xl border border-gray-200/70 dark:border-zinc-800 overflow-hidden shadow-2xl shadow-indigo-500/10 dark:shadow-indigo-500/5 bg-white/40 dark:bg-zinc-950/50 backdrop-blur">
-                <div className="aspect-[16/9] w-full flex items-center justify-center">
-                  <div className="w-full h-full bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:20px_20px] flex items-center justify-center">
+                <div className="aspect-video w-full flex items-center justify-center">
+                  <div className="w-full h-full bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-size-[20px_20px] flex items-center justify-center">
                     <div className="text-center">
                       <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/70 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/50 px-3 py-1 text-xs text-zinc-600 dark:text-zinc-300 backdrop-blur">
                         <span>Product preview</span>
@@ -266,7 +266,7 @@ export function LandingPage() {
 
         <section className="mt-24">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="rounded-2xl border border-zinc-200/70 dark:border-zinc-800 bg-gradient-to-br from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 p-8 md:p-10 text-center">
+            <div className="rounded-2xl border border-zinc-200/70 dark:border-zinc-800 bg-linear-to-br from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 p-8 md:p-10 text-center">
               <h3 className="text-2xl md:text-3xl font-semibold text-zinc-900 dark:text-white">
                 Ship AI safely at scale
               </h3>
