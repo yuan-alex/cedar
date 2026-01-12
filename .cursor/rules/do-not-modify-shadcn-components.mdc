@@ -1,0 +1,7 @@
+---
+description: Never modify shadcn/ui component library files
+globs: "src/components/ui/**/*, src/components/ai-elements/**/*"
+alwaysApply: true
+---
+
+Never modify files in `src/components/ui/` or `src/components/ai-elements/` as they are component libraries fetched from remote sources. Create wrapper components or use composition instead.
