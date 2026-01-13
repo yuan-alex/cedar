@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
 import {
   type ColumnDef,
-  type OnChangeFn,
-  type PaginationState,
   flexRender,
   getCoreRowModel,
+  type OnChangeFn,
+  type PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
