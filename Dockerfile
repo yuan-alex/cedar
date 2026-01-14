@@ -55,10 +55,11 @@ FROM oven/bun:1-alpine AS runtime
 # Use existing bun user from base image
 RUN addgroup -g 1001 -S nodejs || true
 
-# Install minimal runtime dependencies
+# Install minimal runtime dependencies (including curl for health checks)
 RUN apk add --no-cache \
   ca-certificates \
   openssl \
+  curl \
   && rm -rf /var/cache/apk/*
 
 WORKDIR /app
@@ -75,7 +76,6 @@ COPY --from=builder --chown=bun:nodejs /app/prisma.config.ts ./
 COPY --from=builder --chown=bun:nodejs /app/package.json ./
 COPY --from=builder --chown=bun:nodejs /app/bun.lock ./
 COPY --from=builder --chown=bun:nodejs /app/tsconfig.json ./
-COPY --from=builder --chown=bun:nodejs /app/bunfig.toml ./
 
 # Switch to non-root user
 USER bun
@@ -83,9 +83,9 @@ USER bun
 # Expose the port
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD bun --version || exit 1
+# Health check - checks if the server responds
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3000/api/v1/health || exit 1
 
 # Set production environment
 ENV NODE_ENV=production
