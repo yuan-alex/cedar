@@ -30,6 +30,10 @@ FROM deps AS builder
 # Copy source code
 COPY . .
 
+# Prisma generate needs DATABASE_URL at build time
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN bunx --bun prisma generate
 
 # Build the frontend application
