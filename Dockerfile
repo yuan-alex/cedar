@@ -30,7 +30,7 @@ FROM deps AS builder
 # Copy source code
 COPY . .
 
-RUN bunx prisma generate
+RUN bunx --bun prisma generate
 
 # Build the frontend application
 RUN bun run build
